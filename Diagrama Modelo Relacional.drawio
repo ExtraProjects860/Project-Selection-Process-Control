@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36" version="24.7.7">
   <diagram name="Página-1" id="de7DO5orAWd1vN3bYA0H">
-    <mxGraphModel dx="2295" dy="871" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="2020" dy="708" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -49,7 +49,7 @@
         <mxCell id="dZXWX3gMMMTmXV1Ml8qp-18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;curved=1;" edge="1" parent="1" source="dZXWX3gMMMTmXV1Ml8qp-31" target="dZXWX3gMMMTmXV1Ml8qp-14">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="dZXWX3gMMMTmXV1Ml8qp-20" value="Questionário" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="dZXWX3gMMMTmXV1Ml8qp-20" value="Questionários" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="386" y="240" width="160" height="144.25" as="geometry" />
         </mxCell>
         <mxCell id="dZXWX3gMMMTmXV1Ml8qp-21" value="+id&lt;div&gt;+id_vagas&lt;br&gt;+id_perguntas&lt;/div&gt;&lt;div&gt;+resposta&lt;br&gt;&lt;div&gt;+currículo&lt;/div&gt;&lt;/div&gt;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;" vertex="1" parent="dZXWX3gMMMTmXV1Ml8qp-20">
