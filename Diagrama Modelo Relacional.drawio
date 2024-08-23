@@ -32,10 +32,10 @@
           <mxGeometry y="50" width="160" height="70" as="geometry" />
         </mxCell>
         <mxCell id="dZXWX3gMMMTmXV1Ml8qp-11" value="Vagas_Disponíveis" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="-70" y="502.5" width="160" height="100" as="geometry" />
+          <mxGeometry x="-70" y="500" width="160" height="110" as="geometry" />
         </mxCell>
-        <mxCell id="dZXWX3gMMMTmXV1Ml8qp-12" value="+id&lt;div&gt;+id_usuário&lt;br&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;/div&gt;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;" parent="dZXWX3gMMMTmXV1Ml8qp-11" vertex="1">
-          <mxGeometry y="50" width="160" height="50" as="geometry" />
+        <mxCell id="dZXWX3gMMMTmXV1Ml8qp-12" value="+id&lt;div&gt;+id_vaga_total&lt;br&gt;&lt;div&gt;+id_usuário&lt;br&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;" parent="dZXWX3gMMMTmXV1Ml8qp-11" vertex="1">
+          <mxGeometry y="50" width="160" height="60" as="geometry" />
         </mxCell>
         <mxCell id="dZXWX3gMMMTmXV1Ml8qp-13" value="Resultado_Inscrições" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="386" y="603" width="160" height="170" as="geometry" />
