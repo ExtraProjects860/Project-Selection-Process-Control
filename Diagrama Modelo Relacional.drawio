@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36" version="24.7.7">
   <diagram name="Página-1" id="de7DO5orAWd1vN3bYA0H">
-    <mxGraphModel dx="2643" dy="514" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="2849" dy="622" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -75,13 +75,13 @@
         <mxCell id="dZXWX3gMMMTmXV1Ml8qp-65" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;endFill=0;" parent="1" source="dZXWX3gMMMTmXV1Ml8qp-29" target="dZXWX3gMMMTmXV1Ml8qp-21" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="dZXWX3gMMMTmXV1Ml8qp-29" value="Possui" style="shape=rhombus;double=1;perimeter=rhombusPerimeter;whiteSpace=wrap;html=1;align=center;" parent="1" vertex="1">
+        <mxCell id="dZXWX3gMMMTmXV1Ml8qp-29" value="Possui-se" style="shape=rhombus;double=1;perimeter=rhombusPerimeter;whiteSpace=wrap;html=1;align=center;" parent="1" vertex="1">
           <mxGeometry x="626" y="307" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="dZXWX3gMMMTmXV1Ml8qp-31" value="Atribui-se" style="shape=rhombus;double=1;perimeter=rhombusPerimeter;whiteSpace=wrap;html=1;align=center;" parent="1" vertex="1">
           <mxGeometry x="650" y="683" width="120" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="dZXWX3gMMMTmXV1Ml8qp-44" value="Cadastra" style="shape=rhombus;perimeter=rhombusPerimeter;whiteSpace=wrap;html=1;align=center;" parent="1" vertex="1">
+        <mxCell id="dZXWX3gMMMTmXV1Ml8qp-44" value="Cadastra-se" style="shape=rhombus;perimeter=rhombusPerimeter;whiteSpace=wrap;html=1;align=center;" parent="1" vertex="1">
           <mxGeometry x="190" y="100" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="dZXWX3gMMMTmXV1Ml8qp-48" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;curved=1;endArrow=none;endFill=0;" parent="1" source="dZXWX3gMMMTmXV1Ml8qp-3" target="dZXWX3gMMMTmXV1Ml8qp-44" edge="1">
@@ -111,8 +111,8 @@
         <mxCell id="dZXWX3gMMMTmXV1Ml8qp-68" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="dZXWX3gMMMTmXV1Ml8qp-66" target="dZXWX3gMMMTmXV1Ml8qp-13" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="dZXWX3gMMMTmXV1Ml8qp-66" value="Avalia" style="shape=rhombus;perimeter=rhombusPerimeter;whiteSpace=wrap;html=1;align=center;" parent="1" vertex="1">
-          <mxGeometry x="406" y="493" width="120" height="60" as="geometry" />
+        <mxCell id="dZXWX3gMMMTmXV1Ml8qp-66" value="Avalia-se" style="shape=rhombus;perimeter=rhombusPerimeter;whiteSpace=wrap;html=1;align=center;" parent="1" vertex="1">
+          <mxGeometry x="406" y="468.75" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="dZXWX3gMMMTmXV1Ml8qp-67" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="dZXWX3gMMMTmXV1Ml8qp-21" target="dZXWX3gMMMTmXV1Ml8qp-66" edge="1">
           <mxGeometry relative="1" as="geometry" />
@@ -171,14 +171,14 @@
         <mxCell id="jxh5CUl1t5E--HQuOENb-29" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.25;entryDx=0;entryDy=0;endArrow=none;endFill=0;" edge="1" parent="1" source="jxh5CUl1t5E--HQuOENb-27" target="dZXWX3gMMMTmXV1Ml8qp-12">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="jxh5CUl1t5E--HQuOENb-27" value="Relationship" style="shape=rhombus;perimeter=rhombusPerimeter;whiteSpace=wrap;html=1;align=center;" vertex="1" parent="1">
+        <mxCell id="jxh5CUl1t5E--HQuOENb-27" value="Contém" style="shape=rhombus;perimeter=rhombusPerimeter;whiteSpace=wrap;html=1;align=center;" vertex="1" parent="1">
           <mxGeometry x="-270" y="530" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="jxh5CUl1t5E--HQuOENb-30" value="0,n" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="-130" y="530" width="60" height="30" as="geometry" />
         </mxCell>
         <mxCell id="jxh5CUl1t5E--HQuOENb-31" value="0,n" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="-533" y="560" width="60" height="30" as="geometry" />
+          <mxGeometry x="-553" y="567.5" width="60" height="30" as="geometry" />
         </mxCell>
         <mxCell id="jxh5CUl1t5E--HQuOENb-33" value="1,n" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="90" y="537.5" width="60" height="30" as="geometry" />
