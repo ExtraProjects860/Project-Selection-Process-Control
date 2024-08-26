@@ -46,10 +46,10 @@
           <mxGeometry x="111" y="97.5" width="60" height="30" as="geometry" />
         </mxCell>
         <mxCell id="40_1QeHmnroJbZyaDv-z-39" value="1,1" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="330" y="97.5" width="60" height="30" as="geometry" />
+          <mxGeometry x="330" y="110" width="60" height="30" as="geometry" />
         </mxCell>
         <mxCell id="40_1QeHmnroJbZyaDv-z-41" value="0,n" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="-10" y="190" width="60" height="30" as="geometry" />
+          <mxGeometry x="-15" y="190" width="60" height="30" as="geometry" />
         </mxCell>
         <mxCell id="40_1QeHmnroJbZyaDv-z-46" value="1,1" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="270" y="560" width="60" height="30" as="geometry" />
@@ -67,10 +67,10 @@
           <mxGeometry x="720" y="560" width="60" height="30" as="geometry" />
         </mxCell>
         <mxCell id="40_1QeHmnroJbZyaDv-z-51" value="1,n" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="540" y="560" width="60" height="30" as="geometry" />
+          <mxGeometry x="550" y="560" width="60" height="30" as="geometry" />
         </mxCell>
         <mxCell id="40_1QeHmnroJbZyaDv-z-55" value="1,n" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="10" y="490" width="60" height="30" as="geometry" />
+          <mxGeometry x="45" y="490" width="60" height="30" as="geometry" />
         </mxCell>
         <mxCell id="40_1QeHmnroJbZyaDv-z-56" value="Vaga" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="-70" y="520" width="230" height="186.25" as="geometry" />
