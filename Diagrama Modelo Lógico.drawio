@@ -23,10 +23,10 @@
           <mxGeometry y="50" width="160" height="70" as="geometry" />
         </mxCell>
         <mxCell id="40_1QeHmnroJbZyaDv-z-25" value="Status_Processo_Seletivo" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="220" y="250" width="255" height="170" as="geometry" />
+          <mxGeometry x="220" y="250" width="255" height="200" as="geometry" />
         </mxCell>
-        <mxCell id="40_1QeHmnroJbZyaDv-z-26" value="+id | PK | Int | Not null&lt;div&gt;+id_vaga&amp;nbsp;&lt;span style=&quot;background-color: initial;&quot;&gt;| FK | Int | Not null&lt;/span&gt;&lt;/div&gt;&lt;div&gt;+id_etapa | FK | Int | Not null&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;+data_entrevista | DateTime |&amp;nbsp;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;+status_processo | Enum&lt;/span&gt;&lt;/div&gt;&lt;div&gt;+perfil | Varchar |&lt;/div&gt;&lt;div&gt;+feedback | Text |&lt;/div&gt;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;" parent="40_1QeHmnroJbZyaDv-z-25" vertex="1">
-          <mxGeometry y="50" width="255" height="120" as="geometry" />
+        <mxCell id="40_1QeHmnroJbZyaDv-z-26" value="+id | PK | Int | Not null&lt;div&gt;+id_vaga&amp;nbsp;&lt;span style=&quot;background-color: initial;&quot;&gt;| FK | Int | Not null&lt;/span&gt;&lt;/div&gt;&lt;div&gt;+id_etapa | FK | Int | Not null&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;+data_entrevista | DateTime |&amp;nbsp;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;+status_processo | Enum&lt;/span&gt;&lt;/div&gt;&lt;div&gt;+perfil | Varchar |&lt;/div&gt;&lt;div&gt;+feedback | Text |&lt;/div&gt;&lt;div&gt;+ forms_respondido | Boolean,&lt;/div&gt;&lt;div&gt;+ avaliacao_forms | Enum&lt;/div&gt;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;" parent="40_1QeHmnroJbZyaDv-z-25" vertex="1">
+          <mxGeometry y="50" width="255" height="150" as="geometry" />
         </mxCell>
         <mxCell id="40_1QeHmnroJbZyaDv-z-38" value="0,1" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="111" y="97.5" width="60" height="30" as="geometry" />
@@ -44,7 +44,7 @@
           <mxGeometry x="160" y="607.25" width="60" height="30" as="geometry" />
         </mxCell>
         <mxCell id="40_1QeHmnroJbZyaDv-z-49" value="1,1" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
-          <mxGeometry x="347" y="420.5" width="60" height="30" as="geometry" />
+          <mxGeometry x="350" y="450" width="60" height="30" as="geometry" />
         </mxCell>
         <mxCell id="40_1QeHmnroJbZyaDv-z-55" value="1,n" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="45" y="490" width="60" height="30" as="geometry" />
