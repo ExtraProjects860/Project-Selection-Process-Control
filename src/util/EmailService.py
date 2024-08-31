@@ -9,7 +9,7 @@ class EmailService:
         load_dotenv()
         self.__email = os.getenv("EMAIL_SERVICE")
         self.__password = os.getenv("EMAIL_APP_PASSWORD")
-        self.__template_path = os.path.join(os.path.dirname(__file__), "static", "corpo_email.html")
+        self.__template_path = os.path.join(os.path.dirname(__file__), "static", "template_trocar_senha.html")
         
     def read_html_template(self, template_path):
         with open(template_path, "r", encoding="utf-8") as file:
@@ -20,7 +20,7 @@ class EmailService:
             template = template.replace(f"{key}", value)
         return template
 
-    def send_email(self, send_email, subject, message, token):
+    def send_email_forgot_password(self, send_email, subject, message, token):
         template = self.read_html_template(self.__template_path)
         email_html = self.replace_placeholders(template, {
             "{title_html}": subject, 
@@ -40,4 +40,4 @@ class EmailService:
                 connection.login(user=self.__email, password=self.__password)
                 connection.sendmail(message["From"], message["To"], message.as_string())
         except smtplib.SMTPException:
-            raise Exception("Failed to send email")
+            raise Exception("Falha ao enviar o e-mail")

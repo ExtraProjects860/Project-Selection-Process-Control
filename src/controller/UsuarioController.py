@@ -1,6 +1,9 @@
 import bcrypt
+import secrets
+from datetime import timedelta, datetime
 from model.UsuarioModel import UsuarioModel
 from config.MysqlService import MySQLService
+from util.EmailService import EmailService
 from validators.Validators import ValidatorsSchema
 from controller.DadosUsuarioController import DadosUsuarioController
 
@@ -25,16 +28,12 @@ class UsuarioController(UsuarioModel):
             
         hashedPassword: str = bcrypt.hashpw(self.senha.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
             
-        valores_usuario: tuple = (self.email, hashedPassword, self.admin)
-            
         try:
             mysql.begin_transaction()
-            
             self.dados_usuario.inserir_dados_usuario(
                 comandoSQL_usuario, 
-                valores_usuario,
+                (self.email, hashedPassword, self.admin),
             )
-            
             mysql.commit()
         except Exception as error:
             mysql.rollback()
@@ -51,7 +50,7 @@ class UsuarioController(UsuarioModel):
             WHERE u.email = %s
         """
         
-        resultado: tuple = mysql.fetch_all(comandoSQL_login, (self.email,))
+        resultado: tuple = mysql.fetch_one(comandoSQL_login, (self.email,))
             
         if not resultado:
             raise Exception("Usuário não encontrado")
@@ -70,3 +69,56 @@ class UsuarioController(UsuarioModel):
         mysql.close_cursor()
             
         return resposta # se passar pelo if o token de acesso vem aqui
+    
+    
+    def requisitar_token_troca_de_senha(self) -> None:
+        comandoSQL_atualizar_token: str = """
+            UPDATE usuario 
+            SET tokenForgotPassword = %s, tokenTimeValid = %s
+            WHERE email = %s,
+        """
+        token_de_troca_da_senha: str = secrets.token_urlsafe(8)
+        tempo_de_validade: str = datetime.now().isoformat()
+        
+        try:
+            mysql.begin_transaction()
+            mysql.execute_query(comandoSQL_atualizar_token, (token_de_troca_da_senha, tempo_de_validade, self.email))
+            mysql.commit()
+        except Exception as error:
+            mysql.rollback()
+            raise Exception(f"Erro ao redefinir senha: {error}")
+        finally:
+            mysql.close_cursor()
+        
+        email_service: EmailService = EmailService()
+        email_service.send_email_forgot_password(
+            self.email, 
+            "Aviso de redefinição de senha",
+            "Você solicitou uma redefinição de senha. Seu token de redefinição é:" ,
+            token_de_troca_da_senha
+        )
+       
+        
+    def redefinir_senha(self, token: str) -> None:
+        ValidatorsSchema.validar_validade_e_token(self.email, token)
+        
+        hashedPassword: str = bcrypt.hashpw(self.senha.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+        
+        comandoSQL_redefinir_senha: str = """
+            UPDATE usuario
+            SET senha = %s
+            WHERE email = %s;
+        """
+        
+        try:
+            mysql.begin_transaction()
+            mysql.execute_query(comandoSQL_redefinir_senha, (hashedPassword, self.email))
+            mysql.commit()
+        except Exception as error:
+            mysql.rollback()
+            raise Exception(f"Erro ao redefinir senha: {error}")
+        finally:
+            mysql.close_cursor()
+
+        
+        

@@ -25,10 +25,11 @@ class DadosUsuarioController(DadosUsuarioModel):
             INSERT INTO dados_usuario (id_dados_usuario, nome, curriculo, cpf, telefone, endereco, data_nascimento, sexo) 
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s);
         """
-        
-        valores_dados_usuario: tuple = (id_usuario, self.nome, self.curriculo, self.cpf, self.telefone, self.endereco, self.dataNascimento, self.sexo)
             
-        mysql.execute_query(comandoSQL_dados_usuario, valores_dados_usuario)
+        mysql.execute_query(
+            comandoSQL_dados_usuario, 
+            (id_usuario, self.nome, self.curriculo, self.cpf, self.telefone, self.endereco, self.dataNascimento, self.sexo)
+        )
         
     # falta implementar
     def atualizar_dados_usuario(self, comandoSQL_dados_usuario: str, valores_dados_usuario: tuple) -> None:

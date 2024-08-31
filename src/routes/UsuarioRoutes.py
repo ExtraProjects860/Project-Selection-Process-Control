@@ -35,9 +35,7 @@ def criar_usuario() -> tuple[Response, int]:
                 endereco = body["endereco"], 
                 dataNascimento = body["dataNascimento"], 
                 sexo = body["sexo"],
-                # está comentado, pois não será utilizado agora
-                # curriculo = body["curriculo"]
-                curriculo = "teste"
+                curriculo = None
             ),
             email = body["email"], 
             senha = body["senha"], 
@@ -60,6 +58,8 @@ def login() -> tuple[Response, int]:
     try:
         body = request.get_json()
         
+        ValidatorsSchema.validate_body(body)
+        
         usuario_controller: UsuarioController = UsuarioController(
             dados_usuario = None,
             email = body["email"],
@@ -78,21 +78,55 @@ def login() -> tuple[Response, int]:
 @jwt_required()
 def logout():
     try:
-        jti = get_jwt()["jti"]
+        jti: str = get_jwt()["jti"]
         ValidatorsSchema.adicionar_token_na_blacklist(jti)
         return jsonify({"message": "Logout efetuado com sucesso"}), 200
     except Exception as error:
         return jsonify({"message": "Erro ao realizar o logout: " + str(error)}), 500
 
+
 # falta implementar
 @usuario_routes.route('/requisitar-troca-senha', methods=['POST'])
 def requisitar_troca_senha():
-    pass
+    try:
+        body = request.get_json()
+        
+        ValidatorsSchema.validate_body(body)
+        ValidatorsSchema.validate_email_exists(body["email"])
+        
+        usuario_controller: UsuarioController = UsuarioController(
+            dados_usuario = None,
+            email = body["email"],
+            senha = None,
+            admin = None
+        )
+        
+        usuario_controller.requisitar_token_troca_de_senha()
+        
+        return jsonify({"message": f"Token de troca de senha enviado para o e-mail {body['email']}"}), 200
+    except Exception as error:
+        return jsonify({"message": "Erro ao requisitar token para trocar a senha: " + str(error)}), 500
+
 
 # falta implementar
-@usuario_routes.route('/recuperar-senha', methods=['POST'])
-def recuperar_senha():
-    pass
+@usuario_routes.route('/redefinir-senha', methods=['POST'])
+def redefinir_senha():
+    try:
+        body = request.get_json()
+        
+        ValidatorsSchema.validate_body(body)
+        
+        usuario_controller: UsuarioController = UsuarioController(
+            dados_usuario = None,
+            email = body["email"],
+            senha = body["nova_senha"],
+            admin = None
+        )
+        
+        usuario_controller.redefinir_senha(body["token"])
+    except Exception as error:
+        return jsonify({"message": "Erro ao recuperar a senha: " + str(error)}), 500
+
 
 # falta implementar
 @usuario_routes.route('/atualizar-dados', methods=['POST'])

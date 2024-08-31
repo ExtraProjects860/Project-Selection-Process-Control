@@ -3,6 +3,7 @@ import bcrypt
 from flask_jwt_extended import create_access_token, get_jwt
 from werkzeug.utils import secure_filename
 from config.MysqlService import MySQLService
+from datetime import timedelta, datetime
 
 mysql: MySQLService = MySQLService()
 
@@ -28,7 +29,6 @@ class ValidatorsSchema:
         """
         
         result = mysql.fetch_one(comandoSQL_checar_token, (jwt_payload["jti"],))
-        
         mysql.close_cursor()
             
         return result is not None and result[0]
@@ -43,9 +43,7 @@ class ValidatorsSchema:
         
         try:
             mysql.begin_transaction()
-            
             mysql.execute_query(comandoSQL_inserir_token, (jti,))
-            
             mysql.commit()
         except Exception as error:
             mysql.rollback()
@@ -59,6 +57,18 @@ class ValidatorsSchema:
         for key in body:
             if not body[key]:
                 raise Exception(f"O campo {key} é obrigatório")
+            
+            
+    @staticmethod
+    def validate_email_exists(email: str) -> None:
+        comandoSQL_verificar_email: str = """
+            SELECT email 
+            FROM usuario 
+            WHERE email = %s
+        """
+        
+        if not mysql.fetch_one(comandoSQL_verificar_email, (email,)):
+            raise Exception("Email não encontrado")
     
     
     @staticmethod
@@ -82,3 +92,20 @@ class ValidatorsSchema:
         })
             
         return True, token_de_acesso
+    
+    
+    @staticmethod
+    def validar_validade_e_token(email: str, token: str) -> bool:
+        comandoSQL_verificar_validade_e_token: str = """
+            SELECT tokenForgotPassword, tokenTimeValid
+            From usuario
+            WHERE email = %s;
+        """
+        
+        data_token: tuple = mysql.fetch_one(comandoSQL_verificar_validade_e_token, (email,))
+        
+        if not datetime.now() - datetime.fromisoformat(data_token[1]) < timedelta(hours=1):
+            raise Exception("Token expirado")
+        
+        if not token == data_token[0]:
+            raise Exception("Token inválido, tente novamente")
