@@ -21,6 +21,7 @@ def rota_teste() -> tuple[Response, int]:
 def criar_usuario() -> tuple[Response, int]:
     try:
         body = request.get_json()
+        
         # se não estiver com multipart/form-data na requisição ira dar erro
         # arquivo_curriculo = request.files['curriculo']
         
@@ -44,6 +45,7 @@ def criar_usuario() -> tuple[Response, int]:
         
         usuario_controller.criar_usuario()
         
+        # não irá ser executado aqui
         # só vai funcionar no front end
         # video de auxilio: https://www.youtube.com/watch?v=oKtJdsFfNnI
         # ValidatorsSchema.salvar_curriculo(user_id, body["nome"], arquivo_curriculo)
@@ -124,6 +126,8 @@ def redefinir_senha():
         )
         
         usuario_controller.redefinir_senha(body["token"])
+        
+        return jsonify({"message": "Senha redefinida com sucesso"}), 200
     except Exception as error:
         return jsonify({"message": "Erro ao recuperar a senha: " + str(error)}), 500
 
