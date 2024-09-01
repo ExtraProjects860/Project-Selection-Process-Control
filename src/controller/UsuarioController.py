@@ -38,8 +38,6 @@ class UsuarioController(UsuarioModel):
         except Exception as error:
             mysql.rollback()
             raise Exception(f"Erro ao criar o usuário: {error}")
-        finally:
-            mysql.close_cursor()
     
     
     def login(self) -> str:
@@ -47,26 +45,26 @@ class UsuarioController(UsuarioModel):
             SELECT u.id_usuario, u.senha, u.admin, du.nome
             FROM usuario u
             INNER JOIN dados_usuario du ON u.id_usuario = du.id_dados_usuario
-            WHERE u.email = %s
+            WHERE u.email = %s;
         """
         
         resultado: tuple = mysql.fetch_one(comandoSQL_login, (self.email,))
+        
+        print(resultado)
             
         if not resultado:
             raise Exception("Usuário não encontrado")
             
         validacao, resposta = ValidatorsSchema.validate_password(
-            id_usuario=resultado[0][0], 
+            id_usuario=resultado[0], 
             email_usuario=self.email,
-            nome_usuario=resultado[0][3],
+            nome_usuario=resultado[3],
             senha_usuario=self.senha, 
-            senha_banco_de_dados=resultado[0][1]
+            senha_banco_de_dados=resultado[1]
         )
             
         if not validacao:
             raise Exception(resposta)
-        
-        mysql.close_cursor()
             
         return resposta # se passar pelo if o token de acesso vem aqui
     
@@ -75,7 +73,7 @@ class UsuarioController(UsuarioModel):
         comandoSQL_atualizar_token: str = """
             UPDATE usuario 
             SET tokenForgotPassword = %s, tokenTimeValid = %s
-            WHERE email = %s,
+            WHERE email = %s;
         """
         token_de_troca_da_senha: str = secrets.token_urlsafe(8)
         tempo_de_validade: str = datetime.now().isoformat()
@@ -86,9 +84,7 @@ class UsuarioController(UsuarioModel):
             mysql.commit()
         except Exception as error:
             mysql.rollback()
-            raise Exception(f"Erro ao redefinir senha: {error}")
-        finally:
-            mysql.close_cursor()
+            raise Exception(f"Erro ao redefinir senha {error}")
         
         email_service: EmailService = EmailService()
         email_service.send_email_forgot_password(
@@ -100,13 +96,13 @@ class UsuarioController(UsuarioModel):
        
         
     def redefinir_senha(self, token: str) -> None:
-        ValidatorsSchema.validar_validade_e_token(self.email, token)
+        ValidatorsSchema.validate_validade_e_token(self.email, token)
         
         hashedPassword: str = bcrypt.hashpw(self.senha.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
         
         comandoSQL_redefinir_senha: str = """
             UPDATE usuario
-            SET senha = %s
+            SET senha = %s, tokenForgotPassword = NULL, tokenTimeValid = NULL
             WHERE email = %s;
         """
         
@@ -116,9 +112,7 @@ class UsuarioController(UsuarioModel):
             mysql.commit()
         except Exception as error:
             mysql.rollback()
-            raise Exception(f"Erro ao redefinir senha: {error}")
-        finally:
-            mysql.close_cursor()
+            raise Exception(f"Erro ao redefinir senha {error}")
 
         
         
