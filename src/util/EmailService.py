@@ -7,9 +7,9 @@ from dotenv import load_dotenv
 class EmailService:
     def __init__(self):
         load_dotenv()
-        self.__email = os.getenv("EMAIL_SERVICE")
-        self.__password = os.getenv("EMAIL_APP_PASSWORD")
-        self.__template_path = os.path.join(os.path.dirname(__file__), "static", "template_trocar_senha.html")
+        self.__email = os.getenv("EMAIL_SENDER_SERVICE")
+        self.__password = os.getenv("EMAIL_PASSWORD_APP_SERVICE")
+        self.__template_path = os.path.join(os.getcwd(), "src", "static", "template_trocar_senha.html")
         
     def read_html_template(self, template_path):
         with open(template_path, "r", encoding="utf-8") as file:
@@ -39,5 +39,5 @@ class EmailService:
                 connection.starttls()
                 connection.login(user=self.__email, password=self.__password)
                 connection.sendmail(message["From"], message["To"], message.as_string())
-        except smtplib.SMTPException:
-            raise Exception("Falha ao enviar o e-mail")
+        except smtplib.SMTPException as error:
+            raise Exception(f"Falha ao enviar o e-mail {error}")
