@@ -3,7 +3,7 @@ import bcrypt
 from flask_jwt_extended import create_access_token, get_jwt
 from werkzeug.utils import secure_filename
 from config.MysqlService import MySQLService
-from datetime import timedelta, datetime
+from datetime import datetime, timedelta
 
 mysql: MySQLService = MySQLService()
 
@@ -29,7 +29,6 @@ class ValidatorsSchema:
         """
         
         result = mysql.fetch_one(comandoSQL_checar_token, (jwt_payload["jti"],))
-        mysql.close_cursor()
             
         return result is not None and result[0]
 
@@ -64,7 +63,7 @@ class ValidatorsSchema:
         comandoSQL_verificar_email: str = """
             SELECT email 
             FROM usuario 
-            WHERE email = %s
+            WHERE email = %s;
         """
         
         if not mysql.fetch_one(comandoSQL_verificar_email, (email,)):
@@ -95,7 +94,7 @@ class ValidatorsSchema:
     
     
     @staticmethod
-    def validar_validade_e_token(email: str, token: str) -> bool:
+    def validate_validade_e_token(email: str, token: str) -> None:
         comandoSQL_verificar_validade_e_token: str = """
             SELECT tokenForgotPassword, tokenTimeValid
             From usuario
@@ -104,8 +103,30 @@ class ValidatorsSchema:
         
         data_token: tuple = mysql.fetch_one(comandoSQL_verificar_validade_e_token, (email,))
         
-        if not datetime.now() - datetime.fromisoformat(data_token[1]) < timedelta(hours=1):
-            raise Exception("Token expirado")
-        
         if not token == data_token[0]:
             raise Exception("Token inválido, tente novamente")
+        
+        if datetime.fromisoformat(str(data_token[1])) - datetime.now() >= timedelta(hours=1):
+            ValidatorsSchema.remover_token_senha(email)
+            raise Exception("Token expirado")
+        
+    
+    @staticmethod
+    def remover_token_senha(email: str) -> None:
+        comandoSQL_invalidar_token: str = """
+            UPDATE usuario
+            SET tokenForgotPassword = NULL, tokenTimeValid = NULL
+            WHERE email = %s;
+        """
+        
+        try:
+            mysql.begin_transaction()
+            mysql.execute_query(comandoSQL_invalidar_token, (email,))
+            mysql.commit()
+        except Exception as error:
+            mysql.rollback()
+            raise Exception(f"Erro ao remover token {error}")
+        finally:
+            mysql.close_cursor()
+        
+        
