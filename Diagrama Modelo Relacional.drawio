@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36" version="24.7.8">
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36" version="24.7.12">
   <diagram name="Página-1" id="de7DO5orAWd1vN3bYA0H">
-    <mxGraphModel dx="1781" dy="566" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="2261" dy="746" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -25,7 +25,7 @@
         <mxCell id="dZXWX3gMMMTmXV1Ml8qp-13" value="Status_Processo_Seletivo" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="210" y="274.25" width="160" height="198.75" as="geometry" />
         </mxCell>
-        <mxCell id="dZXWX3gMMMTmXV1Ml8qp-14" value="+id&lt;div&gt;+id_vaga&lt;/div&gt;&lt;div&gt;+id_etapa&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;+data_entrevista&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;+status_processo&lt;/span&gt;&lt;/div&gt;&lt;div&gt;+perfil&lt;/div&gt;&lt;div&gt;+feedback&lt;/div&gt;&lt;div&gt;+forms_respondido&lt;/div&gt;&lt;div&gt;+avaliação_forms&lt;/div&gt;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;" parent="dZXWX3gMMMTmXV1Ml8qp-13" vertex="1">
+        <mxCell id="dZXWX3gMMMTmXV1Ml8qp-14" value="+id&lt;div&gt;+id_vaga&lt;/div&gt;&lt;div&gt;+id_etapa&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;+data_entrevista&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;+status_processo&lt;/span&gt;&lt;/div&gt;&lt;div&gt;+perfil&lt;/div&gt;&lt;div&gt;+observacao&lt;/div&gt;&lt;div&gt;+forms_respondido&lt;/div&gt;&lt;div&gt;+avaliação_forms&lt;/div&gt;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;" parent="dZXWX3gMMMTmXV1Ml8qp-13" vertex="1">
           <mxGeometry y="50" width="160" height="148.75" as="geometry" />
         </mxCell>
         <mxCell id="dZXWX3gMMMTmXV1Ml8qp-28" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;endFill=0;" parent="1" source="dZXWX3gMMMTmXV1Ml8qp-10" target="dZXWX3gMMMTmXV1Ml8qp-27" edge="1">
@@ -85,7 +85,7 @@
         <mxCell id="jxh5CUl1t5E--HQuOENb-22" value="Vaga" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="-70" y="510" width="160" height="196.25" as="geometry" />
         </mxCell>
-        <mxCell id="jxh5CUl1t5E--HQuOENb-23" value="&lt;div&gt;+id&lt;/div&gt;&lt;div&gt;+id_setor&lt;/div&gt;&lt;div&gt;+título&lt;/div&gt;&lt;div&gt;+descrição_vaga&lt;/div&gt;&lt;div&gt;+salário&lt;/div&gt;&lt;div&gt;+quantidade_vagas&lt;/div&gt;&lt;div&gt;+data_abertura&lt;/div&gt;&lt;div&gt;+data_encerramento&lt;/div&gt;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;" parent="jxh5CUl1t5E--HQuOENb-22" vertex="1">
+        <mxCell id="jxh5CUl1t5E--HQuOENb-23" value="&lt;div&gt;+id&lt;/div&gt;&lt;div&gt;+id_setor&lt;/div&gt;&lt;div&gt;+nome&lt;/div&gt;&lt;div&gt;+status&lt;/div&gt;&lt;div&gt;+descrição_vaga&lt;/div&gt;&lt;div&gt;+salário&lt;/div&gt;&lt;div&gt;+quantidade_vagas&lt;/div&gt;&lt;div&gt;+data_abertura&lt;/div&gt;&lt;div&gt;+data_encerramento&lt;/div&gt;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;" parent="jxh5CUl1t5E--HQuOENb-22" vertex="1">
           <mxGeometry y="50" width="160" height="146.25" as="geometry" />
         </mxCell>
         <mxCell id="jxh5CUl1t5E--HQuOENb-25" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.019;entryY=0.436;entryDx=0;entryDy=0;entryPerimeter=0;endArrow=none;endFill=0;" parent="1" source="dZXWX3gMMMTmXV1Ml8qp-27" target="jxh5CUl1t5E--HQuOENb-23" edge="1">
