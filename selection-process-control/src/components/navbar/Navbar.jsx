@@ -20,7 +20,7 @@ function Navbar() {
         <div className="navbar-menu">
           <a href="/">Login</a>
           <a href="/register">Cadastro</a>
-          <a href="/contact">Redefinição de senha</a>
+          <a href="/reset-password-request">Redefinição de senha</a>
         </div>
       )}
     </nav>
