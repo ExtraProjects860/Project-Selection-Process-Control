@@ -1,0 +1,15 @@
+.social-footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background-color: #DDE0E0;
+  }
+  
+  .social-footer .social-icon {
+    padding: 10px;
+    margin: 0 10px;
+    font-size: 20px;
+    color: black; 
+  }
+  
