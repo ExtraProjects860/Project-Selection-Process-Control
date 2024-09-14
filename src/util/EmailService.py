@@ -39,5 +39,7 @@ class EmailService:
                 connection.starttls()
                 connection.login(user=self.__email, password=self.__password)
                 connection.sendmail(message["From"], message["To"], message.as_string())
-        except smtplib.SMTPException as error:
-            raise Exception(f"Falha ao enviar o e-mail {error}")
+        except smtplib.SMTPException as smtp_error:
+            raise Exception(f"Falha ao enviar o e-mail {smtp_error}")
+        except Exception as error:
+            raise Exception(f"Algum erro aconteceu ao enviar o e-mail: {error}")

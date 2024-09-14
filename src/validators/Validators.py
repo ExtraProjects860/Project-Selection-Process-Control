@@ -1,16 +1,14 @@
 import os
 import bcrypt
-from flask_jwt_extended import create_access_token, get_jwt
 from werkzeug.utils import secure_filename
-from config.MysqlService import MySQLService
+from src.config.MysqlService import MySQLService
+from mysql.connector import DatabaseError, IntegrityError
 from datetime import datetime, timedelta
-
-mysql: MySQLService = MySQLService()
 
 class ValidatorsSchema:
     
-    @staticmethod
-    def salvar_curriculo(id_usuario: int, nome: str, arquivo_curriculo) -> None | str:
+    # não está sendo utilizado no momento
+    def salvar_curriculo(self, id_usuario: int, nome: str, arquivo_curriculo) -> None | str:
         if not arquivo_curriculo or not arquivo_curriculo.filename.endswith('.pdf'):
             raise ValueError("Arquivo de currículo inválido, somente PDFs são aceitos.")
         
@@ -20,8 +18,8 @@ class ValidatorsSchema:
         return filepath
     
     
-    @staticmethod
-    def checar_se_token_esta_na_blacklist(jwt_payload: str) -> bool:
+    def checar_se_token_esta_na_blacklist(self, jwt_payload: str, mysql: MySQLService) -> bool:
+        # está sendo utiliza na classe de middleware
         comandoSQL_checar_token: str = """
             SELECT revogado
             FROM token_blacklist
@@ -29,12 +27,13 @@ class ValidatorsSchema:
         """
         
         result = mysql.fetch_one(comandoSQL_checar_token, (jwt_payload["jti"],))
+        mysql.close_cursor()
             
         return result is not None and result[0]
 
 
-    @staticmethod
-    def adicionar_token_na_blacklist(jti: str) -> None:
+    def adicionar_token_na_blacklist(self, jti: str) -> None:
+        mysql: MySQLService = MySQLService()
         comandoSQL_inserir_token: str = """
             INSERT INTO token_blacklist (jti)
             VALUES (%s);
@@ -44,22 +43,26 @@ class ValidatorsSchema:
             mysql.begin_transaction()
             mysql.execute_query(comandoSQL_inserir_token, (jti,))
             mysql.commit()
+        except IntegrityError as ie:
+            mysql.rollback()
+            raise IntegrityError(f"Erro de integridade ao adicionar token na blacklist: {ie}")
+        except DatabaseError as de:
+            mysql.rollback()
+            raise DatabaseError(f"Erro de banco de dados ao adicionar token na blacklist: {de}")
         except Exception as error:
             mysql.rollback()
             raise Exception(f"Erro ao adicionar token na blacklist: {error}")
         finally:
             mysql.close_cursor()
+            mysql.close_connection()
     
     
-    @staticmethod
-    def validate_body(body: dict) -> None:
-        for key in body:
-            if not body[key]:
-                raise Exception(f"O campo {key} é obrigatório")
+    def validate_body(self, body: dict[str, str]) -> bool:
+        return all(value is not None for value in body.values())
+                  
             
-            
-    @staticmethod
-    def validate_email_exists(email: str) -> None:
+    def validate_email_exists(self, email: str) -> None:
+        mysql: MySQLService = MySQLService()
         comandoSQL_verificar_email: str = """
             SELECT email 
             FROM usuario 
@@ -70,31 +73,15 @@ class ValidatorsSchema:
             raise Exception("Email não encontrado")
     
     
-    @staticmethod
-    def validate_email_is_admin(email: str) -> bool:
-        if not "@webcertificados.com.br" in email:
+    def validate_password(self, senha_usuario: str, senha_banco_de_dados: str) -> bool:
+        if not bcrypt.checkpw(senha_usuario.encode('utf-8'), senha_banco_de_dados.encode('utf-8')):
             return False
         
+        bcrypt.checkpw(senha_usuario.encode('utf-8'), senha_banco_de_dados.encode('utf-8'))
         return True
     
-    
-    @staticmethod
-    def validate_password(id_usuario: int, email_usuario: str, nome_usuario: str, senha_usuario: str, senha_banco_de_dados: str) -> tuple[bool, str]:
-        if not bcrypt.checkpw(senha_usuario.encode('utf-8'), senha_banco_de_dados.encode('utf-8')):
-            return False, "Senha inválida"
-        
-        bcrypt.checkpw(senha_usuario.encode('utf-8'), senha_banco_de_dados.encode('utf-8'))
-        token_de_acesso: str = create_access_token(identity={
-            "id": id_usuario, 
-            "email": email_usuario, 
-            "nome": nome_usuario
-        })
-            
-        return True, token_de_acesso
-    
-    
-    @staticmethod
-    def validate_validade_e_token(email: str, token: str) -> None:
+
+    def validate_validade_e_token(self, email: str, token: str, mysql: MySQLService) -> None:
         comandoSQL_verificar_validade_e_token: str = """
             SELECT tokenForgotPassword, tokenTimeValid
             From usuario
@@ -104,15 +91,14 @@ class ValidatorsSchema:
         data_token: tuple = mysql.fetch_one(comandoSQL_verificar_validade_e_token, (email,))
         
         if not token == data_token[0]:
-            raise Exception("Token inválido, tente novamente")
+            raise ValueError("Token inválido, tente novamente")
         
         if datetime.fromisoformat(str(data_token[1])) - datetime.now() >= timedelta(hours=1):
-            ValidatorsSchema.remover_token_senha(email)
+            ValidatorsSchema().remover_token_senha(email)
             raise Exception("Token expirado")
         
     
-    @staticmethod
-    def remover_token_senha(email: str) -> None:
+    def remover_token_senha(self, email: str, mysql: MySQLService) -> None:
         comandoSQL_invalidar_token: str = """
             UPDATE usuario
             SET tokenForgotPassword = NULL, tokenTimeValid = NULL
@@ -123,10 +109,11 @@ class ValidatorsSchema:
             mysql.begin_transaction()
             mysql.execute_query(comandoSQL_invalidar_token, (email,))
             mysql.commit()
+        except DatabaseError as de:
+            mysql.rollback()
+            raise DatabaseError(f"Erro de banco de dados ao remover token: {de}")
         except Exception as error:
             mysql.rollback()
             raise Exception(f"Erro ao remover token {error}")
         finally:
-            mysql.close_cursor()
-        
-        
+            mysql.close_cursor()   

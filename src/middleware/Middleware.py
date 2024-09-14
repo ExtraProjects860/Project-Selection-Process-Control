@@ -1,9 +1,23 @@
 from flask import Flask, Response, jsonify, request
-from flask_jwt_extended import verify_jwt_in_request, get_jwt
+from flask_jwt_extended import verify_jwt_in_request, get_jwt, create_access_token
 from werkzeug.exceptions import Unauthorized
-from validators.Validators import ValidatorsSchema
+from src.validators.Validators import ValidatorsSchema
+from src.config.MysqlService import MySQLService
+
+validators_schema: ValidatorsSchema = ValidatorsSchema()
 
 class Middleware:
+    
+    @staticmethod
+    def create_access_jwt(id_usuario: int, email_usuario: str, nome_usuario: str, is_admin: bool) -> str:
+        token_de_acesso: str = create_access_token(identity={
+            "id": id_usuario, 
+            "email": email_usuario, 
+            "nome": nome_usuario,
+            "admin": is_admin,
+        })
+        
+        return token_de_acesso
     
     def __init__(self, app: Flask):
         self.wsgi_app = app.wsgi_app
@@ -27,19 +41,18 @@ class Middleware:
         
         return self.wsgi_app(environ, start_response)
     
-    
+
     def verificacoes_rotas(self) -> None:
         self.verificacoes_jwt()
 
     
     def verificacoes_jwt(self) -> None:
-        if not request.headers.get("Authorization"):
-            raise Unauthorized("Token de acesso ausente na requisição")
-        
         verify_jwt_in_request()
                     
-        if ValidatorsSchema.checar_se_token_esta_na_blacklist(get_jwt()):
+        if validators_schema.checar_se_token_esta_na_blacklist(get_jwt(), mysql=MySQLService()):
             raise Unauthorized("Token de acesso revogado")
+        
+        # verificar de implementar para chegar de se usuário é normal ou admin para acessar a rota
         
     
     def is_public_route(self, path: str) -> bool:
@@ -49,8 +62,8 @@ class Middleware:
             "/api/requistar-troca-senha",
             "/api/redefinir-senha",
         ]
-   
-
+        
+    # não está sendo usado
     def verificar_admin_rotas(self, current_user: dict) -> None:
         if not current_user["admin"]:
             raise Unauthorized("Você não tem permissão para acessar esta rota")

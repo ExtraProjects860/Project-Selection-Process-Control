@@ -1,10 +1,12 @@
 import os
-from flask import Flask, send_from_directory
+from flask import Flask
 from flask_cors import CORS
 from dotenv import load_dotenv
 from flask_jwt_extended import JWTManager
-from routes.UsuarioRoutes import usuario_routes
-from middleware.Middleware import Middleware
+from src.routes.UsuarioRoutes import usuario_routes
+from src.routes.VagaRoutes import vaga_routes
+from src.routes.InscricaoRoutes import inscricao_routes
+from src.middleware.Middleware import Middleware
 from datetime import timedelta
 
 load_dotenv()
@@ -18,9 +20,8 @@ app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=1)
 jwt = JWTManager(app)
 app.wsgi_app = Middleware(app)
 
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 app.register_blueprint(usuario_routes, url_prefix='/api')
-
-if __name__ == '__main__':
-    app.run(debug=True)
+app.register_blueprint(vaga_routes, url_prefix='/api')
+app.register_blueprint(inscricao_routes, url_prefix='/api')
