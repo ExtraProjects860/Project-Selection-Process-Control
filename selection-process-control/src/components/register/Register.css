@@ -1,0 +1,126 @@
+
+.register-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f4f4f4;
+  }
+  
+
+  .register-card {
+    background-color: white;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 60%;
+  }
+  
+
+  .register-header img {
+    width: 40vh;
+  }
+  
+  .register-header h2 {
+    margin: 15px 0 5px;
+    font-size: 20px;
+    color: #333;
+  }
+  
+  .register-header p {
+    font-size: 14px;
+    color: #888;
+  }
+  
+
+  .register-body form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+    tr {
+        width: 50%;
+        input {
+            width: 90%;
+        }
+    }
+  }
+  
+  form label {
+    font-size: 14px;
+    text-align: left;
+    color: #0056b3;
+  }
+  
+  form input {
+    padding: 10px;
+    font-size: 14px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+  }
+  
+  .forgot-password {
+    text-align: left;
+    margin-bottom: 15px;
+  }
+  
+  .forgot-password a {
+    color: #888;
+    font-size: 12px;
+  }
+  
+
+  .register-button {
+    background-color: #006C98;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 40%;
+  }
+  
+  .register-button:hover {
+    background-color: #0056b3;
+  }
+  
+
+  .register-footer p {
+    font-size: 12px;
+    color: #888;
+    margin-top: 20px;
+    a {
+      color: black;
+    }
+  }
+  
+
+.password-input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-input-container input {
+  padding-right: 40px; 
+  width: 100%;
+}
+
+.password-toggle-icon {
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+  color: #888;
+}
+
+
+.password-toggle-icon:hover {
+  color: #007bff;
+}
+
+.input-group {
+    gap: 6px;
+    display: flex;
+}
