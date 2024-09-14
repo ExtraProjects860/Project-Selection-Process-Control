@@ -9,16 +9,14 @@
 from datetime import datetime, timedelta
 
 # Suponha que 'tempo_de_validade' seja uma data/hora em formato ISO
-tempo_de_validade = datetime.now()
+tempo_de_validade = datetime.now() + timedelta(minutes=30)
 
 # Converta para isoformat
 tempo_de_validade_iso = tempo_de_validade.isoformat()
 
 # Simule a recuperação do ISO string e conversão de volta para datetime
 tempo_de_validade_dt = datetime.fromisoformat(tempo_de_validade_iso)
+print(tempo_de_validade_dt)
 
 # Agora faça a comparação
-if datetime.now() - tempo_de_validade_dt > timedelta(hours=1):
-    print("Token inválido ou expirado")
-else:
-    print("Token válido")
+print(tempo_de_validade_dt - datetime.now() >= timedelta(minutes=30))

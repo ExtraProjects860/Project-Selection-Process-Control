@@ -1,19 +1,27 @@
 import mysql.connector
 import os
 from dotenv import load_dotenv
+from mysql.connector import Error, DatabaseError, InterfaceError
 
 class MySQLService:
     def __init__(self):
         load_dotenv()
-        self.__connection = mysql.connector.connect(
-            host=os.getenv("MYSQL_HOST_HOMO"),
-            user=os.getenv("MYSQL_USER_HOMO"),
-            password=os.getenv("MYSQL_PASSWORD_HOMO"),
-            database=os.getenv("MYSQL_DATABASE_HOMO")
-        )
-        self.__connection.autocommit = False
-        self.__cursor = self.__connection.cursor()
-
+        try:
+            self.__connection = mysql.connector.connect(
+                host=os.getenv("MYSQL_HOST_HOMO"),
+                user=os.getenv("MYSQL_USER_HOMO"),
+                password=os.getenv("MYSQL_PASSWORD_HOMO"),
+                database=os.getenv("MYSQL_DATABASE_HOMO")
+            )
+            self.__connection.autocommit = False
+            self.__cursor = self.__connection.cursor()
+        except InterfaceError as error:
+            raise ConnectionError(f"Erro de conexão ao MySQL: {error}")
+        except DatabaseError as error:
+            raise ConnectionError(f"Erro no banco de dados MySQL: {error}")
+        except Error as error:
+            raise ConnectionError(f"Erro geral ao conectar ao MySQL: {error}")
+        
 
     def close_cursor(self) -> None:
         self.__cursor.close()

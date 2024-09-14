@@ -1,4 +1,4 @@
-from controller.DadosUsuarioController import DadosUsuarioController
+from src.controller.DadosUsuarioController import DadosUsuarioController
 from typing import Optional
 from pydantic import BaseModel, Field, EmailStr
 
