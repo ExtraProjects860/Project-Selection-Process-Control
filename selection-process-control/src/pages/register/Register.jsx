@@ -1,9 +1,9 @@
 import React from 'react';
 import './Register.css'; 
 import logo from '../../assets/icon/logo.svg';
-import Navbar from '../navbar/Navbar';
-import SocialFooter from '../social-footer/SocialFooter';
-import RightsFooter from '../rights-footer/RightsFooter';
+import Navbar from '../../components/navbar/Navbar';
+import SocialFooter from '../../components/social-footer/SocialFooter';
+import RightsFooter from '../../components/rights-footer/RightsFooter';
 
 function Register() {
   return (

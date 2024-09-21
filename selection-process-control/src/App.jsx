@@ -1,9 +1,10 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Login from './components/login/Login';
-import Register from './components/register/Register';
-import ResetPasswordRequest from './components/reset-password-request/ResetPasswordRequest';
-import ResetPasswordConfirmation from './components/reset-password-confirmation/ResetPasswordConfirmation';
+import Login from './pages/login/Login';
+import Register from './pages/register/Register';
+import ResetPasswordRequest from './pages/reset-password-request/ResetPasswordRequest';
+import ResetPasswordConfirmation from './pages/reset-password-confirmation/ResetPasswordConfirmation';
+import HomeCandidate from './pages/home-candidate/HomeCandidate';
 
 
 // Instalar o npm install react-router-dom mdb-react-ui-kit para roteamento e para o bootstrap !!
@@ -17,6 +18,7 @@ function App() {
         <Route path="/register" element={<Register/>} />
         <Route path="/reset-password-request" element={<ResetPasswordRequest/>} />
         <Route path="/password-reset-confirmation" element={<ResetPasswordConfirmation/>} />
+        <Route path="/home-candidate" element={<HomeCandidate/>} />
         </Routes>  
       </div>   
     </Router>

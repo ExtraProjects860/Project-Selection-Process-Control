@@ -1,18 +1,17 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom'; // Atualização aqui
+import { useNavigate } from 'react-router-dom'; 
 import './ResetPasswordRequest.css'; 
 import logo from '../../assets/icon/logo.svg';
-import Navbar from '../navbar/Navbar';
-import SocialFooter from '../social-footer/SocialFooter';
-import RightsFooter from '../rights-footer/RightsFooter';
+import Navbar from '../../components/navbar/Navbar';
+import SocialFooter from '../../components/social-footer/SocialFooter';
+import RightsFooter from '../../components/rights-footer/RightsFooter';
 
 function ResetPasswordRequest() {
-  const navigate = useNavigate(); // Atualização aqui
+  const navigate = useNavigate(); 
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Aqui você pode fazer qualquer lógica adicional necessária antes de redirecionar
-    navigate('/password-reset-confirmation'); // Atualização aqui
+    navigate('/password-reset-confirmation'); 
   };
 
   return (
