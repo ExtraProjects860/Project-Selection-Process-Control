@@ -35,9 +35,10 @@
     color: white;
     padding: 10px 20px;
     border: none;
-    border-radius: 5px;
+    border-radius: 12px;
     cursor: pointer;
     font-size: 14px;
+    width: 30%;
   }
   
   .modal-cancel-button {
@@ -45,9 +46,10 @@
     color: white;
     padding: 10px 20px;
     border: none;
-    border-radius: 5px;
+    border-radius: 12px;
     cursor: pointer;
     font-size: 14px;
+    width: 30%;
   }
   
 
