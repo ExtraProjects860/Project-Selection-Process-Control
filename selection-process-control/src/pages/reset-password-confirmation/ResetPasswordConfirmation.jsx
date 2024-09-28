@@ -7,6 +7,7 @@ import SocialFooter from '../../components/social-footer/SocialFooter';
 import RightsFooter from '../../components/rights-footer/RightsFooter';
 
 function ResetPasswordConfirmation() {
+  const userType = 'deslogado'; 
   // Crie estados separados para cada campo de senha
   const [passwordType, setPasswordType] = useState("password");
   const [confirmPasswordType, setConfirmPasswordType] = useState("password");
@@ -23,7 +24,7 @@ function ResetPasswordConfirmation() {
 
   return (
     <>
-      <Navbar />
+      <Navbar userType={userType} />
       <div className="reset-container">
         <div className="reset-card">
           <div className="reset-header">

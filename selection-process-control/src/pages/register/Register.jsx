@@ -6,9 +6,10 @@ import SocialFooter from '../../components/social-footer/SocialFooter';
 import RightsFooter from '../../components/rights-footer/RightsFooter';
 
 function Register() {
+  const userType = 'deslogado'; 
   return (
     <>
-      <Navbar />
+      <Navbar userType={userType} />
       <div className="register-container">
         <div className="register-card">
           <div className="register-header">

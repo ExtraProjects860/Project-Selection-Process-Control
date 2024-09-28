@@ -1,22 +1,29 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom'; 
+import React, {useState} from 'react';
 import './ResetPasswordRequest.css'; 
 import logo from '../../assets/icon/logo.svg';
 import Navbar from '../../components/navbar/Navbar';
 import SocialFooter from '../../components/social-footer/SocialFooter';
 import RightsFooter from '../../components/rights-footer/RightsFooter';
+import ResetPasswordConfirmation from '../reset-password-confirmation/ResetPasswordConfirmation';
 
 function ResetPasswordRequest() {
-  const navigate = useNavigate(); 
+  const [showFirstDiv, setShowFirstDiv] = useState(true);
+  const userType = 'deslogado'; 
+
+  const toggleDiv = () => {
+    setShowFirstDiv(!showFirstDiv); // Alterna entre true e false
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    navigate('/password-reset-confirmation'); 
+   toggleDiv();
   };
 
   return (
     <>
-      <Navbar />
+     {showFirstDiv ? (
+    <div>
+      <Navbar userType={userType} />
       <div className="reset-container">
         <div className="reset-card">
           <div className="reset-header">
@@ -39,6 +46,12 @@ function ResetPasswordRequest() {
       </div>
       <SocialFooter />
       <RightsFooter />
+      </div>
+     ) : (
+      <div>
+        <ResetPasswordConfirmation/>
+      </div>
+     )}
     </>
   );
 }

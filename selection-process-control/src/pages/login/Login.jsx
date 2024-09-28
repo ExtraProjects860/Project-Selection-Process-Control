@@ -8,6 +8,7 @@ import RightsFooter from '../../components/rights-footer/RightsFooter';
 
 function Login() {
   const [passwordType, setPasswordType] = useState("password"); 
+  const userType = 'deslogado'; 
 
   // Função para alternar entre mostrar e esconder a senha
   const togglePasswordVisibility = () => {
@@ -15,7 +16,7 @@ function Login() {
   };
 
   return (
-    <><><><Navbar /><div className="login-container">
+    <><><><Navbar userType={userType}/><div className="login-container">
       <div className="login-card">
         <div className="login-header">
           <img src={logo} alt="Web Certificados" className="logo" />
