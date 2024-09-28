@@ -15,6 +15,7 @@ function Navbar({ userType }) {
         return (
           <>
             <a href="/home-candidate">Home</a>
+            <a href="/reset-password-candidate">Alterar senha</a>
           </>
         );
       case 'admin':
@@ -23,6 +24,7 @@ function Navbar({ userType }) {
             <a href="/dashboard-admin">Dashboard</a>
             <a href="/">Gerenciar Usuários</a>
             <a href="/job-posting-admin-page">Gerenciar vagas</a>
+            <a href="/reset-password-admin">Alterar senha</a>
           </>
         );
       case 'deslogado':

@@ -7,7 +7,8 @@ import ResetPasswordConfirmation from './pages/reset-password-confirmation/Reset
 import HomeCandidate from './pages/home-candidate/HomeCandidate';
 import JobPostingAdminPage from './pages/job-posting-admin-page/JobPostingAdminPage';
 import DashboardAdmin from './pages/dashboard-admin/DashboardAdmin';
-
+import ResetPasswordAdmin from './pages/reset-password-admin/ResetPasswordAdmin';
+import ResetPasswordCandidate from './pages/reset-password-candidate/ResetPasswordCandidate';
 
 // Instalar o npm install react-router-dom mdb-react-ui-kit para roteamento e para o bootstrap !!
 
@@ -23,6 +24,8 @@ function App() {
         <Route path="/home-candidate" element={<HomeCandidate/>} />
         <Route path="/job-posting-admin-page" element={<JobPostingAdminPage/>} />
         <Route path="/dashboard-admin" element={<DashboardAdmin/>} />
+        <Route path="/reset-password-admin" element={<ResetPasswordAdmin/>} />
+        <Route path="/reset-password-candidate" element={<ResetPasswordCandidate/>} />
         </Routes>  
       </div>   
     </Router>
