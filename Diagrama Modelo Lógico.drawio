@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (X11; Linux x86_64; rv:130.0) Gecko/20100101 Firefox/130.0" version="24.7.8">
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36" version="24.7.16">
   <diagram name="Página-1" id="EL_KJ8rC0fLjsbg1RFDB">
-    <mxGraphModel dx="2145" dy="519" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1781" dy="566" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -52,7 +52,7 @@
         <mxCell id="40_1QeHmnroJbZyaDv-z-56" value="Vaga" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="-162.5" y="540.5" width="345" height="219.5" as="geometry" />
         </mxCell>
-        <mxCell id="40_1QeHmnroJbZyaDv-z-57" value="&lt;div&gt;+id | PK | Int | Not null&lt;/div&gt;&lt;div&gt;+id_setor | FK | Int | Not null&lt;/div&gt;&lt;div&gt;+id_cargo | FK | Int | Not null&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;+nome_vaga | Varchar | Not null&lt;/span&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;+status | Enum | Not null&lt;/span&gt;&lt;/div&gt;&lt;div&gt;+descrição_vaga | Text | Not null&lt;/div&gt;&lt;div&gt;+salario | Float | Not null&lt;/div&gt;&lt;div&gt;+quantidade_vagas | Int | Not null&lt;/div&gt;&lt;div&gt;+data_abertura | Date | Not null |&amp;nbsp;DEFAULT (CURRENT_DATE)&lt;/div&gt;&lt;div&gt;+data_encerramento | Date | Not null&lt;/div&gt;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;" parent="40_1QeHmnroJbZyaDv-z-56" vertex="1">
+        <mxCell id="40_1QeHmnroJbZyaDv-z-57" value="&lt;div&gt;+id | PK | Int | Not null&lt;/div&gt;&lt;div&gt;+id_setor | FK | Int | Not null&lt;/div&gt;&lt;div&gt;+id_cargo | FK | Int | Not null&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;+nome_vaga | UNI | Varchar | Not null&lt;/span&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;+status | Enum | Not null&lt;/span&gt;&lt;/div&gt;&lt;div&gt;+descrição_vaga | Text | Not null&lt;/div&gt;&lt;div&gt;+salario | Float | Not null&lt;/div&gt;&lt;div&gt;+quantidade_vagas | Int | Not null&lt;/div&gt;&lt;div&gt;+data_abertura | Date | Not null |&amp;nbsp;DEFAULT (CURRENT_DATE)&lt;/div&gt;&lt;div&gt;+data_encerramento | Date | Not null&lt;/div&gt;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;" parent="40_1QeHmnroJbZyaDv-z-56" vertex="1">
           <mxGeometry y="50" width="345" height="169.5" as="geometry" />
         </mxCell>
         <mxCell id="40_1QeHmnroJbZyaDv-z-59" value="0,n" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
