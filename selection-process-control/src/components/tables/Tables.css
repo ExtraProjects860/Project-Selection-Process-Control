@@ -1,0 +1,13 @@
+.tableHeader {
+    background-color: #006C98 !important;
+    color: white !important;
+  }
+  
+  .tableTitle {
+    color: #FCFCFC !important;
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-align: center;
+    padding: 10px;
+    background-color: #006C98 !important;
+  }
