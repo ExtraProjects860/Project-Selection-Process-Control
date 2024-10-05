@@ -21,7 +21,7 @@ function Navbar({ userType }) {
       case 'admin':
         return (
           <>
-            <a href="/dashboard-admin">Dashboard</a>
+            <a href="/home-admin">Home</a>
             <a href="/">Gerenciar Usuários</a>
             <a href="/job-posting-admin-page">Gerenciar vagas</a>
             <a href="/reset-password-admin">Alterar senha</a>
