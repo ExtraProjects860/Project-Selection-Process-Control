@@ -1,69 +1,161 @@
 import React, { useState } from 'react';
 import './ResetPassword.css'; 
-import { FaEye, FaEyeSlash } from 'react-icons/fa'; 
 import logo from '../../assets/icon/logo.svg';
-import Navbar from '../navbar/Navbar';
-import SocialFooter from '../social-footer/SocialFooter';
-import RightsFooter from '../rights-footer/RightsFooter';
+import Navbar from '../../components/navbar/Navbar';
+import SocialFooter from '../../components/social-footer/SocialFooter';
+import RightsFooter from '../../components/rights-footer/RightsFooter';
 import { useNavigate } from 'react-router-dom';
+import { validateForm, handleErrorResponse} from '../../utils/formUtils'
 
 function ResetPassword({user}) {
+  const userType = user;
   const navigate = useNavigate();
 
-  const userType = user; 
-  const [passwordType, setPasswordType] = useState("password");
-  const [confirmPasswordType, setConfirmPasswordType] = useState("password");
+    const goBack = () => {
+        navigate(-1); 
+    };
 
-  const togglePasswordVisibility = () => {
-    setPasswordType(passwordType === "password" ? "text" : "password");
+  const [formData, setFormData] = useState({
+    email: '',
+    phone: '',
+    address: '',
+    password: '',
+    confirmPassword: '',
+
+  });
+  const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+
+  const handleInputChange = (e) => {
+    setFormData({ ...formData, [e.target.id]: e.target.value });
   };
 
-  const toggleConfirmPasswordVisibility = () => {
-    setConfirmPasswordType(confirmPasswordType === "password" ? "text" : "password");
-  };
 
-  const handleClick = () => {
-    navigate(-1); 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    if (formData.password !== formData.confirmPassword) {
+      setErrorMessage('As senhas não correspondem!');
+      return;
+    }
+    const validationError = validateForm(formData);
+    if (validationError) {
+      setErrorMessage(validationError);
+      return;
+    }
+
+    const userData = {
+      email: formData.email,
+      senha: formData.password,
+      telefone: formData.phone,
+      endereco: formData.address,
+    };
+
+   
   };
+  
 
   return (
     <>
       <Navbar userType={userType} />
-      <div className="reset-container">
-        <div className="reset-card">
-          <div className="reset-header">
+      <div className="register-container">
+        <div className="register-card">
+          <div className="register-header">
             <img src={logo} alt="Web Certificados" className="logo" />
+            <h2>Alteração de dados</h2>
           </div>
-          <div className="reset-body">
-            <form>
+          <div className="register-body">
+            <form onSubmit={handleSubmit}>
+            <td>
+                <div className="input-group">
+                  <tr>
+                  <input
+                      type="email"
+                      id="email"
+                      placeholder="E-mail"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </tr>
+                  <tr>
+                  <input
+                      type="tel"
+                      id="phone"
+                      placeholder="Telefone"
+                      value={formData.phone}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </tr>
+                </div>
+              </td>
+              <td>
+                <div className="input-group">
+                <tr>
+                    <input
+                      type="text"
+                      id="address"
+                      placeholder="Endereço"
+                      value={formData.address}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </tr>
+                  <tr>
+                    <input
+                      type="tel"
+                      id="phone"
+                      placeholder="Telefone"
+                      value={formData.phone}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </tr>
+                </div>
+              </td>
+              <td>
+                <div className="input-group">
+                  <tr>
+                    <input
+                      type="password"
+                      id="password"
+                      placeholder="Senha"
+                      value={formData.password}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </tr>
+                  <tr>
+                    <input
+                      type="password"
+                      id="confirmPassword"
+                      placeholder="Confirme sua senha"
+                      value={formData.confirmPassword}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </tr>
+                </div>
+              </td>
+              <td>
+                
+              </td>
 
-              <label htmlFor="password">Senha atual</label>
-              <div className="password-input-container">
-                <input
-                  type={passwordType}
-                  id="password"
-                  placeholder="Digite sua senha"
-                  required
-                />
-                <span onClick={togglePasswordVisibility} className="password-toggle-icon">
-                  {passwordType === "password" ? <FaEyeSlash /> : <FaEye />}
-                </span>
+              <br />
+              <br />
+              <div className='btns'>
+              <button type="submit" className="register-button">
+                Confirmar
+              </button>
+              {errorMessage && <p className="error-message">{errorMessage}</p>}
+              {successMessage && (
+                <p className="success-message">{successMessage}</p>
+              )}
+               <button onClick={goBack}  className="cancel-button">
+                Cancelar
+              </button>
               </div>
-
-              <label htmlFor="confirm-password">Nova senha</label>
-              <div className="password-input-container">
-                <input
-                  type={confirmPasswordType}
-                  id="confirm-password"
-                  placeholder="Confirme sua senha"
-                  required
-                />
-                <span onClick={toggleConfirmPasswordVisibility} className="password-toggle-icon">
-                  {confirmPasswordType === "password" ? <FaEyeSlash /> : <FaEye />}
-                </span>
-              </div>
-              <button type="submit" className="reset-button">Alterar senha</button>
-              <button onClick={handleClick} type="button" className="reset-again-button">Cancelar</button>
             </form>
           </div>
         </div>

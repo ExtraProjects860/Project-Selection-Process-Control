@@ -3,7 +3,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 120vh;
     background-color: #f4f4f4;
   }
   
@@ -47,11 +47,7 @@
     }
   }
   
-  form label {
-    font-size: 14px;
-    text-align: left;
-    color: #0056b3;
-  }
+
   
   form input {
     padding: 10px;
@@ -123,4 +119,36 @@
 .input-group {
     gap: 6px;
     display: flex;
+    select {
+      width: 96%;
+    }
 }
+
+
+form input,
+form select {
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  width: 90%;
+}
+
+form select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-color: white;
+  cursor: pointer;
+}
+
+.error-message {
+  color: red;
+  font-size: 12px;
+  margin-top: 10px;
+}
+
+
+
+
+
