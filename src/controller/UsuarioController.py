@@ -15,7 +15,33 @@ class UsuarioController(UsuarioModel):
     
     def __init__(self, dados_usuario: DadosUsuarioController, email: str, senha: str, admin: bool):
         super().__init__(dados_usuario=dados_usuario, email=email, senha=senha, admin=admin)
+    
+    
+    def atualizar_usuario_ou_admin(self, id_usuario: int) -> None:
+        mysql: MySQLService = MySQLService()
+        comandoSQL_update_user: str = """
+            UPDATE usuario
+            SET admin = %s
+            WHERE id_usuario = %s;
+        """
         
+        try:
+            mysql.begin_transaction()
+            mysql.execute_query(comandoSQL_update_user, (self.admin, id_usuario))
+            mysql.commit()
+        except IntegrityError as ie:
+            mysql.rollback()
+            raise IntegrityError(f"Erro de integridade ao atualizar o usuário: {ie}")
+        except DatabaseError as de:
+            mysql.rollback()
+            raise DatabaseError(f"Erro de banco de dados ao atualizar o usuário: {de}")
+        except Exception as error:
+            mysql.rollback()
+            raise Exception(f"Erro ao atualizar o usuário: {error}")
+        finally:
+            mysql.close_cursor()
+            mysql.close_connection()
+    
     
     def criar_usuario(self) -> None:
         mysql: MySQLService = MySQLService()
@@ -102,10 +128,10 @@ class UsuarioController(UsuarioModel):
             mysql.close_connection()
         
         EmailService().send_email_forgot_password(
-            self.email, 
-            "Aviso de redefinição de senha",
-            "Você solicitou uma redefinição de senha. Seu token de redefinição é:" ,
-            token_de_troca_da_senha
+            send_email=self.email, 
+            subject="Aviso de redefinição de senha",
+            message="Você solicitou uma redefinição de senha. Seu token de redefinição é:" ,
+            token=token_de_troca_da_senha
         )
        
         
@@ -125,6 +151,9 @@ class UsuarioController(UsuarioModel):
             mysql.begin_transaction()
             mysql.execute_query(comandoSQL_redefinir_senha, (hashedPassword, self.email))
             mysql.commit()
+        except IntegrityError as ie:
+            mysql.rollback()
+            raise IntegrityError(f"Erro de integridade ao redefinir a senha: {ie}")
         except DatabaseError as de:
             mysql.rollback()
             raise DatabaseError(f"Erro ao redefinir senha no banco de dados: {de}")

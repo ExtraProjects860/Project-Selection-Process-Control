@@ -10,16 +10,37 @@ validators_schema: ValidatorsSchema = ValidatorsSchema()
 DIRETORIO_CURRICULOS: str = os.getcwd() + "\\src\\archives"
 
 
+@inscricao_routes.route('/excluir-curriculo/<int:id_usuario>', methods=['DELETE'])
+@jwt_required()
+def excluir_curriculo(id_usuario: int) -> tuple[Response, int]:
+    try:
+        inscricao: InscricaoController = InscricaoController(id_usuario, None)
+        nome_arquivo_curriculo: str = inscricao.pegar_curriculo()
+        
+        if not nome_arquivo_curriculo:
+            raise ValueError("O curriculo não foi encontrado")
+        
+        os.remove(os.path.join(DIRETORIO_CURRICULOS, nome_arquivo_curriculo))
+        
+        inscricao.excluir_curriculo()
+        
+        return jsonify({"success": "Curriculo excluído com sucesso"}), 200
+    except ValueError as error:
+        return jsonify({"error": "ValueError " + str(error)}), 400
+    except Exception as error:
+        return jsonify({"error": "Exception " + str(error)}), 500
+
+
 @inscricao_routes.route('/pegar-curriculo/<int:id_usuario>', methods=['GET'])
 @jwt_required()
 def pegar_curriculo(id_usuario: int) -> tuple[Response, int]:
     try:
         inscricao: InscricaoController = InscricaoController(id_usuario, None)
-        nome_curriculo: str = inscricao.pegar_curriculo()
+        nome_arquivo_curriculo: str = inscricao.pegar_curriculo()
 
-        return send_from_directory(DIRETORIO_CURRICULOS, nome_curriculo, as_attachment=True)
+        return send_from_directory(DIRETORIO_CURRICULOS, nome_arquivo_curriculo, as_attachment=True)
     except Exception as error:
-        return jsonify({"error": str(error)}), 500
+        return jsonify({"error": "Exception " + str(error)}), 500
 
 
 @inscricao_routes.route('/salvar-inscricao-curriculo/<int:id_usuario>/<int:id_vaga>', methods=['POST'])
@@ -37,13 +58,44 @@ def salvar_inscricao_curriculo(id_usuario: int, id_vaga: int) -> tuple[Response,
         
         inscricao: InscricaoController = InscricaoController(id_usuario, id_vaga)
         
-        nome_arquivo: str = inscricao.tratar_nome_curriculo(nome_usuario)
-        inscricao.salvar_inscricao_curriculo(nome_arquivo)
+        nome_arquivo_curriculo: str = inscricao.tratar_nome_curriculo(nome_usuario)
+        inscricao.salvar_inscricao_curriculo(nome_arquivo_curriculo)
         
-        arquivo.save(os.path.join(DIRETORIO_CURRICULOS, nome_arquivo))
+        arquivo.save(os.path.join(DIRETORIO_CURRICULOS, nome_arquivo_curriculo))
         
-        return jsonify({"success": "Inscrição salva com sucesso e curriculo salvo"}), 200
+        response_message: dict[str, str] = {"success": "Inscricão salva com sucesso e curriculo salvo"}
+        
+        try:
+            inscricao.enviar_email_informando_inscricao_usuario_para_admin(id_usuario)
+        except Exception as error:
+            response_message["email_error"] = str(error)
+        
+        return jsonify(response_message), 200
+    except ValueError as error:
+        return jsonify({"error": "ValueError " + str(error)}), 400
     except OSError as error:
-        return jsonify({"error": str(error)}), 500
+        return jsonify({"error": "OSError " + str(error)}), 500
     except Exception as error:
-        return jsonify({"error": "Erro: " + str(error)}), 500
+        return jsonify({"error": "Exception " + str(error)}), 500
+    
+
+@inscricao_routes.route('/mostrar-inscricoes-usuario/<int:id_usuario>', methods=['GET'])
+@jwt_required()
+def mostrar_inscricoes_usuario(id_usuario: int) -> tuple[Response, int]:
+    try:
+        inscricao: InscricaoController = InscricaoController(id_usuario, None)
+        return jsonify({"success": "Inscricoes encontradas", "inscricoes": inscricao.mostrar_inscricoes_usuario()}), 200
+    except Exception as error:
+        return jsonify({"error": "Exception " + str(error)}), 500
+
+
+@inscricao_routes.route('/forms-respondido/<int:id_status_processo_seletivo>',  methods=['PUT'])
+@jwt_required
+def atualizar_forms_como_preenchido(id_status_processo_seletivo: int):
+    try:
+        inscricao: InscricaoController = InscricaoController(None, None)
+        inscricao.atualizar_forms_como_preenchido(id_status_processo_seletivo)
+        
+        return jsonify({"success": "Form foi declarado como preenchido"}), 200
+    except Exception as error:
+        return jsonify({"error": "Exception " + str(error)}), 500

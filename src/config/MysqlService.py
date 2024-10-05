@@ -59,7 +59,3 @@ class MySQLService:
     def fetch_one(self, query: str, values: tuple = ()) -> tuple:
         self.__cursor.execute(query, values)
         return self.__cursor.fetchone()
-
-    
-    
-    

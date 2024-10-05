@@ -6,6 +6,7 @@ from flask_jwt_extended import JWTManager
 from src.routes.UsuarioRoutes import usuario_routes
 from src.routes.VagaRoutes import vaga_routes
 from src.routes.InscricaoRoutes import inscricao_routes
+from src.routes.StatusProcessoSeletivoRoutes import status_processo_seletivo_routes
 from src.middleware.Middleware import Middleware
 from datetime import timedelta
 
@@ -25,3 +26,4 @@ CORS(app, resources={r"/*": {"origins": "*"}})
 app.register_blueprint(usuario_routes, url_prefix='/api')
 app.register_blueprint(vaga_routes, url_prefix='/api')
 app.register_blueprint(inscricao_routes, url_prefix='/api')
+app.register_blueprint(status_processo_seletivo_routes, url_prefix='/api')

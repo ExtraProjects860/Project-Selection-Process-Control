@@ -1,5 +1,5 @@
 from flask import Flask, Response, jsonify, request
-from flask_jwt_extended import verify_jwt_in_request, get_jwt, create_access_token
+from flask_jwt_extended import verify_jwt_in_request, get_jwt, get_jwt_identity, create_access_token
 from werkzeug.exceptions import Unauthorized
 from src.validators.Validators import ValidatorsSchema
 from src.config.MysqlService import MySQLService
@@ -44,6 +44,9 @@ class Middleware:
 
     def verificacoes_rotas(self) -> None:
         self.verificacoes_jwt()
+        
+        if self.is_admin_route(request.path):
+            self.verificacao_admin()
 
     
     def verificacoes_jwt(self) -> None:
@@ -52,7 +55,11 @@ class Middleware:
         if validators_schema.checar_se_token_esta_na_blacklist(get_jwt(), mysql=MySQLService()):
             raise Unauthorized("Token de acesso revogado")
         
-        # verificar de implementar para chegar de se usuário é normal ou admin para acessar a rota
+        
+    def verificacao_admin(self) -> None:
+        claims: dict = get_jwt_identity()
+        if claims["admin"] != 1:
+            raise Unauthorized("Acesso não autorizado privilégios de admin são necessários")
         
     
     def is_public_route(self, path: str) -> bool:
@@ -62,24 +69,18 @@ class Middleware:
             "/api/requistar-troca-senha",
             "/api/redefinir-senha",
         ]
-        
-    # não está sendo usado
-    def verificar_admin_rotas(self, current_user: dict) -> None:
-        if not current_user["admin"]:
-            raise Unauthorized("Você não tem permissão para acessar esta rota")
-     
-        
-    # Não será necessário, pois o flask já verifica o conteúdo da requisição
-    # def verificacao_corpo_requisicao_json(self) -> None:
-    #     if not request.is_json or not request.content_type == "application/json":
-    #         raise Exception("Corpo da requisição deve ser JSON")
-        
     
-    # Não será necessário, pois o flask já verifica o método http da requisição
-    # def verificacao_gerais(self) -> None:
-    #     if not request.method in ["GET", "POST", "PUT", "DELETE"]:
-    #         raise Exception("Metodo não permitido")
-        
-    #     # verificação se a rota existe 
-    #     if request.path not in self.app.url_map._rules_by_endpoint:
-    #         raise Exception("Rota não encontrada")
+    
+    def is_admin_route(self, path: str) -> bool:
+        return path in [
+            "/api/atualizar-para-usuario-ou-admin/<int:id_usuario>/<bool:admin>",
+            "/api/criar-vaga",
+            "/api/atualizar-vaga/<int:id_vaga>",
+            "/api/atualizar-status-vaga/<int:id_vaga>/<status>",
+            "/api/excluir-curriculo/<int:id_usuario>"
+            "/api/pegar-curriculo/<int:id_usuario>",
+            "/api/pegar_vagas_etapas",
+            "/api/pegar_todos_status_processo_seletivo",
+            "/api/pegar_todos_usuarios"
+            "/api/atualizar_status_processo_seletivo/<int:id_status_processo_seletivo>",
+        ]

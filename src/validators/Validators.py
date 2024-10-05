@@ -7,17 +7,6 @@ from datetime import datetime, timedelta
 
 class ValidatorsSchema:
     
-    # não está sendo utilizado no momento
-    def salvar_curriculo(self, id_usuario: int, nome: str, arquivo_curriculo) -> None | str:
-        if not arquivo_curriculo or not arquivo_curriculo.filename.endswith('.pdf'):
-            raise ValueError("Arquivo de currículo inválido, somente PDFs são aceitos.")
-        
-        filename = secure_filename(f"{id_usuario}_{nome}.pdf")
-        filepath = os.path.join(os.getcwd(), "src", "archives", filename)
-        arquivo_curriculo.save(filepath)
-        return filepath
-    
-    
     def checar_se_token_esta_na_blacklist(self, jwt_payload: str, mysql: MySQLService) -> bool:
         # está sendo utiliza na classe de middleware
         comandoSQL_checar_token: str = """
@@ -70,7 +59,7 @@ class ValidatorsSchema:
         """
         
         if not mysql.fetch_one(comandoSQL_verificar_email, (email,)):
-            raise Exception("Email não encontrado")
+            raise ValueError("Email não encontrado")
     
     
     def validate_password(self, senha_usuario: str, senha_banco_de_dados: str) -> bool:

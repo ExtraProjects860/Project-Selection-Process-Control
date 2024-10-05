@@ -110,7 +110,7 @@ class VagaController(VagaModel):
         mysql: MySQLService = MySQLService()
         comandoSQL_vaga: str = """
             UPDATE vaga
-            SET nome_vaga = %s, descricao_vaga = %s, salario = %s, quantidade_vagas = %s, data_encerramento = %s
+            SET nome_vaga = %s, status = %s, descricao_vaga = %s, salario = %s, quantidade_vagas = %s, data_encerramento = %s
             WHERE id_vaga = %s;
         """
         
@@ -119,10 +119,13 @@ class VagaController(VagaModel):
             
             mysql.execute_query(
                 comandoSQL_vaga, 
-                (self.nome_vaga, self.descricao_vaga, self.salario, self.quantidade_vagas, self.data_encerramento, id_vaga)
+                (self.nome_vaga, self.status, self.descricao_vaga, self.salario, self.quantidade_vagas, self.data_encerramento, id_vaga)
             )
             
             mysql.commit()
+        except IntegrityError as ie:
+            mysql.rollback()
+            raise IntegrityError(f"Erro de integridade ao atualizar a vaga: {ie}")
         except DatabaseError as de:
             mysql.rollback()
             raise DatabaseError(f"Erro de banco de dados ao atualizar a vaga: {de}")
@@ -132,32 +135,3 @@ class VagaController(VagaModel):
         finally:
             mysql.close_cursor()
             mysql.close_connection()
-            
-    
-    def atualizar_status_vaga(self, id_vaga: int) -> None:
-        mysql: MySQLService = MySQLService()
-        comandoSQL_vaga: str = """
-            UPDATE vaga
-            SET status = %s
-            WHERE id_vaga = %s;
-        """
-        
-        try:
-            mysql.begin_transaction()
-            
-            mysql.execute_query(comandoSQL_vaga, (self.status, id_vaga,)
-            )
-            
-            mysql.commit()
-        except DatabaseError as de:
-            mysql.rollback()
-            raise DatabaseError(f"Erro de banco de dados ao atualizar a vaga: {de}")
-        except Exception as error:
-            mysql.rollback()
-            raise Exception(f"Erro ao atualizar a vaga: {error}")
-        finally:
-            mysql.close_cursor()
-            mysql.close_connection()
-            
-    
-            
