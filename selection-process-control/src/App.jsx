@@ -6,7 +6,7 @@ import ResetPasswordRequest from './pages/reset-password-request/ResetPasswordRe
 import ResetPasswordConfirmation from './pages/reset-password-confirmation/ResetPasswordConfirmation';
 import HomeCandidate from './pages/home-candidate/HomeCandidate';
 import JobPostingAdminPage from './pages/job-posting-admin-page/JobPostingAdminPage';
-import DashboardAdmin from './pages/dashboard-admin/DashboardAdmin';
+import HomeAdmin from './pages/home-admin/HomeAdmin';
 import ResetPasswordAdmin from './pages/reset-password-admin/ResetPasswordAdmin';
 import ResetPasswordCandidate from './pages/reset-password-candidate/ResetPasswordCandidate';
 
@@ -23,7 +23,7 @@ function App() {
         <Route path="/password-reset-confirmation" element={<ResetPasswordConfirmation/>} />
         <Route path="/home-candidate" element={<HomeCandidate/>} />
         <Route path="/job-posting-admin-page" element={<JobPostingAdminPage/>} />
-        <Route path="/dashboard-admin" element={<DashboardAdmin/>} />
+        <Route path="/home-admin" element={<HomeAdmin/>} />
         <Route path="/reset-password-admin" element={<ResetPasswordAdmin/>} />
         <Route path="/reset-password-candidate" element={<ResetPasswordCandidate/>} />
         </Routes>  
