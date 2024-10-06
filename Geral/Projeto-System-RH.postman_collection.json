@@ -1,0 +1,747 @@
+{
+	"info": {
+		"_postman_id": "e7c5f7c3-2b77-4d1b-a33a-27b7daa91a2c",
+		"name": "Projeto-System-RH",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37394175"
+	},
+	"item": [
+		{
+			"name": "Usuários-Routes",
+			"item": [
+				{
+					"name": "http://localhost:5000/api/rota-teste-protegida",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcyNjI2NTk0OCwianRpIjoiMTU5NDQ2ZGYtYmE2NS00YTUxLTk1YjktMzc2NWYxZDc3NjJmIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJpZCI6MSwiZW1haWwiOiJxdWFscXVlcmNvaXNhMTgzM0BnbWFpbC5jb20iLCJub21lIjoiU2V1IG5vbWUiLCJhZG1pbiI6MH0sIm5iZiI6MTcyNjI2NTk0OCwiY3NyZiI6ImNmOTExOWM2LTNhMGMtNGMzNS1iYmIwLTFiODgwMDQyNTBlZCIsImV4cCI6MTcyNjI2OTU0OH0.HaituYb1NfV5Zd2kRzFgn-veVSKMNlcDKP22a59BaHA",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:5000/api/pegar-dados-usuario",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"pegar-dados-usuario"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:5000/api/criar-usuario",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"qualquercoisa1833@gmail.com\",\r\n    \"senha\": \"1234\",\r\n    \"nome_usuario\": \"Seu nome\",\r\n    \"cpf\": \"12345678902\",\r\n    \"telefone\": \"1234567891\",\r\n    \"endereco\": \"Rua Exemplo, 123\",\r\n    \"dataNascimento\": \"1992-02-02\",\r\n    \"sexo\": \"M\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/criar-usuario",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"criar-usuario"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:5000/api/login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"projectsgithub860@gmail.com\",\r\n    \"senha\": \"1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:5000/api/logout",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcyNjI2NjQxMiwianRpIjoiZTdjZmIwMDUtYzk3ZS00ZmRlLTk4OGYtY2IwOGZlNTI1M2Y4IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJpZCI6MSwiZW1haWwiOiJxdWFscXVlcmNvaXNhMTgzM0BnbWFpbC5jb20iLCJub21lIjoiU2V1IG5vbWUiLCJhZG1pbiI6MH0sIm5iZiI6MTcyNjI2NjQxMiwiY3NyZiI6ImQyYzYxNzYwLTc0MzMtNGQ3Ny1hMzZlLWZkMmUyYjM1ZTNhYSIsImV4cCI6MTcyNjI3MDAxMn0.HlLBsiFhRlel54aYCuXGVw90XdK6Ky91DWt6I-57cxk",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:5000/api/logout",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:5000/api/requisitar-troca-senha",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"qualquercoisa1833@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/requisitar-troca-senha",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"requisitar-troca-senha"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:5000/api/redefinir-senha",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"qualquercoisa1833@gmail.com\",\r\n    \"nova_senha\": \"123456\",\r\n    \"token\": \"pyGlc7savbE\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/redefinir-senha",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"redefinir-senha"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:5000/api/atualizar-para-usuario-ou-admin/:id_usuario/:admin",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcyNjk2NjEzMSwianRpIjoiOWIxYWY2MjctN2EwOS00MmFhLWE3OWYtODAzZGJhNjllOWU3IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJpZCI6MSwiZW1haWwiOiJwcm9qZWN0c2dpdGh1Yjg2MEBnbWFpbC5jb20iLCJub21lIjoiU2V1IG5vbWUiLCJhZG1pbiI6MX0sIm5iZiI6MTcyNjk2NjEzMSwiY3NyZiI6IjZlOTMxN2U2LWUxZmYtNDQxOC1iMDkxLTM1MzMzNDg3OTUyYyIsImV4cCI6MTcyNjk2OTczMX0.WdlwoEPWJEZLKAX2JXwhuiWOEeKnT4EOYAaOPJM_dCY",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:5000/api/atualizar-para-usuario-ou-admin/:id_usuario/:admin",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"atualizar-para-usuario-ou-admin",
+								":id_usuario",
+								":admin"
+							],
+							"variable": [
+								{
+									"key": "id_usuario",
+									"value": "2"
+								},
+								{
+									"key": "admin",
+									"value": "false"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:5000/api/atualizar-dados/:id_usuario",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer ",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"novo_email\": \"\",\r\n    \"nova_senha\": \"\",\r\n    \"novo_telefone\": \"\",\r\n    \"novo_endereco\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/atualizar-dados/:id_usuario",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"atualizar-dados",
+								":id_usuario"
+							],
+							"variable": [
+								{
+									"key": "id_usuario",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Vagas-Routes",
+			"item": [
+				{
+					"name": "http://localhost:5000/api/pegar-setores-cargos",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcyNjk2NjEzMSwianRpIjoiOWIxYWY2MjctN2EwOS00MmFhLWE3OWYtODAzZGJhNjllOWU3IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJpZCI6MSwiZW1haWwiOiJwcm9qZWN0c2dpdGh1Yjg2MEBnbWFpbC5jb20iLCJub21lIjoiU2V1IG5vbWUiLCJhZG1pbiI6MX0sIm5iZiI6MTcyNjk2NjEzMSwiY3NyZiI6IjZlOTMxN2U2LWUxZmYtNDQxOC1iMDkxLTM1MzMzNDg3OTUyYyIsImV4cCI6MTcyNjk2OTczMX0.WdlwoEPWJEZLKAX2JXwhuiWOEeKnT4EOYAaOPJM_dCY",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:5000/api/pegar-setores-cargos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"pegar-setores-cargos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:5000/api/pegar-todas-vagas",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcyNjMzMTk1NSwianRpIjoiN2JhMmNlNjQtOWFkOC00Yjk5LTkxMDEtZmNhMTI1ZGYzN2ZkIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJpZCI6MSwiZW1haWwiOiJwcm9qZWN0c2dpdGh1Yjg2MEBnbWFpbC5jb20iLCJub21lIjoiU2V1IG5vbWUiLCJhZG1pbiI6MX0sIm5iZiI6MTcyNjMzMTk1NSwiY3NyZiI6IjJiZDIyYzRiLWRjNDAtNGMwNC1hYmE2LWQwN2VjZjQ3YWZiMCIsImV4cCI6MTcyNjMzNTU1NX0.mU8U2KL90BsdHL3mevcv1BuNhT05uYaEdH9WpSmIzgU",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:5000/api/pegar-todas-vagas",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"pegar-todas-vagas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:5000/api/criar-vaga",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcyNjk2MjQ2NywianRpIjoiMTVkZmUzY2YtZmQ5ZC00NmEwLTljOWItZDdmOGMyMDJjZTMwIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJpZCI6MSwiZW1haWwiOiJwcm9qZWN0c2dpdGh1Yjg2MEBnbWFpbC5jb20iLCJub21lIjoiU2V1IG5vbWUiLCJhZG1pbiI6MX0sIm5iZiI6MTcyNjk2MjQ2NywiY3NyZiI6ImUwYzRhOTM3LWI3MjktNGQyNS1iZDYwLWRjYjBlMDRjOWJkMSIsImV4cCI6MTcyNjk2NjA2N30.RLqbmbO-XJjCcrNMj5sv2LPozECGZ_BHWwQi_Kt_QTM",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"setor\": \"TI\",\r\n    \"cargo\": \"ESTÁGIO TI\",\r\n    \"nome_vaga\": \"Vaga de estágio para TI\",\r\n    \"status\": \"ABERTA\",\r\n    \"descricao_vaga\": \"É uma vaga dedica para o setor de TI, buscamos profissionais capacitados\",\r\n    \"salario\": 1770.77,\r\n    \"quantidade_vagas\": 5,\r\n    \"data_encerramento\": \"2024-09-21\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/criar-vaga",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"criar-vaga"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:5000/api/atualizar-vaga/:id",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcyNjMzNTYxNiwianRpIjoiZWM4MDllNzktNjY0Ni00N2UwLWEyMmMtMTE0ZTRkN2E3Y2M4IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJpZCI6MSwiZW1haWwiOiJwcm9qZWN0c2dpdGh1Yjg2MEBnbWFpbC5jb20iLCJub21lIjoiU2V1IG5vbWUiLCJhZG1pbiI6MX0sIm5iZiI6MTcyNjMzNTYxNiwiY3NyZiI6IjhlMzRjYzM2LWVlZjQtNDMwNS04MGNkLWNmZDhmNzcyNjliYiIsImV4cCI6MTcyNjMzOTIxNn0.nTXLNde4-MWGuabzaQnq2v4J8y4sSxk5m7nPBN_ri9o",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome_vaga\": \"Vaga de estágio para TI\",\r\n    \"status\": \"ABERTA\",\r\n    \"descricao_vaga\": \"É uma vaga dedica para o setor de TI, buscamos profissionais capacitados\",\r\n    \"salario\": 1770.77,\r\n    \"quantidade_vagas\": 5,\r\n    \"data_encerramento\": \"2024-09-20\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/atualizar-vaga/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"atualizar-vaga",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Inscricao-Routes",
+			"item": [
+				{
+					"name": "http://localhost:5000/api/excluir-curriculo/:id_usuario",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcyODEzNzU5OCwianRpIjoiMTYzMmE0MGEtMTlhNy00ZjkwLWEzYjYtYzI5ODU1YzBjNWYyIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJpZCI6MSwiZW1haWwiOiJwcm9qZWN0c2dpdGh1Yjg2MEBnbWFpbC5jb20iLCJub21lIjoiU2V1IG5vbWUiLCJhZG1pbiI6MX0sIm5iZiI6MTcyODEzNzU5OCwiY3NyZiI6IjgxNDM3M2NiLTgwN2UtNDE4Yy1hY2E5LWZmMTIyOTQwYjNjMyIsImV4cCI6MTcyODE0MTE5OH0.Tr105yWKSSRW_VHd-rPi02lAn9MsyDmt9m-KWxK_cD8",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:5000/api/excluir-curriculo/:id_usuario",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"excluir-curriculo",
+								":id_usuario"
+							],
+							"variable": [
+								{
+									"key": "id_usuario",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:5000/api/pegar-curriculo/:id_usuario",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcyNjM0NTk5MiwianRpIjoiZjJkNzQ0NDAtNTkzZC00OWQ2LWFmZmYtYWY0ZmFlNTFhMTcxIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJpZCI6MSwiZW1haWwiOiJwcm9qZWN0c2dpdGh1Yjg2MEBnbWFpbC5jb20iLCJub21lIjoiU2V1IG5vbWUiLCJhZG1pbiI6MX0sIm5iZiI6MTcyNjM0NTk5MiwiY3NyZiI6ImVlYWYxZTBkLTQzMTYtNGExNi05NzBkLWFmN2Y0M2EyY2I2ZCIsImV4cCI6MTcyNjM0OTU5Mn0.ytN2dy6DgFQgyCc39A84W1rODWcaLd9Gz-dEn5iEVMo",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:5000/api/pegar-curriculo/:id_usuario",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"pegar-curriculo",
+								":id_usuario"
+							],
+							"variable": [
+								{
+									"key": "id_usuario",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:5000/api/mostrar-inscricoes-usuario/:id_usuario",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcyNjk2NjEzMSwianRpIjoiOWIxYWY2MjctN2EwOS00MmFhLWE3OWYtODAzZGJhNjllOWU3IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJpZCI6MSwiZW1haWwiOiJwcm9qZWN0c2dpdGh1Yjg2MEBnbWFpbC5jb20iLCJub21lIjoiU2V1IG5vbWUiLCJhZG1pbiI6MX0sIm5iZiI6MTcyNjk2NjEzMSwiY3NyZiI6IjZlOTMxN2U2LWUxZmYtNDQxOC1iMDkxLTM1MzMzNDg3OTUyYyIsImV4cCI6MTcyNjk2OTczMX0.WdlwoEPWJEZLKAX2JXwhuiWOEeKnT4EOYAaOPJM_dCY",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:5000/api/mostrar-inscricoes-usuario/:id_usuario",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"mostrar-inscricoes-usuario",
+								":id_usuario"
+							],
+							"variable": [
+								{
+									"key": "id_usuario",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:5000/api/salvar-inscricao-curriculo/:id_usuario/:id_vaga",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcyNjk2MjUwNywianRpIjoiZDlhMDNkNDMtOWY4OC00Zjk5LWJiYjgtZWYyN2YxMGZhOTI3IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJpZCI6MiwiZW1haWwiOiJxdWFscXVlcmNvaXNhMTgzM0BnbWFpbC5jb20iLCJub21lIjoiU2V1IG5vbWUiLCJhZG1pbiI6MH0sIm5iZiI6MTcyNjk2MjUwNywiY3NyZiI6IjZjMmQ4YjBlLTI0ZmEtNDVjNi04NTM4LTQ1M2ZhMTEzZDgwMCIsImV4cCI6MTcyNjk2NjEwN30.QfsFn95vn7p4NGklp6Zl3TnQrm_7RVn8gHU_6zP_xVA",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "curriculo",
+									"type": "file",
+									"src": "/H:/Meu Drive/Coisas de Backup/Arquivos e coisas importantes/Projetos/Programação Orientada a Objetos em Java/Geral/Seu nome_1_curriculo.pdf"
+								},
+								{
+									"key": "nome_usuario",
+									"value": "Seu nome",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/salvar-inscricao-curriculo/:id_usuario/:id_vaga",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"salvar-inscricao-curriculo",
+								":id_usuario",
+								":id_vaga"
+							],
+							"variable": [
+								{
+									"key": "id_usuario",
+									"value": "2"
+								},
+								{
+									"key": "id_vaga",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:5000/api/forms-respondido/:id_status_processo_seletivo",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer ",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:5000/api/forms-respondido/:id_status_processo_seletivo",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"forms-respondido",
+								":id_status_processo_seletivo"
+							],
+							"variable": [
+								{
+									"key": "id_status_processo_seletivo",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "StatusProcessoSeletivo-Routes",
+			"item": [
+				{
+					"name": "http://localhost:5000/api/pegar_vagas_etapas",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcyNjk2NjEzMSwianRpIjoiOWIxYWY2MjctN2EwOS00MmFhLWE3OWYtODAzZGJhNjllOWU3IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJpZCI6MSwiZW1haWwiOiJwcm9qZWN0c2dpdGh1Yjg2MEBnbWFpbC5jb20iLCJub21lIjoiU2V1IG5vbWUiLCJhZG1pbiI6MX0sIm5iZiI6MTcyNjk2NjEzMSwiY3NyZiI6IjZlOTMxN2U2LWUxZmYtNDQxOC1iMDkxLTM1MzMzNDg3OTUyYyIsImV4cCI6MTcyNjk2OTczMX0.WdlwoEPWJEZLKAX2JXwhuiWOEeKnT4EOYAaOPJM_dCY",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:5000/api/pegar_vagas_etapas",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"pegar_vagas_etapas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:5000/api/pegar_todos_status_processo_seletivo",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcyNjk2NjEzMSwianRpIjoiOWIxYWY2MjctN2EwOS00MmFhLWE3OWYtODAzZGJhNjllOWU3IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJpZCI6MSwiZW1haWwiOiJwcm9qZWN0c2dpdGh1Yjg2MEBnbWFpbC5jb20iLCJub21lIjoiU2V1IG5vbWUiLCJhZG1pbiI6MX0sIm5iZiI6MTcyNjk2NjEzMSwiY3NyZiI6IjZlOTMxN2U2LWUxZmYtNDQxOC1iMDkxLTM1MzMzNDg3OTUyYyIsImV4cCI6MTcyNjk2OTczMX0.WdlwoEPWJEZLKAX2JXwhuiWOEeKnT4EOYAaOPJM_dCY",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:5000/api/pegar_todos_status_processo_seletivo",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"pegar_todos_status_processo_seletivo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:5000/api/pegar_todos_usuarios",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcyNjk2NjEzMSwianRpIjoiOWIxYWY2MjctN2EwOS00MmFhLWE3OWYtODAzZGJhNjllOWU3IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJpZCI6MSwiZW1haWwiOiJwcm9qZWN0c2dpdGh1Yjg2MEBnbWFpbC5jb20iLCJub21lIjoiU2V1IG5vbWUiLCJhZG1pbiI6MX0sIm5iZiI6MTcyNjk2NjEzMSwiY3NyZiI6IjZlOTMxN2U2LWUxZmYtNDQxOC1iMDkxLTM1MzMzNDg3OTUyYyIsImV4cCI6MTcyNjk2OTczMX0.WdlwoEPWJEZLKAX2JXwhuiWOEeKnT4EOYAaOPJM_dCY",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:5000/api/pegar_todos_usuarios",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"pegar_todos_usuarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:5000/api/salvar_status_processo_seletivo",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcyNjk2NjEzMSwianRpIjoiOWIxYWY2MjctN2EwOS00MmFhLWE3OWYtODAzZGJhNjllOWU3IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJpZCI6MSwiZW1haWwiOiJwcm9qZWN0c2dpdGh1Yjg2MEBnbWFpbC5jb20iLCJub21lIjoiU2V1IG5vbWUiLCJhZG1pbiI6MX0sIm5iZiI6MTcyNjk2NjEzMSwiY3NyZiI6IjZlOTMxN2U2LWUxZmYtNDQxOC1iMDkxLTM1MzMzNDg3OTUyYyIsImV4cCI6MTcyNjk2OTczMX0.WdlwoEPWJEZLKAX2JXwhuiWOEeKnT4EOYAaOPJM_dCY",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"vaga\": \"Vaga de estágio para TI\",\r\n    \"etapa\": \"FORMS INICIAL\",\r\n    \"status_processo\": \"EM ANDAMENTO\",\r\n    \"forms_respondido\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/salvar_status_processo_seletivo",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"salvar_status_processo_seletivo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:5000/api/atualizar_status_processo_seletivo/:id_status_processo_seletivo",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcyNjk2NjEzMSwianRpIjoiOWIxYWY2MjctN2EwOS00MmFhLWE3OWYtODAzZGJhNjllOWU3IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJpZCI6MSwiZW1haWwiOiJwcm9qZWN0c2dpdGh1Yjg2MEBnbWFpbC5jb20iLCJub21lIjoiU2V1IG5vbWUiLCJhZG1pbiI6MX0sIm5iZiI6MTcyNjk2NjEzMSwiY3NyZiI6IjZlOTMxN2U2LWUxZmYtNDQxOC1iMDkxLTM1MzMzNDg3OTUyYyIsImV4cCI6MTcyNjk2OTczMX0.WdlwoEPWJEZLKAX2JXwhuiWOEeKnT4EOYAaOPJM_dCY",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome_usuario\": \"Seu nome\",\r\n    \"email_usuario\": \"qualquercoisa1833@gmail.com\",\r\n    \"data_entrevista\": \"0000-00-00 00:00:00\",\r\n    \"data_conclusao\": \"0000-00-00 00:00:0\",\r\n    \"status_processo\": \"ATIVO\",\r\n    \"perfil\": \"\",\r\n    \"observacao\": \"\",\r\n    \"forms_respondido\": false,\r\n    \"avaliacao_forms\": \"IDEAL\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/atualizar_status_processo_seletivo/:id_status_processo_seletivo",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"atualizar_status_processo_seletivo",
+								":id_status_processo_seletivo"
+							],
+							"variable": [
+								{
+									"key": "id_status_processo_seletivo",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,20 @@
+- Colocar na parte de verificar o body da requisição retorno jsonify com erro 400 (média demanda) V
+
+- verificar rotas de atualizar-vaga e atualizar-status-vaga, pois posso colocar o status para atualizar na primeira e retirar redundância do código (alta demanda) V
+
+- fazer uma rota para excluir o arquivo de currículo do usuário e colocar como null na coluna do banco, com base no id (alta demanda) V
+(no front só poderá ficar disponível, depois que mudar de em andamento para outra etapa)
+
+- fazer método e rota para atualizar dados do usuário (alta demanda) V
+=(verificar de não disponibilizar para atualizar o email, cpf e data de nascimento)
+
+- verificar por que o email não está indo para o admin na classe EmailService (alta demanda)
+
+- melhorar rota salvar-inscricao-curriculo verificando de retornar como jsonify alguns erros (média demanda) V
+
+- alimentar banco com links do forms de acordo com o cargo (alta demanda) V
+
+- arrumar alguns tipos/parametros de atributos do banco de dados (média demanda) V
+=(colocar atributos como chave UNIQUE e verificar diagrama do BD para validar)
+
+- testar essas melhorias no postman e verificar se precisar alterar ou remover alguma rota (alta demanda)

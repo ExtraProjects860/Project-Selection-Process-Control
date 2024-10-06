@@ -1,0 +1,87 @@
+requisitos funcionais:
+
+- página inicial sobre o site com opções para de sobre, contato e suporte
+
+- página de login/cadastro de usuários e admin (parte de esqueceu a senha também)
+
+- sistema precisará de datas (criação do usuário, data da inscrição, data de abertura e encerramento de uma vaga, data da entrevista)
+
+- envio de email para troca de senha, para aviso de (aprovação ou rejeição)
+
+- apenas admins podem transformar outros usuários em admins
+
+-- tela do usuário (
+* interface amigável
+* botão de menu burguer com menu lateral abrindo as opções
+* exibição de vagas abertas
+* inscrição da vaga (forms pedindo currículo pdf), (será enviado um email para usuário contendo um link de forms de perguntas e respostas)
+(avisar ao usuário no forms de inscrição sobre o envio do email para ele realizar o preenchimento, esse forms será da empresa)
+* exibição das inscrições realizadas (mostrará status, data e hora entrevista, etapa atual)
+(**verificar se colocaremos para usuário marcar em um botão na parte de inscrições realizadas se ele respondeu ao forms ou não)
+* forms para alterar dados (opção dentro do menu burguer)
+* modal de opção para logout (opção dentro do menu burguer)
+)
+
+-- tela do admin (
+* interface amigável
+* botão de menu burguer com menu lateral abrindo as opções
+
+opção 1 do menu
+* tela inicial de dashboard mostrando dados e gráficos que ainda serão selecionados
+
+opção 2 do menu
+* opções de filtro (mes, ano, todos, vaga, etapa) e pesquisa - No caso é para ambas as tabelas
+
+-primeira tabela
+* opção de edição/visualização do processo seletivo de cada usuário geral dos dados da linha na tabela através um formulário (no caso de quando estiver finalizado)
+* exemplo de base para montar https://docs.google.com/spreadsheets/d/1AuZ2i6hxsf0TJso1N7god1w18HrdhRlBVV2OACOUjeI/edit?gid=1321250139#gid=1321250139
+* do exemplo acima será preciso incluir na tabela uma coluna se o forms está respondido, avaliação do forms ('IDEAL', 'MEDIANO', 'RUIM'),
+coluna de currículo (clicando nela será baixado o arquivo do servidor para o admin) e qual a vaga o candidato se inscreveu
+
+-segunda tabela (apenas terá uma única opção de update)
+* exemplo de exibição das colunas e dados da tabela (id, email, admin, dataCrição, nome, cpf, telefone, endereço, dataNascimento, sexo)
+* tabela com todos os usuários e seus dados, implementar funcionalidade para tornar admin ou voltar usuário normal por meio de um modal 
+(se sobrar tempo conseguir transformar em csv a tabela de todos os usuários) 
+
+
+opção 3 do menu
+* exibição de vagas abertas
+* criação de novas vagas (pensar em colocar envio de email para usuários já cadastrados informando sobre a vaga)
+* modificação dos dados da vaga
+- vagas não serão deletadas, apenas colocadas como encerradas em seu status e não mostradas para os usuários
+* encerramento da vaga
+
+opção 4 do menu
+* forms para alterar dados
+
+opção 5 do menu 
+* opção para logout
+)
+
+requisitos não funcionais:
+
+- ferramentas (
+VScode para construção do código do sistema
+Figma para prototipação de telas do sistema
+App.diagrams para construção de diagrama de classes, diagrama relacional, diagrama lógico
+Word para documentação geral e da API
+Postman para testes da API
+PHPadmin para criação e testes do banco de dados
+GitHub para controle de versionamento e armazenamento do código
+Discord para realização de reuniões
+)
+
+- backend (
+Python/Flask, servidor para API Rest do sistema
+)
+
+- frontend (
+React/Js/Node.js, servidor para interface do sistema
+React BootStrap, estilização / componentes para auxiliar na criação da interface
+)
+
+- database (
+Servidor Wamp para testes com MYSQL
+Servidor MYSQL na Hostinger para alocação do banco de dados
+)
+
