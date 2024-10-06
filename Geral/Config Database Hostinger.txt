@@ -1,9 +1,0 @@
-db_host='193.203.175.51'
-db_user='u329187410_root'
-db_password='1D9P2M0@ti'
-db_name='u329187410_webdisparador'
-
--Para mudar o acesso do banco é só ir na para de Banco de Dados, depois em MySQL Remoto, nele eu coloquei para que qualquer um possa acessar
-você irá visualizar que está com uma porcentagem no Acessar host;
-
--Fiz a migração e já realizei o teste de conexão, ambos funcionaram normalmente. Para acessar o banco é só ir pelo próprio site da hostinger e  vá em Entrar no phpMyAdmin, nele você tem a interface para realizar alterações no banco de dados;
