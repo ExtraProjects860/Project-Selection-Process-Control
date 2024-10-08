@@ -1,4 +1,5 @@
-from flask import Flask, Response, jsonify, request
+import re
+from flask import jsonify, request
 from flask_jwt_extended import verify_jwt_in_request, get_jwt, get_jwt_identity, create_access_token
 from werkzeug.exceptions import Unauthorized
 from src.validators.Validators import ValidatorsSchema
@@ -19,25 +20,27 @@ class Middleware:
         
         return token_de_acesso
     
-    def __init__(self, app: Flask):
-        self.wsgi_app = app.wsgi_app
-        app.wsgi_app = self
+    def __init__(self, app):
+        # sempre quando for utilizar middleware personalizado fazer dessa forma
         self.app = app
-        
-        
-    def __call__(self, environ, start_response) -> Response:
+        self.wsgi_app = app.wsgi_app
+
+
+    def __call__(self, environ, start_response):
+        # Definindo o contexto da requisição Flask
         with self.app.request_context(environ):
+            if request.method == 'OPTIONS' or self.is_public_route(request.path):
+                return self.wsgi_app(environ, start_response)
             try:
-                if not self.is_public_route(request.path):
-                    self.verificacoes_rotas()
-            except Unauthorized as error:
-                res = jsonify({"msg": str(error)})
-                res.status_code = 401
-                return res(environ, start_response)
-            except Exception as error:
-                res = jsonify({"msg": str(error)})
-                res.status_code = 400
-                return res(environ, start_response)
+                self.verificacoes_rotas()
+            except Unauthorized as e:
+                response = jsonify({"msg": str(e)})
+                response.status_code = 401
+                return response(environ, start_response)
+            except Exception as e:
+                response = jsonify({"msg": str(e)})
+                response.status_code = 400
+                return response(environ, start_response)
         
         return self.wsgi_app(environ, start_response)
     
@@ -72,15 +75,17 @@ class Middleware:
     
     
     def is_admin_route(self, path: str) -> bool:
-        return path in [
-            "/api/atualizar-para-usuario-ou-admin/<int:id_usuario>/<bool:admin>",
-            "/api/criar-vaga",
-            "/api/atualizar-vaga/<int:id_vaga>",
-            "/api/atualizar-status-vaga/<int:id_vaga>/<status>",
-            "/api/excluir-curriculo/<int:id_usuario>"
-            "/api/pegar-curriculo/<int:id_usuario>",
-            "/api/pegar_vagas_etapas",
-            "/api/pegar_todos_status_processo_seletivo",
-            "/api/pegar_todos_usuarios"
-            "/api/atualizar_status_processo_seletivo/<int:id_status_processo_seletivo>",
+        admin_routes: list[str] = [
+            r"^/api/atualizar-para-usuario-ou-admin/\d+/\w+$",
+            r"^/api/criar-vaga$",
+            r"^/api/atualizar-vaga/\d+$",
+            r"^/api/atualizar-status-vaga/\d+/[^/]+$",
+            r"^/api/excluir-curriculo/\d+$",
+            r"^/api/pegar-curriculo/\d+$",
+            r"^/api/pegar_vagas_etapas$",
+            r"^/api/pegar_todos_status_processo_seletivo$",
+            r"^/api/pegar_todos_usuarios$",
+            r"^/api/atualizar_status_processo_seletivo/\d+$",
         ]
+        
+        return any(re.match(route, path) for route in admin_routes)
