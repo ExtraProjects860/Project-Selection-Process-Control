@@ -13,15 +13,16 @@ from datetime import timedelta
 load_dotenv()
 
 app: Flask = Flask(__name__)
+CORS(app, supports_credentials=True, resources={r"/*": {"origins": "*"}})
 app.config['JWT_SECRET_KEY'] = os.getenv("JWT_SECRET_KEY_HOMO")
 app.config['JWT_TOKEN_LOCATION'] = ['headers']
 app.config['JWT_HEADER_NAME'] = 'Authorization'
 app.config['JWT_HEADER_TYPE'] = 'Bearer'
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=1)
 jwt = JWTManager(app)
-app.wsgi_app = Middleware(app)
 
-CORS(app, resources={r"/*": {"origins": "*"}})
+middleware = Middleware(app)
+app.wsgi_app = middleware
 
 app.register_blueprint(usuario_routes, url_prefix='/api')
 app.register_blueprint(vaga_routes, url_prefix='/api')
