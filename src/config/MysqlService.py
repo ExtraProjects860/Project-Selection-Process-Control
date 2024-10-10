@@ -8,10 +8,10 @@ class MySQLService:
         load_dotenv()
         try:
             self.__connection = mysql.connector.connect(
-                host=os.getenv("MYSQL_HOST_HOMO"),
-                user=os.getenv("MYSQL_USER_HOMO"),
-                password=os.getenv("MYSQL_PASSWORD_HOMO"),
-                database=os.getenv("MYSQL_DATABASE_HOMO")
+                host=os.getenv("MYSQL_HOST_PROD"),
+                user=os.getenv("MYSQL_USER_PROD"),
+                password=os.getenv("MYSQL_PASSWORD_PROD"),
+                database=os.getenv("MYSQL_DATABASE_PROD")
             )
             self.__connection.autocommit = False
             self.__cursor = self.__connection.cursor()
