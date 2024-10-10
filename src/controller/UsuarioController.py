@@ -77,7 +77,7 @@ class UsuarioController(UsuarioModel):
     def login(self) -> str:
         mysql: MySQLService = MySQLService()
         comandoSQL_login: str = """
-            SELECT u.id_usuario, u.senha, u.admin, du.nome_usuario
+            SELECT u.id_usuario, u.senha, u.admin, du.nome_usuario, du.telefone, du.endereco
             FROM usuario u
             INNER JOIN dados_usuario du ON u.id_usuario = du.id_dados_usuario
             WHERE u.email = %s;
@@ -98,6 +98,7 @@ class UsuarioController(UsuarioModel):
         token_de_acesso: str = Middleware.create_access_jwt(
             id_usuario=resultado[0], email_usuario=self.email,
             nome_usuario=resultado[3], is_admin=resultado[2],
+            telefone=resultado[4], endereco=resultado[5]
         )
             
         return token_de_acesso
