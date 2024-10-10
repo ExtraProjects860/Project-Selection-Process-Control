@@ -10,12 +10,14 @@ validators_schema: ValidatorsSchema = ValidatorsSchema()
 class Middleware:
     
     @staticmethod
-    def create_access_jwt(id_usuario: int, email_usuario: str, nome_usuario: str, is_admin: bool) -> str:
+    def create_access_jwt(id_usuario: int, email_usuario: str, nome_usuario: str, is_admin: bool, telefone: str, endereco: str) -> str:
         token_de_acesso: str = create_access_token(identity={
             "id": id_usuario, 
             "email": email_usuario, 
             "nome": nome_usuario,
             "admin": is_admin,
+            "telefone": telefone,
+            "endereco": endereco
         })
         
         return token_de_acesso
