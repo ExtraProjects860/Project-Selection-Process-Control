@@ -48,8 +48,10 @@ function Login() {
       console.log("Login bem-sucedido:", response);
       setErrorMessage("");
       const token = response.token;
+      localStorage.setItem("token", token);
       const userData = await UserService.pegarDadosUsuario(token);
       console.log("User data: ", userData);
+      localStorage.setItem("userData", JSON.stringify(userData));
       console.log("Admin? ", userData.dados.admin);
       if (userData.dados.admin === 1) {
         return navigate("/dashboard-admin");
