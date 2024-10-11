@@ -1,23 +1,23 @@
-import React, { useState } from 'react';
-import './Login.css'; 
-import { FaEye, FaEyeSlash } from 'react-icons/fa'; 
-import logo from '../../assets/icon/logo.svg';
-import Navbar from '../../components/navbar/Navbar';
-import SocialFooter from '../../components/social-footer/SocialFooter';
-import RightsFooter from '../../components/rights-footer/RightsFooter';
-import { login } from '../../services/login-service/LoginService';
-import UserService from '../../services/user-service/UserService';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import "./Login.css";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import logo from "../../assets/icon/logo.svg";
+import Navbar from "../../components/navbar/Navbar";
+import SocialFooter from "../../components/social-footer/SocialFooter";
+import RightsFooter from "../../components/rights-footer/RightsFooter";
+import { login } from "../../services/login-service/LoginService";
+import UserService from "../../services/user-service/UserService";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [passwordType, setPasswordType] = useState("password"); 
-  const [errorMessage, setErrorMessage] = useState('');
-  const [emailError, setEmailError] = useState(''); // Estado para erro de email
-  const [passwordError, setPasswordError] = useState(''); // Estado para erro de senha
-  const userType = 'deslogado'; 
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordType, setPasswordType] = useState("password");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [emailError, setEmailError] = useState(""); // Estado para erro de email
+  const [passwordError, setPasswordError] = useState(""); // Estado para erro de senha
+  const userType = "deslogado";
 
   // Função para alternar entre mostrar e esconder a senha
   const togglePasswordVisibility = () => {
@@ -26,47 +26,51 @@ function Login() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setEmailError(''); // Limpar mensagens de erro anteriores
-    setPasswordError('');
+    setEmailError(""); // Limpar mensagens de erro anteriores
+    setPasswordError("");
 
     // Validação do email
-    if (!email.includes('@') || email.split('@')[1].length === 0) {
-      setEmailError('Por favor, insira um email válido com @ e um domínio.');
+    if (!email.includes("@") || email.split("@")[1].length === 0) {
+      setEmailError("Por favor, insira um email válido com @ e um domínio.");
       return;
     }
 
     // Validação da senha
-    // if (password.length < 8 || password.length > 16) {
-    //   setPasswordError('A senha deve ter no mínimo 8 e no máximo 16 caracteres.');
-    //   return;
-    // }
+    if (password.length < 8 || password.length > 16) {
+      setPasswordError(
+        "A senha deve ter no mínimo 8 e no máximo 16 caracteres."
+      );
+      return;
+    }
 
     try {
-      const response = await login(email, password); 
-      console.log('Login bem-sucedido:', response);
-      setErrorMessage('');
+      const response = await login(email, password);
+      console.log("Login bem-sucedido:", response);
+      setErrorMessage("");
       const token = response.token;
       const userData = await UserService.pegarDadosUsuario(token);
       console.log("User data: ", userData);
-      if(userData.dados.admin === 0){
-        navigate('/home-candidate')
+      console.log("Admin? ", userData.dados.admin);
+      if (userData.dados.admin === 1) {
+        return navigate("/dashboard-admin");
       }
-      navigate('/dashboard')
-      
+      navigate("/home-candidate");
     } catch (error) {
       if (error.status === 400) {
-        setErrorMessage('Campos obrigatórios ausentes.');
+        setErrorMessage("Campos obrigatórios ausentes.");
       } else if (error.status === 500) {
-        setErrorMessage('Erro interno do servidor. Tente novamente mais tarde.');
+        setErrorMessage(
+          "Erro interno do servidor. Tente novamente mais tarde."
+        );
       } else {
-        setErrorMessage('Erro de login. Verifique suas credenciais.');
+        setErrorMessage("Erro de login. Verifique suas credenciais.");
       }
     }
   };
 
   return (
     <>
-      <Navbar userType={userType}/>
+      <Navbar userType={userType} />
       <div className="login-container">
         <div className="login-card">
           <div className="login-header">
@@ -83,8 +87,8 @@ function Login() {
                 placeholder="Digite seu e-mail"
                 required
               />
-              {emailError && <p className="error-message">{emailError}</p>} {/* Exibir mensagem de erro de email */}
-
+              {emailError && <p className="error-message">{emailError}</p>}{" "}
+              {/* Exibir mensagem de erro de email */}
               <label htmlFor="password">Senha</label>
               <div className="password-input-container">
                 <input
@@ -95,18 +99,27 @@ function Login() {
                   placeholder="Digite sua senha"
                   required
                 />
-                <span onClick={togglePasswordVisibility} className="password-toggle-icon">
+                <span
+                  onClick={togglePasswordVisibility}
+                  className="password-toggle-icon"
+                >
                   {passwordType === "password" ? <FaEyeSlash /> : <FaEye />}
                 </span>
               </div>
-              {passwordError && <p className="error-message">{passwordError}</p>} {/* Exibir mensagem de erro de senha */}
-
-              {errorMessage && <p className="error-message">{errorMessage}</p>} {/* Exibir mensagem de erro geral */}
-
+              {passwordError && (
+                <p className="error-message">{passwordError}</p>
+              )}{" "}
+              {/* Exibir mensagem de erro de senha */}
+              {errorMessage && (
+                <p className="error-message">{errorMessage}</p>
+              )}{" "}
+              {/* Exibir mensagem de erro geral */}
               <div className="forgot-password">
                 <a href="#!">Esqueci minha senha</a>
               </div>
-              <button type="submit" className="login-button">Entrar</button>
+              <button type="submit" className="login-button">
+                Entrar
+              </button>
             </form>
           </div>
           <div className="login-footer">
