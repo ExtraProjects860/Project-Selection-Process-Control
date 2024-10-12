@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import CandidatesTable from './CandidatesTable';
 import UsersTable from './UsersTable';
 import ImageWithText from '../imageWithText/ImageWithText';
