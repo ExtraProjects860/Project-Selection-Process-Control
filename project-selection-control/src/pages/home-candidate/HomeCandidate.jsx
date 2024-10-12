@@ -1,4 +1,3 @@
-import React from 'react';
 import './HomeCandidate.css';
 import HeaderCandidate from '../../components/header-candidate/HeaderCandidate';
 import RegistrationsCandidate from '../../components/registrations-candidate/RegistrationsCandidate';

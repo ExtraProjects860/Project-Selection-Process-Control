@@ -1,4 +1,4 @@
-import  { useState } from "react";
+import  { useState, useContext } from "react";
 import "./Login.css";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import logo from "../../assets/icon/logo.svg";
@@ -8,9 +8,11 @@ import RightsFooter from "../../components/rights-footer/RightsFooter";
 import { login } from "../../services/login-service/LoginService";
 import UserService from "../../services/user-service/UserService";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../components/auth-context/AuthContext";
 
 function Login() {
   const navigate = useNavigate();
+  const { setIsLoggedIn, setUserRole } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordType, setPasswordType] = useState("password");
@@ -53,10 +55,10 @@ function Login() {
       console.log("User data: ", userData);
       localStorage.setItem("userData", JSON.stringify(userData));
       console.log("Admin? ", userData.dados.admin);
-      if (userData.dados.admin === 1) {
-        return navigate("/dashboard-admin");
-      }
-      navigate("/home-candidate");
+      setIsLoggedIn(true); // Atualiza o estado global
+      setUserRole(userData.dados.admin === 1 ? "admin" : "candidate");
+      const route = userData.dados.admin === 1 ? "/home-admin" : "/home-candidate";
+      navigate(route);
     } catch (error) {
       if (error.status === 400) {
         setErrorMessage("Campos obrigatórios ausentes.");

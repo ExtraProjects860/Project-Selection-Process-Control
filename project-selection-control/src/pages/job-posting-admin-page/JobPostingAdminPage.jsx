@@ -1,4 +1,3 @@
-import React from 'react';
 import './JobPostingAdminPage.css';
 import HeaderCandidate from '../../components/header-candidate/HeaderCandidate';
 import SocialFooter from '../../components/social-footer/SocialFooter';

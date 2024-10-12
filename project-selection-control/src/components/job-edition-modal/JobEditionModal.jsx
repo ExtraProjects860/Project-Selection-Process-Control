@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import './JobEditionModal.css'
 
 function JobEditionModal({ jobDetails, isOpen, onClose }) {

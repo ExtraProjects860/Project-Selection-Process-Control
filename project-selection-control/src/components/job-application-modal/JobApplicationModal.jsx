@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import './JobApplicationModal.css'; 
 import { FaPaperclip } from 'react-icons/fa'; 
 

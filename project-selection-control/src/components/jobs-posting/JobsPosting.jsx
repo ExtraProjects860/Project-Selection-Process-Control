@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import './JobsPosting.css';
 import Pagination from '../pagination/Pagination';
 import JobEditionModal from '../job-edition-modal/JobEditionModal';
