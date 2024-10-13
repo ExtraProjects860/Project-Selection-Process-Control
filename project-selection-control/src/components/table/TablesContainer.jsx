@@ -11,7 +11,6 @@ function TablesContainer() {
   return (
     <>
     <div className="tables-container">
-      
       <button onClick={toggleTables}>
         {showCandidates ? 'Mostrar Tabela de Usuários' : 'Mostrar Tabela de Candidatos'}
       </button>

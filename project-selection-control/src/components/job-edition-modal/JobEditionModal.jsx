@@ -1,4 +1,5 @@
 import './JobEditionModal.css'
+import { useState } from 'react';
 
 function JobEditionModal({ jobDetails, isOpen, onClose }) {
   const [title, setTitle] = useState(jobDetails.title);
