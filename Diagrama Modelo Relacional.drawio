@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36" version="24.7.14">
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36" version="24.7.17">
   <diagram name="Página-1" id="de7DO5orAWd1vN3bYA0H">
     <mxGraphModel dx="2261" dy="746" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -94,7 +94,7 @@
         <mxCell id="jxh5CUl1t5E--HQuOENb-31" value="0,n" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="-130" y="623.5" width="60" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="wbHYAVBV8Am1rfHpN2hO-2" value="&lt;ul&gt;&lt;li&gt;&lt;span style=&quot;text-wrap: nowrap;&quot;&gt;+id_usuario&lt;/span&gt;&lt;/li&gt;&lt;li&gt;&lt;span style=&quot;text-wrap: nowrap;&quot;&gt;+id_vaga_total&lt;/span&gt;&lt;/li&gt;&lt;li&gt;&lt;span style=&quot;text-wrap: nowrap;&quot;&gt;+data_inscrição&lt;/span&gt;&lt;/li&gt;&lt;/ul&gt;" style="text;strokeColor=none;fillColor=none;html=1;whiteSpace=wrap;verticalAlign=middle;overflow=hidden;" parent="1" vertex="1">
+        <mxCell id="wbHYAVBV8Am1rfHpN2hO-2" value="&lt;ul&gt;&lt;li&gt;&lt;span style=&quot;text-wrap: nowrap;&quot;&gt;+id_inscricao&lt;/span&gt;&lt;/li&gt;&lt;li&gt;&lt;span style=&quot;text-wrap: nowrap;&quot;&gt;+id_usuario&lt;/span&gt;&lt;/li&gt;&lt;li&gt;&lt;span style=&quot;text-wrap: nowrap;&quot;&gt;+id_vaga_total&lt;/span&gt;&lt;/li&gt;&lt;li&gt;&lt;span style=&quot;text-wrap: nowrap;&quot;&gt;+data_inscrição&lt;/span&gt;&lt;/li&gt;&lt;/ul&gt;" style="text;strokeColor=none;fillColor=none;html=1;whiteSpace=wrap;verticalAlign=middle;overflow=hidden;" parent="1" vertex="1">
           <mxGeometry x="-180" y="297" width="130" height="80" as="geometry" />
         </mxCell>
         <mxCell id="ZoAUte5qtV3VM0xdpxg7-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;endFill=0;" parent="1" source="jxh5CUl1t5E--HQuOENb-23" target="dZXWX3gMMMTmXV1Ml8qp-66" edge="1">
