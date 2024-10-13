@@ -55,7 +55,7 @@ function Login() {
       console.log("User data: ", userData);
       localStorage.setItem("userData", JSON.stringify(userData));
       console.log("Admin? ", userData.dados.admin);
-      setIsLoggedIn(true); // Atualiza o estado global
+      setIsLoggedIn(true);
       setUserRole(userData.dados.admin === 1 ? "admin" : "candidate");
       const route = userData.dados.admin === 1 ? "/home-admin" : "/home-candidate";
       navigate(route);
