@@ -1,3 +1,4 @@
+import MainPage from './pages/landing-page/LandingPage';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { useContext } from 'react';
 import { AuthContext } from '../src/components/auth-context/AuthContext';
@@ -20,7 +21,8 @@ function App() {
     <Router>
       <div className="App">
         <Routes>
-          <Route path="/" element={isLoggedIn ? <Navigate to={route} /> : <Login />} />
+          <Route path="/" element={<MainPage />} />
+          <Route path="/login" element={isLoggedIn ? <Navigate to={route} /> : <Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/reset-password-request" element={<ResetPasswordRequest />} />
           <Route path="/password-reset-confirmation" element={<ResetPasswordConfirmation />} />
