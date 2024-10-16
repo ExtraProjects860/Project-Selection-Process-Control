@@ -7,7 +7,7 @@ status_processo_seletivo_routes: Blueprint = Blueprint('status_processo_seletivo
 
 validators_schema: Validators = Validators()
 
-@status_processo_seletivo_routes.route('/pegar_vagas_etapas', methods=['GET'])
+@status_processo_seletivo_routes.route('/pegar-vagas-etapas', methods=['GET'])
 @jwt_required()
 def pegar_vagas_etapas() -> tuple[Response, int]:
     try:
@@ -34,8 +34,8 @@ def pegar_todos_status_processo_seletivo(pagina: int) -> tuple[Response, int]:
         return jsonify({"error": "Exception " + str(error)}), 500
     
 
-@status_processo_seletivo_routes.route('/pegar_todos_usuarios/', defaults={'pagina': 1}, methods=['GET'])
-@status_processo_seletivo_routes.route('/pegar_todos_usuarios/<int:pagina>', methods=['GET'])
+@status_processo_seletivo_routes.route('/pegar-todos-usuarios/', defaults={'pagina': 1}, methods=['GET'])
+@status_processo_seletivo_routes.route('/pegar-todos-usuarios/<int:pagina>', methods=['GET'])
 @jwt_required()
 def pegar_todos_usuarios(pagina: int) -> tuple[Response, int]:
     try:
@@ -46,7 +46,7 @@ def pegar_todos_usuarios(pagina: int) -> tuple[Response, int]:
         return jsonify({"error": "Exception " + str(error)}), 500
     
 
-@status_processo_seletivo_routes.route('/salvar_status_processo_seletivo/<int:id_usuario>', methods=['POST'])
+@status_processo_seletivo_routes.route('/salvar-status-processo-seletivo/<int:id_usuario>', methods=['POST'])
 @jwt_required()
 def salvar_status_processo_seletivo(id_usuario: int) -> tuple[Response, int]:
     try:
@@ -68,7 +68,7 @@ def salvar_status_processo_seletivo(id_usuario: int) -> tuple[Response, int]:
         return jsonify({"error": "Exception " + str(error)}), 500
     
 
-@status_processo_seletivo_routes.route('/atualizar_status_processo_seletivo/<int:id_status_processo_seletivo>', methods=['PUT'])
+@status_processo_seletivo_routes.route('/atualizar-status-processo-seletivo/<int:id_status_processo_seletivo>', methods=['PUT'])
 @jwt_required()
 def atualizar_status_processo_seletivo(id_status_processo_seletivo: int) -> tuple[Response, int]:
     try:
