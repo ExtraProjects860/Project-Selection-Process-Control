@@ -1,5 +1,5 @@
 import re
-from flask import jsonify, request
+from flask import jsonify, request, Response
 from flask_jwt_extended import verify_jwt_in_request, get_jwt, get_jwt_identity, create_access_token
 from werkzeug.exceptions import Unauthorized
 from src.validators.Validators import Validators
@@ -30,7 +30,9 @@ class Middleware:
     def __call__(self, environ, start_response):
         # Definindo o contexto da requisição Flask
         with self.app.request_context(environ):
-            if request.method == 'OPTIONS' or self.__is_public_route(request.path):
+            if request.method == 'OPTIONS':
+                return self.__handle_options(environ, start_response)
+            elif self.__is_public_route(request.path):
                 return self.wsgi_app(environ, start_response)
             try:
                 self.__verificacoes_rotas()
@@ -44,6 +46,15 @@ class Middleware:
                 return response(environ, start_response)
         
         return self.wsgi_app(environ, start_response)
+    
+    
+    def __handle_options(self, environ, start_response) -> Response:
+        response = Response()
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
+        response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+        response.status_code = 200
+        return response(environ, start_response)
     
 
     def __verificacoes_rotas(self) -> None:
@@ -67,26 +78,28 @@ class Middleware:
         
     
     def __is_public_route(self, path: str) -> bool:
-        return path in [
-            "/api/criar-usuario", 
-            "/api/login", 
-            "/api/requistar-troca-senha",
-            "/api/redefinir-senha",
+        public_routes: list[str] = [
+            r"^/api/criar-usuario/?$", 
+            r"^/api/login/?$", 
+            r"^/api/requistar-troca-senha/?$",
+            r"^/api/redefinir-senha/?$",
         ]
+        
+        return any(re.match(route, path) for route in public_routes)
     
     
     def __is_admin_route(self, path: str) -> bool:
         admin_routes: list[str] = [
-            r"^/api/atualizar-para-usuario-ou-admin/\d+/\w+$",
-            r"^/api/criar-vaga$",
-            r"^/api/atualizar-vaga/\d+$",
-            r"^/api/excluir-curriculo/\d+$",
-            r"^/api/pegar-curriculo/\d+$",
-            r"^/api/pegar_vagas_etapas/\d+$",
-            r"^/api/pegar-setores-cargos/$",
-            r"^/api/pegar_todos_status_processo_seletivo/\d+$", # preciso implementar paginação
-            r"^/api/pegar_todos_usuarios/\d+$", # preciso implementar paginação
-            r"^/api/atualizar_status_processo_seletivo/\d+$",
+            r"^/api/atualizar-para-usuario-ou-admin/\d+/\w+/?$",
+            r"^/api/criar-vaga/?$",
+            r"^/api/atualizar-vaga/\d+/?$",
+            r"^/api/excluir-curriculo/\d+/?$",
+            r"^/api/pegar-curriculo/\d+/?$",
+            r"^/api/pegar-vagas-etapas/\d+/?$",
+            r"^/api/pegar-setores-cargos/?$",
+            r"^/api/pegar-todos_status-processo-seletivo/\d+/?$",
+            r"^/api/pegar-todos-usuarios/\d+/?$",
+            r"^/api/atualizar-status-processo-seletivo/\d+/?$",
         ]
         
         return any(re.match(route, path) for route in admin_routes)

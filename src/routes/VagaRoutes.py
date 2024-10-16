@@ -7,7 +7,7 @@ vaga_routes: Blueprint = Blueprint('vaga_routes', __name__)
 
 validators_schema: Validators = Validators()
 
-@vaga_routes.route('/pegar-setores-cargos', methods=['GET'])
+@vaga_routes.route('/pegar-setores-cargos', methods=['GET'], strict_slashes=False)
 @jwt_required()
 def pegar_setores_cargos() -> tuple[Response, int]:
     try:
@@ -18,8 +18,8 @@ def pegar_setores_cargos() -> tuple[Response, int]:
         return jsonify({"error": "Exception " + str(error)}), 500
     
 
-@vaga_routes.route('/pegar-todas-vagas/', defaults={'pagina': 1}, methods=['GET'])
-@vaga_routes.route('/pegar-todas-vagas/<int:pagina>', methods=['GET'])
+@vaga_routes.route('/pegar-todas-vagas', defaults={'pagina': 1}, methods=['GET'], strict_slashes=False)
+@vaga_routes.route('/pegar-todas-vagas/<int:pagina>', methods=['GET'], strict_slashes=False)
 @jwt_required()
 def pegar_todas_vagas(pagina: int) -> tuple[Response, int]:
     try:
@@ -34,7 +34,7 @@ def pegar_todas_vagas(pagina: int) -> tuple[Response, int]:
         return jsonify({"error": "Exception " + str(error)}), 500
 
 
-@vaga_routes.route('/criar-vaga', methods=['POST'])
+@vaga_routes.route('/criar-vaga', methods=['POST'], strict_slashes=False)
 @jwt_required()
 def criar_vaga() -> tuple[Response, int]:
     try:
@@ -58,7 +58,7 @@ def criar_vaga() -> tuple[Response, int]:
         return jsonify({"error": "Exception " + str(error)}), 500
     
 
-@vaga_routes.route('/atualizar-vaga/<int:id_vaga>', methods=['PUT'])
+@vaga_routes.route('/atualizar-vaga/<int:id_vaga>', methods=['PUT'], strict_slashes=False)
 @jwt_required()
 def atualizar_vaga(id_vaga: int) -> tuple[Response, int]:
     try:

@@ -10,7 +10,7 @@ validators_schema: Validators = Validators()
 DIRETORIO_CURRICULOS: str = os.getcwd() + "\\src\\archives"
 
 
-@inscricao_routes.route('/excluir-curriculo/<int:id_usuario>', methods=['DELETE'])
+@inscricao_routes.route('/excluir-curriculo/<int:id_usuario>', methods=['DELETE'], strict_slashes=False)
 @jwt_required()
 def excluir_curriculo(id_usuario: int) -> tuple[Response, int]:
     try:
@@ -31,7 +31,7 @@ def excluir_curriculo(id_usuario: int) -> tuple[Response, int]:
         return jsonify({"error": "Exception " + str(error)}), 500
 
 
-@inscricao_routes.route('/pegar-curriculo/<int:id_usuario>', methods=['GET'])
+@inscricao_routes.route('/pegar-curriculo/<int:id_usuario>', methods=['GET'], strict_slashes=False)
 @jwt_required()
 def pegar_curriculo(id_usuario: int) -> tuple[Response, int]:
     try:
@@ -43,7 +43,7 @@ def pegar_curriculo(id_usuario: int) -> tuple[Response, int]:
         return jsonify({"error": "Exception " + str(error)}), 500
 
 
-@inscricao_routes.route('/salvar-inscricao-curriculo/<int:id_usuario>/<int:id_vaga>', methods=['POST'])
+@inscricao_routes.route('/salvar-inscricao-curriculo/<int:id_usuario>/<int:id_vaga>', methods=['POST'], strict_slashes=False)
 @jwt_required()
 def salvar_inscricao_curriculo(id_usuario: int, id_vaga: int) -> tuple[Response, int]:
     try:
@@ -78,8 +78,8 @@ def salvar_inscricao_curriculo(id_usuario: int, id_vaga: int) -> tuple[Response,
         return jsonify({"error": "Exception " + str(error)}), 500
     
 
-@inscricao_routes.route('/mostrar-inscricoes-usuario/<int:id_usuario>/', defaults={'pagina': 1}, methods=['GET'])
-@inscricao_routes.route('/mostrar-inscricoes-usuario/<int:id_usuario>/<int:pagina>', methods=['GET'])
+@inscricao_routes.route('/mostrar-inscricoes-usuario/<int:id_usuario>', defaults={'pagina': 1}, methods=['GET'], strict_slashes=False)
+@inscricao_routes.route('/mostrar-inscricoes-usuario/<int:id_usuario>/<int:pagina>', methods=['GET'], strict_slashes=False)
 @jwt_required()
 def mostrar_inscricoes_usuario(id_usuario: int, pagina: int) -> tuple[Response, int]:
     try:

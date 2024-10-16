@@ -8,7 +8,7 @@ usuario_routes: Blueprint = Blueprint('usuario_routes', __name__)
 
 validators_schema: Validators = Validators()
 
-@usuario_routes.route('/pegar-dados-usuario', methods=['GET'])
+@usuario_routes.route('/pegar-dados-usuario', methods=['GET'], strict_slashes=False)
 @jwt_required()
 def pegar_dados_usuario() -> tuple[Response, int]:
     try:
@@ -18,7 +18,7 @@ def pegar_dados_usuario() -> tuple[Response, int]:
         return jsonify({"error": "Exception " + str(error)}), 500
     
     
-@usuario_routes.route('/atualizar-para-usuario-ou-admin/<int:id_usuario>/<admin>', methods=['PUT'])
+@usuario_routes.route('/atualizar-para-usuario-ou-admin/<int:id_usuario>/<admin>', methods=['PUT'], strict_slashes=False)
 @jwt_required()
 def atualizar_para_usuario_ou_admin(id_usuario: int, admin: bool) -> tuple[Response, int]:
     try:
@@ -33,7 +33,7 @@ def atualizar_para_usuario_ou_admin(id_usuario: int, admin: bool) -> tuple[Respo
         return jsonify({"error": "Exception " + str(error)}), 500     
         
 
-@usuario_routes.route('/criar-usuario', methods=['POST'])
+@usuario_routes.route('/criar-usuario', methods=['POST'], strict_slashes=False)
 def criar_usuario() -> tuple[Response, int]:
     try:
         body: dict[str, str] = request.get_json()
@@ -61,7 +61,7 @@ def criar_usuario() -> tuple[Response, int]:
         return jsonify({"error": "Exception " + str(error)}), 500
     
 
-@usuario_routes.route('/login', methods=['POST'])
+@usuario_routes.route('/login', methods=['POST'], strict_slashes=False)
 def login() -> tuple[Response, int]:
     try:
         body: dict[str, str] = request.get_json()
@@ -83,7 +83,7 @@ def login() -> tuple[Response, int]:
         return jsonify({"error": "Exception " + str(error)}), 500
 
 
-@usuario_routes.route('/logout', methods=['POST'])
+@usuario_routes.route('/logout', methods=['POST'], strict_slashes=False)
 @jwt_required()
 def logout() -> tuple[Response, int]:
     try:
@@ -96,7 +96,7 @@ def logout() -> tuple[Response, int]:
         return jsonify({"error": "Erro ao realizar o logout " + str(error)}), 500
 
 
-@usuario_routes.route('/requisitar-troca-senha', methods=['POST'])
+@usuario_routes.route('/requisitar-troca-senha', methods=['POST'], strict_slashes=False)
 def requisitar_troca_senha():
     try:
         body: dict[str, str] = request.get_json()
@@ -120,7 +120,7 @@ def requisitar_troca_senha():
         return jsonify({"error": "Erro ao requisitar token para trocar a senha " + str(error)}), 500
 
 
-@usuario_routes.route('/redefinir-senha', methods=['POST'])
+@usuario_routes.route('/redefinir-senha', methods=['POST'], strict_slashes=False)
 def redefinir_senha():
     try:
         body: dict[str, str] = request.get_json()
@@ -142,7 +142,7 @@ def redefinir_senha():
         return jsonify({"error": "Erro ao redefinir a senha " + str(error)}), 500
 
 
-@usuario_routes.route('/atualizar-dados/<int:id_usuario>', methods=['PUT'])
+@usuario_routes.route('/atualizar-dados/<int:id_usuario>', methods=['PUT'], strict_slashes=False)
 @jwt_required()
 def atualizar_dados(id_usuario: int):
     try:
