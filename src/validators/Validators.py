@@ -1,49 +1,75 @@
-import os
 import bcrypt
-from werkzeug.utils import secure_filename
 from src.config.MysqlService import MySQLService
 from mysql.connector import DatabaseError, IntegrityError
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
+from mysql.connector import MySQLConnection
+from mysql.connector.cursor import MySQLCursor
+from src.validators.sql_validators.comandos_sql import (
+    SQL_VERIFICAR_SE_TOKEN_ESTA_NA_BLACKLIST,
+    SQL_INSERIR_TOKEN_NA_BLACKLIST,
+    SQL_VERIFICAR_SE_EMAIL_EXISTE,
+    SQL_VERIFICAR_VALIDADE_E_TOKEN,
+    SQL_INVALIDAR_TOKEN
+)
 
-class ValidatorsSchema:
+class Validators:
     
-    def checar_se_token_esta_na_blacklist(self, jwt_payload: str, mysql: MySQLService) -> bool:
-        # está sendo utiliza na classe de middleware
-        comandoSQL_checar_token: str = """
-            SELECT revogado
-            FROM token_blacklist
-            WHERE jti = %s;
-        """
+    def __init__(self):
+        self.__mysql: MySQLService = MySQLService()
         
-        result = mysql.fetch_one(comandoSQL_checar_token, (jwt_payload["jti"],))
-        mysql.close_cursor()
+    def formatar_data(self, data) -> str:
+        if isinstance(data, (datetime, date)):
+            return data.strftime("%Y-%m-%d")
+        
+        try:
+            data_convertida = datetime.strptime(data, "%a, %d %b %Y %H:%M:%S %Z")
+            return data_convertida.strftime("%Y-%m-%d")
+        except ValueError:
+            return data
+    
+    
+    def validar_paginacao(self, pagina: int, limite_por_pagina: int, SQL_ALL: str, SQL_QUANTIDADE: str, db_cursor: MySQLCursor) -> tuple[int, int]:
+        offset: int = (pagina - 1) * limite_por_pagina
+        
+        resultado: list = self.__mysql.fetch_all(SQL_ALL, (limite_por_pagina, offset,), db_cursor)
+        quantidade_de_vagas: int = self.__mysql.fetch_one(SQL_QUANTIDADE, None, db_cursor)[0]
+        
+        total_de_paginas: int = (quantidade_de_vagas + limite_por_pagina - 1) // limite_por_pagina
+        
+        if pagina > total_de_paginas or pagina < 1:
+            raise ValueError("Nenhuma vaga encontrada. Total de paginas excedido.")
+        
+        return total_de_paginas, resultado
+    
+    
+    # está sendo utiliza na classe de middleware
+    def checar_se_token_esta_na_blacklist(self, jwt_payload: dict[str, str]) -> bool:
+        db_connection, db_cursor = self.__mysql.connect()
+        
+        result = self.__mysql.fetch_one(SQL_VERIFICAR_SE_TOKEN_ESTA_NA_BLACKLIST, (jwt_payload["jti"],), db_cursor)
+        self.__mysql.close_cursor_and_connection(db_cursor, db_connection)
             
         return result is not None and result[0]
 
 
     def adicionar_token_na_blacklist(self, jti: str) -> None:
-        mysql: MySQLService = MySQLService()
-        comandoSQL_inserir_token: str = """
-            INSERT INTO token_blacklist (jti)
-            VALUES (%s);
-        """
+        db_connection, db_cursor = self.__mysql.connect()
         
         try:
-            mysql.begin_transaction()
-            mysql.execute_query(comandoSQL_inserir_token, (jti,))
-            mysql.commit()
+            db_connection.start_transaction()
+            db_cursor.execute(SQL_INSERIR_TOKEN_NA_BLACKLIST, (jti,))
+            db_connection.commit()
         except IntegrityError as ie:
-            mysql.rollback()
+            db_connection.rollback()
             raise IntegrityError(f"Erro de integridade ao adicionar token na blacklist: {ie}")
         except DatabaseError as de:
-            mysql.rollback()
+            db_connection.rollback()
             raise DatabaseError(f"Erro de banco de dados ao adicionar token na blacklist: {de}")
         except Exception as error:
-            mysql.rollback()
+            db_connection.rollback()
             raise Exception(f"Erro ao adicionar token na blacklist: {error}")
         finally:
-            mysql.close_cursor()
-            mysql.close_connection()
+            self.__mysql.close_cursor_and_connection(db_cursor, db_connection)
     
     
     def validate_body(self, body: dict[str, str]) -> bool:
@@ -51,15 +77,13 @@ class ValidatorsSchema:
                   
             
     def validate_email_exists(self, email: str) -> None:
-        mysql: MySQLService = MySQLService()
-        comandoSQL_verificar_email: str = """
-            SELECT email 
-            FROM usuario 
-            WHERE email = %s;
-        """
+        db_connection, db_cursor = self.__mysql.connect()
         
-        if not mysql.fetch_one(comandoSQL_verificar_email, (email,)):
+        if not self.__mysql.fetch_one(SQL_VERIFICAR_SE_EMAIL_EXISTE, (email,), db_cursor):
+            self.__mysql.close_cursor_and_connection(db_cursor, db_connection)
             raise ValueError("Email não encontrado")
+        
+        self.__mysql.close_cursor_and_connection(db_cursor, db_connection)
     
     
     def validate_password(self, senha_usuario: str, senha_banco_de_dados: str) -> bool:
@@ -70,39 +94,30 @@ class ValidatorsSchema:
         return True
     
 
-    def validate_validade_e_token(self, email: str, token: str, mysql: MySQLService) -> None:
-        comandoSQL_verificar_validade_e_token: str = """
-            SELECT tokenForgotPassword, tokenTimeValid
-            From usuario
-            WHERE email = %s;
-        """
-        
-        data_token: tuple = mysql.fetch_one(comandoSQL_verificar_validade_e_token, (email,))
+    def validate_validade_e_token(self, email: str, token: str, mysql: MySQLService, db_connection: MySQLConnection, db_cursor: MySQLCursor) -> None:
+        data_token: tuple = mysql.fetch_one(SQL_VERIFICAR_VALIDADE_E_TOKEN, (email,), db_cursor)
         
         if not token == data_token[0]:
             raise ValueError("Token inválido, tente novamente")
         
         if datetime.fromisoformat(str(data_token[1])) - datetime.now() >= timedelta(hours=1):
-            ValidatorsSchema().remover_token_senha(email)
+            self.__remover_token_senha(email, db_connection, db_cursor)
             raise Exception("Token expirado")
         
     
-    def remover_token_senha(self, email: str, mysql: MySQLService) -> None:
-        comandoSQL_invalidar_token: str = """
-            UPDATE usuario
-            SET tokenForgotPassword = NULL, tokenTimeValid = NULL
-            WHERE email = %s;
-        """
-        
+    def __remover_token_senha(self, email: str, db_connection: MySQLConnection, db_cursor: MySQLCursor) -> None:
         try:
-            mysql.begin_transaction()
-            mysql.execute_query(comandoSQL_invalidar_token, (email,))
-            mysql.commit()
+            db_connection.start_transaction()
+            db_cursor.execute(SQL_INVALIDAR_TOKEN, (email,))
+            db_connection.commit()
+        except IntegrityError as ie:
+            db_connection.rollback()
+            raise IntegrityError(f"Erro de integridade ao remover token: {ie}")
         except DatabaseError as de:
-            mysql.rollback()
+            db_connection.rollback()
             raise DatabaseError(f"Erro de banco de dados ao remover token: {de}")
         except Exception as error:
-            mysql.rollback()
+            db_connection.rollback()
             raise Exception(f"Erro ao remover token {error}")
         finally:
-            mysql.close_cursor()   
+            self.__mysql.close_cursor_and_connection(db_cursor, db_connection)  

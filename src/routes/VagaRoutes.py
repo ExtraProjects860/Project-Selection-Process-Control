@@ -1,40 +1,35 @@
 from flask import Blueprint, jsonify, request, Response
 from flask_jwt_extended import jwt_required
-from src.validators.Validators import ValidatorsSchema
+from src.validators.Validators import Validators
 from src.controller.VagaController import VagaController
 
 vaga_routes: Blueprint = Blueprint('vaga_routes', __name__)
 
-validators_schema: ValidatorsSchema = ValidatorsSchema()
+validators_schema: Validators = Validators()
 
 @vaga_routes.route('/pegar-setores-cargos', methods=['GET'])
 @jwt_required()
 def pegar_setores_cargos() -> tuple[Response, int]:
     try:
-        vaga_controller: VagaController = VagaController(
-            nome_vaga = None, status = None,
-            descricao_vaga = None, salario = None,
-            quantidade_vagas = None, data_encerramento = None
-        )
-        
-        setores, cargos = vaga_controller.pegar_setores_cargos()
+        setores, cargos = VagaController().pegar_setores_cargos()
         
         return jsonify({"success": "Setores e cargos recuperados com sucesso", "setores": setores, "cargos": cargos}), 200
     except Exception as error:
         return jsonify({"error": "Exception " + str(error)}), 500
     
 
-@vaga_routes.route('/pegar-todas-vagas', methods=['GET'])
+@vaga_routes.route('/pegar-todas-vagas/', defaults={'pagina': 1}, methods=['GET'])
+@vaga_routes.route('/pegar-todas-vagas/<int:pagina>', methods=['GET'])
 @jwt_required()
-def pegar_todas_vagas() -> tuple[Response, int]:
+def pegar_todas_vagas(pagina: int) -> tuple[Response, int]:
     try:
-        vaga_controller: VagaController = VagaController(
-            nome_vaga = None, status = None,
-            descricao_vaga = None, salario = None,
-            quantidade_vagas = None, data_encerramento = None
-        )
+        if not pagina:
+            raise ValueError("Número da página não informado")
         
-        return jsonify({"success": "Vagas recuperadas com sucesso", "vagas": vaga_controller.pegar_todas_vagas()}), 200
+        total_de_paginas, vagas = VagaController().pegar_todas_vagas(pagina)
+        return jsonify({"success": "Vagas recuperadas com sucesso", "total_de_paginas": total_de_paginas, "vagas": vagas}), 200
+    except ValueError as error:
+        return jsonify({"error": "ValueError " + str(error)}), 400
     except Exception as error:
         return jsonify({"error": "Exception " + str(error)}), 500
 
@@ -78,9 +73,9 @@ def atualizar_vaga(id_vaga: int) -> tuple[Response, int]:
             quantidade_vagas=body["quantidade_vagas"], data_encerramento=body["data_encerramento"]
         )
         
-        vaga_controller.atualizar_vaga(id_vaga)
+        vaga_controller.atualizar_vaga(id_vaga, body["setor"], body["cargo"])
         
-        return jsonify({"success": "Vaga atualizada com sucesso"}), 200
+        return jsonify({"success": "Vaga atualizada com sucesso"}), 204
     except ValueError as error:
         return jsonify({"error": "ValueError " + str(error)}), 400
     except Exception as error:

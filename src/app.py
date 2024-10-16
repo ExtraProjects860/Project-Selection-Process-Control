@@ -1,5 +1,5 @@
 import os
-from flask import Flask
+from flask import Flask, request, Response
 from flask_cors import CORS
 from dotenv import load_dotenv
 from flask_jwt_extended import JWTManager
@@ -8,6 +8,7 @@ from src.routes.VagaRoutes import vaga_routes
 from src.routes.InscricaoRoutes import inscricao_routes
 from src.routes.StatusProcessoSeletivoRoutes import status_processo_seletivo_routes
 from src.middleware.Middleware import Middleware
+from src.middleware.RateLimiter import RateLimiter
 from datetime import timedelta
 
 load_dotenv()
@@ -23,6 +24,14 @@ jwt = JWTManager(app)
 
 middleware = Middleware(app)
 app.wsgi_app = middleware
+
+rate_limiter = RateLimiter(requests_limit=10, time_window=60)
+
+@app.before_request
+def limit_request() -> tuple[Response, int]:
+    response = rate_limiter(request)
+    if response is not True:
+        return response
 
 app.register_blueprint(usuario_routes, url_prefix='/api')
 app.register_blueprint(vaga_routes, url_prefix='/api')

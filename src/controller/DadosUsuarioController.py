@@ -2,71 +2,103 @@ import bcrypt
 from src.model.DadosUsuarioModel import DadosUsuarioModel
 from src.config.MysqlService import MySQLService
 from mysql.connector.errors import IntegrityError, DatabaseError
+from mysql.connector.cursor import MySQLCursor
+from src.controller.sql_dados_usuario.comandos_sql import (
+    SQL_INSERIR_DADOS_USUARIO,
+    SQL_ATUALIZAR_EMAIL_SENHA_USUARIO,
+    SQL_ATUALIZAR_DADOS_USUARIO,
+)
 
 class DadosUsuarioController(DadosUsuarioModel):
+    """
+    Controller responsável por gerenciar as operações relacionadas aos dados do usuário.
+
+    Esta classe herda de `DadosUsuarioModel` e fornece métodos para inserir e atualizar 
+    informações dos usuários no banco de dados MySQL. Ela utiliza o serviço `MySQLService` 
+    para gerenciar conexões e executar comandos SQL. Além disso, lida com o hashing de 
+    senhas utilizando a biblioteca `bcrypt` para garantir a segurança das informações.
+
+    Atributos:
+    ----------
+    nome_usuario : str
+        O nome completo do usuário. (protected)
+    cpf : str
+        O CPF do usuário. (protected)
+    telefone : str
+        O telefone de contato do usuário. (protected)
+    endereco : str
+        O endereço residencial do usuário. (protected)
+    dataNascimento : str
+        A data de nascimento do usuário. (protected)
+    sexo : str
+        O sexo do usuário. (protected)
+    curriculo : str
+        O caminho para o arquivo do currículo do usuário. (protected)
+    __mysql : MySQLService
+        Instância do serviço `MySQLService` para gerenciar conexões e operações no banco de dados. (private)
+
+    Métodos:
+    --------
+    inserir_dados_usuario(comandoSQL_usuario: str, valores_usuario: tuple, db_cursor: MySQLCursor) -> None: (public)
+        Insere os dados do usuário no banco de dados utilizando o cursor fornecido.
+
+    atualizar_dados_usuario(id_usuario: int, new_email: str, new_password: str) -> None: (public)
+        Atualiza o email e a senha do usuário especificado no banco de dados.
+    """
     
     def __init__(self, nome_usuario: str, cpf: str, telefone: str, endereco: str, dataNascimento: str, sexo: str, curriculo: str):
         super().__init__(
-            nome_usuario=nome_usuario, cpf=cpf, 
-            telefone=telefone, endereco=endereco, 
-            dataNascimento=dataNascimento, sexo=sexo, 
-            curriculo=curriculo
+            _nome_usuario=nome_usuario, _cpf=cpf, 
+            _telefone=telefone, _endereco=endereco, 
+            _dataNascimento=dataNascimento, _sexo=sexo, 
+            _curriculo=curriculo
         )
+        self.__mysql: MySQLService = MySQLService()
                  
                  
-    def inserir_dados_usuario(self, comandoSQL_usuario: str, valores_usuario: tuple, mysql: MySQLService) -> None:
-        mysql.execute_query(comandoSQL_usuario, valores_usuario)
-        id_usuario = mysql.lastrowid()
+    def inserir_dados_usuario(self, SQL_CRIAR_USUARIO: str, valores_usuario: tuple, db_cursor: MySQLCursor) -> None:
+        db_cursor.execute(SQL_CRIAR_USUARIO, valores_usuario)
+        id_usuario: int = self.__mysql.lastrowid(db_cursor)
         
-        comandoSQL_dados_usuario: str = f"""
-            INSERT INTO dados_usuario (id_dados_usuario, nome_usuario, curriculo, cpf, telefone, endereco, data_nascimento, sexo) 
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s);
-        """
+        if id_usuario is None:
+            raise Exception("ID do usuário não foi gerado, verifique a inserção na tabela de usuários.")
             
-        mysql.execute_query(
-            comandoSQL_dados_usuario, 
+        db_cursor.execute(
+            SQL_INSERIR_DADOS_USUARIO, 
             (id_usuario, self.nome_usuario, self.curriculo, self.cpf, self.telefone, self.endereco, self.dataNascimento, self.sexo)
         )
         
         
     def atualizar_dados_usuario(self, id_usuario: int, new_email: str, new_password: str) -> None:
-        mysql: MySQLService = MySQLService()
-        comandoSQL_email_senha_usuario: str = """
-            UPDATE usuario
-            SET email = %s, senha = %s
-            WHERE id_usuario = %s;
-        """
-        
-        comandoSQL_dados_usuario: str = """
-            UPDATE dados_usuario
-            SET telefone = %s, endereco = %s
-            WHERE id_dados_usuario = %s;
-        """
+        db_connection, db_cursor = self.__mysql.connect()
+        hashedPassword: str = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
         try:
-            mysql.begin_transaction()
-            
-            hashedPassword: str = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
-            
-            mysql.execute_query(
-                comandoSQL_email_senha_usuario, 
-                (new_email, hashedPassword, id_usuario)
-            )
-            
-            mysql.execute_query(
-                comandoSQL_dados_usuario, 
-                (self.telefone, self.endereco, id_usuario)
-            )
-            
-            mysql.commit()
+            db_connection.start_transaction()
+            db_cursor.execute(SQL_ATUALIZAR_EMAIL_SENHA_USUARIO, (new_email, hashedPassword, id_usuario),)
+            db_cursor.execute(SQL_ATUALIZAR_DADOS_USUARIO, (self.telefone, self.endereco, id_usuario),)
+            db_connection.commit()
         except IntegrityError as ie:
-            mysql.rollback()
+            db_connection.rollback()
             raise IntegrityError(f"Erro de integridade ao atualizar os dados do usuário: {ie}")
         except DatabaseError as de:
-            mysql.rollback()
+            db_connection.rollback()
             raise DatabaseError(f"Erro de banco de dados ao atualizar os dados do usuário: {de}")
         except Exception as error:
-            mysql.rollback()
+            db_connection.rollback()
             raise Exception(f"Erro ao atualizar os dados do usuário: {error}")
         finally:
-            mysql.close_cursor()
-            mysql.close_connection()
+            self.__mysql.close_cursor_and_connection(db_cursor, db_connection)
+            
+    
+    def __str__(self):
+        return (
+            "DadosUsuarioController("
+            f"nome_usuario='{self.nome_usuario}', "
+            f"cpf='{self.cpf}', "
+            f"telefone='{self.telefone}', "
+            f"endereco='{self.endereco}', "
+            f"dataNascimento='{self.dataNascimento}', "
+            f"sexo='{self.sexo}', "
+            f"curriculo='{self.curriculo}'"
+            ")"
+        )

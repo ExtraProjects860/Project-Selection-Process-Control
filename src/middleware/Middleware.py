@@ -2,10 +2,9 @@ import re
 from flask import jsonify, request
 from flask_jwt_extended import verify_jwt_in_request, get_jwt, get_jwt_identity, create_access_token
 from werkzeug.exceptions import Unauthorized
-from src.validators.Validators import ValidatorsSchema
-from src.config.MysqlService import MySQLService
+from src.validators.Validators import Validators
 
-validators_schema: ValidatorsSchema = ValidatorsSchema()
+validators_schema: Validators = Validators()
 
 class Middleware:
     
@@ -31,10 +30,10 @@ class Middleware:
     def __call__(self, environ, start_response):
         # Definindo o contexto da requisição Flask
         with self.app.request_context(environ):
-            if request.method == 'OPTIONS' or self.is_public_route(request.path):
+            if request.method == 'OPTIONS' or self.__is_public_route(request.path):
                 return self.wsgi_app(environ, start_response)
             try:
-                self.verificacoes_rotas()
+                self.__verificacoes_rotas()
             except Unauthorized as e:
                 response = jsonify({"msg": str(e)})
                 response.status_code = 401
@@ -47,27 +46,27 @@ class Middleware:
         return self.wsgi_app(environ, start_response)
     
 
-    def verificacoes_rotas(self) -> None:
-        self.verificacoes_jwt()
+    def __verificacoes_rotas(self) -> None:
+        self.__verificacoes_jwt()
         
-        if self.is_admin_route(request.path):
-            self.verificacao_admin()
+        if self.__is_admin_route(request.path):
+            self.__verificacao_admin()
 
     
-    def verificacoes_jwt(self) -> None:
+    def __verificacoes_jwt(self) -> None:
         verify_jwt_in_request()
                     
-        if validators_schema.checar_se_token_esta_na_blacklist(get_jwt(), mysql=MySQLService()):
+        if validators_schema.checar_se_token_esta_na_blacklist(get_jwt()):
             raise Unauthorized("Token de acesso revogado")
         
         
-    def verificacao_admin(self) -> None:
+    def __verificacao_admin(self) -> None:
         claims: dict = get_jwt_identity()
         if claims["admin"] != 1:
             raise Unauthorized("Acesso não autorizado privilégios de admin são necessários")
         
     
-    def is_public_route(self, path: str) -> bool:
+    def __is_public_route(self, path: str) -> bool:
         return path in [
             "/api/criar-usuario", 
             "/api/login", 
@@ -76,17 +75,17 @@ class Middleware:
         ]
     
     
-    def is_admin_route(self, path: str) -> bool:
+    def __is_admin_route(self, path: str) -> bool:
         admin_routes: list[str] = [
             r"^/api/atualizar-para-usuario-ou-admin/\d+/\w+$",
             r"^/api/criar-vaga$",
             r"^/api/atualizar-vaga/\d+$",
-            r"^/api/atualizar-status-vaga/\d+/[^/]+$",
             r"^/api/excluir-curriculo/\d+$",
             r"^/api/pegar-curriculo/\d+$",
-            r"^/api/pegar_vagas_etapas$",
-            r"^/api/pegar_todos_status_processo_seletivo$",
-            r"^/api/pegar_todos_usuarios$",
+            r"^/api/pegar_vagas_etapas/\d+$",
+            r"^/api/pegar-setores-cargos/$",
+            r"^/api/pegar_todos_status_processo_seletivo/\d+$", # preciso implementar paginação
+            r"^/api/pegar_todos_usuarios/\d+$", # preciso implementar paginação
             r"^/api/atualizar_status_processo_seletivo/\d+$",
         ]
         

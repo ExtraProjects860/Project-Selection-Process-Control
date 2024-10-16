@@ -6,91 +6,130 @@ from src.model.UsuarioModel import UsuarioModel
 from src.config.MysqlService import MySQLService
 from src.util.EmailService import EmailService
 from src.middleware.Middleware import Middleware
-from src.validators.Validators import ValidatorsSchema
+from src.validators.Validators import Validators
 from src.controller.DadosUsuarioController import DadosUsuarioController
+from src.controller.sql_usuario.comandos_sql import (
+    SQL_UPDATE_USER_OU_ADMIN,
+    SQL_CRIAR_USUARIO,
+    SQL_LOGIN_USUARIO,
+    SQL_ATUALIZAR_TOKEN,
+    SQL_REDEFINIR_SENHA
+)
 
-validators_schema: ValidatorsSchema = ValidatorsSchema()
 
 class UsuarioController(UsuarioModel):
+    """
+    Controller responsável por gerenciar as operações relacionadas aos usuários no sistema.
+
+    Esta classe herda de `UsuarioModel` e encapsula funcionalidades que permitem a criação,
+    atualização, autenticação e redefinição de senha de usuários. Ela utiliza serviços
+    de banco de dados (MySQL), validação de dados e envio de emails para cumprir essas funções.
+
+    Atributos:
+    ----------
+    dados_usuario : DadosUsuarioController (protected)
+        Controlador de dados do usuário que interage diretamente com a base de dados.
+    email : str
+        O email do usuário. (protected)
+    senha : str
+        A senha do usuário. (protected)
+    admin : bool
+        Define se o usuário é um administrador (True) ou não (False). (protected)
+    __mysql : MySQLService
+        Serviço responsável por gerenciar as operações no banco de dados MySQL. (private)
+    __validators_schema : ValidatorsSchema
+        Classe responsável por validações, como a validação de senhas e tokens. (private)
+    __email_service : EmailService
+        Serviço responsável pelo envio de emails, como redefinição de senha. (private)
+
+    Métodos:
+    --------
+    atualizar_usuario_ou_admin(id_usuario: int) -> None: (public)
+        Atualiza as permissões de um usuário para administrador ou usuário comum no banco de dados.
+    
+    criar_usuario() -> None: (public)
+        Cria um novo usuário no sistema e armazena suas credenciais no banco de dados.
+
+    login() -> str: (public)
+        Realiza a autenticação do usuário com base no email e senha fornecidos.
+        Retorna um token JWT se a autenticação for bem-sucedida.
+
+    requisitar_token_troca_de_senha() -> None: (public)
+        Gera e envia por email um token para redefinição de senha, atualizando o banco de dados
+        com o token e a validade.
+
+    redefinir_senha(token: str) -> None: (public)
+        Redefine a senha do usuário após a validação do token fornecido. Atualiza a senha no banco de dados.
+    """
     
     def __init__(self, dados_usuario: DadosUsuarioController, email: str, senha: str, admin: bool):
-        super().__init__(dados_usuario=dados_usuario, email=email, senha=senha, admin=admin)
+        super().__init__(
+            _dados_usuario=dados_usuario, _email=email, 
+            _senha=senha, _admin=admin
+        )
+        self.__mysql: MySQLService = MySQLService()
+        self.__validators_schema: Validators = Validators()
+        self.__email_service: EmailService = EmailService()
     
     
     def atualizar_usuario_ou_admin(self, id_usuario: int) -> None:
-        mysql: MySQLService = MySQLService()
-        comandoSQL_update_user: str = """
-            UPDATE usuario
-            SET admin = %s
-            WHERE id_usuario = %s;
-        """
-        
+        db_connection, db_cursor = self.__mysql.connect()
         try:
-            mysql.begin_transaction()
-            mysql.execute_query(comandoSQL_update_user, (self.admin, id_usuario))
-            mysql.commit()
+            db_connection.start_transaction()
+            db_cursor.execute(SQL_UPDATE_USER_OU_ADMIN, (self.admin, id_usuario))
+            db_connection.commit()
         except IntegrityError as ie:
-            mysql.rollback()
+            db_connection.rollback()
             raise IntegrityError(f"Erro de integridade ao atualizar o usuário: {ie}")
         except DatabaseError as de:
-            mysql.rollback()
+            db_connection.rollback()
             raise DatabaseError(f"Erro de banco de dados ao atualizar o usuário: {de}")
         except Exception as error:
-            mysql.rollback()
+            db_connection.rollback()
             raise Exception(f"Erro ao atualizar o usuário: {error}")
         finally:
-            mysql.close_cursor()
-            mysql.close_connection()
+            self.__mysql.close_cursor_and_connection(db_cursor, db_connection)
     
     
     def criar_usuario(self) -> None:
-        mysql: MySQLService = MySQLService()
-        comandoSQL_usuario: str = """
-            INSERT INTO usuario (email, senha, admin)
-            VALUES (%s, %s, %s);
-        """
-            
+        db_connection, db_cursor = self.__mysql.connect() 
         hashedPassword: str = bcrypt.hashpw(self.senha.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
             
         try:
-            mysql.begin_transaction()
+            db_connection.start_transaction()
             self.dados_usuario.inserir_dados_usuario(
-                comandoSQL_usuario, 
+                SQL_CRIAR_USUARIO, 
                 (self.email, hashedPassword, self.admin),
-                mysql
+                db_cursor
             )
-            mysql.commit()
+            db_connection.commit()
         except IntegrityError as ie:
-            mysql.rollback()
+            db_connection.rollback()
             raise IntegrityError(f"Erro de integridade ao criar o usuário: {ie}")
         except DatabaseError as de:
-            mysql.rollback()
+            db_connection.rollback()
             raise DatabaseError(f"Erro de banco de dados ao criar o usuário: {de}")
         except Exception as error:
-            mysql.rollback()
+            db_connection.rollback()
             raise Exception(f"Erro ao criar o usuário: {error}")
         finally:
-            mysql.close_cursor()
-            mysql.close_connection()
+            self.__mysql.close_cursor_and_connection(db_cursor, db_connection)
     
     
     def login(self) -> str:
-        mysql: MySQLService = MySQLService()
-        comandoSQL_login: str = """
-            SELECT u.id_usuario, u.senha, u.admin, du.nome_usuario, du.telefone, du.endereco
-            FROM usuario u
-            INNER JOIN dados_usuario du ON u.id_usuario = du.id_dados_usuario
-            WHERE u.email = %s;
-        """
+        db_connection, db_cursor = self.__mysql.connect()
         
-        resultado: tuple = mysql.fetch_one(comandoSQL_login, (self.email,))
-        mysql.close_cursor()
-        mysql.close_connection()
+        resultado: tuple = self.__mysql.fetch_one(SQL_LOGIN_USUARIO, (self.email,), db_cursor)
+          
+        self.__mysql.close_cursor_and_connection(db_cursor, db_connection)  
             
         if not resultado:
             raise ValueError("Usuário não encontrado ou dados inválidos")
             
-        validacao: bool = validators_schema.validate_password(senha_usuario=self.senha, senha_banco_de_dados=resultado[1])
+        validacao: bool = self.__validators_schema.validate_password(
+            senha_usuario=self.senha, 
+            senha_banco_de_dados=resultado[1]
+        )
             
         if not validacao:
             raise ValueError("Senha inválida")
@@ -105,30 +144,27 @@ class UsuarioController(UsuarioModel):
     
     
     def requisitar_token_troca_de_senha(self) -> None:
-        mysql: MySQLService = MySQLService()
-        comandoSQL_atualizar_token: str = """
-            UPDATE usuario 
-            SET tokenForgotPassword = %s, tokenTimeValid = %s
-            WHERE email = %s;
-        """
+        db_connection, db_cursor = self.__mysql.connect()
         token_de_troca_da_senha: str = secrets.token_urlsafe(8)
         tempo_de_validade: str = datetime.now().isoformat()
         
         try:
-            mysql.begin_transaction()
-            mysql.execute_query(comandoSQL_atualizar_token, (token_de_troca_da_senha, tempo_de_validade, self.email))
-            mysql.commit()
+            db_connection.start_transaction()
+            db_cursor.execute(
+                SQL_ATUALIZAR_TOKEN, 
+                (token_de_troca_da_senha, tempo_de_validade, self.email)
+            )
+            db_connection.commit()
         except DatabaseError as de:
-            mysql.rollback()
+            db_connection.rollback()
             raise DatabaseError(f"Erro ao atualizar token no banco de dados: {de}")
         except Exception as error:
-            mysql.rollback()
+            db_connection.rollback()
             raise Exception(f"Erro ao redefinir senha {error}")
         finally:
-            mysql.close_cursor()
-            mysql.close_connection()
+            self.__mysql.close_cursor_and_connection(db_cursor, db_connection)  
         
-        EmailService().send_email_forgot_password(
+        self.__email_service.send_email_forgot_password(
             send_email=self.email, 
             subject="Aviso de redefinição de senha",
             message="Você solicitou uma redefinição de senha. Seu token de redefinição é:" ,
@@ -137,30 +173,34 @@ class UsuarioController(UsuarioModel):
        
         
     def redefinir_senha(self, token: str) -> None:
-        mysql: MySQLService = MySQLService()
-        validators_schema.validate_validade_e_token(self.email, token, mysql)
+        db_connection, db_cursor = self.__mysql.connect()
+        self.__validators_schema.validate_validade_e_token(self.email, token, self.__mysql, db_connection, db_cursor)
         
         hashedPassword: str = bcrypt.hashpw(self.senha.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
         
-        comandoSQL_redefinir_senha: str = """
-            UPDATE usuario
-            SET senha = %s, tokenForgotPassword = NULL, tokenTimeValid = NULL
-            WHERE email = %s;
-        """
-        
         try:
-            mysql.begin_transaction()
-            mysql.execute_query(comandoSQL_redefinir_senha, (hashedPassword, self.email))
-            mysql.commit()
+            db_connection.start_transaction()
+            db_cursor.execute(SQL_REDEFINIR_SENHA, (hashedPassword, self.email))
+            db_connection.commit()
         except IntegrityError as ie:
-            mysql.rollback()
+            db_connection.rollback()
             raise IntegrityError(f"Erro de integridade ao redefinir a senha: {ie}")
         except DatabaseError as de:
-            mysql.rollback()
+            db_connection.rollback()
             raise DatabaseError(f"Erro ao redefinir senha no banco de dados: {de}")
         except Exception as error:
-            mysql.rollback()
+            db_connection.rollback()
             raise Exception(f"Erro ao redefinir senha {error}")
         finally:
-            mysql.close_cursor()
-            mysql.close_connection()
+            self.__mysql.close_cursor_and_connection(db_cursor, db_connection) 
+    
+    
+    def __str__(self):
+        return (
+            "UsuarioController("
+            f"dados_usuario='{self.dados_usuario}', "
+            f"email='{self.email}', "
+            f"senha='{self.senha}', "
+            f"admin='{self.admin}'"
+            ")"
+        )

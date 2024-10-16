@@ -1,58 +1,102 @@
 from src.model.StatusProcessoSeletivoModel import StatusProcessoSeletivoModel
 from mysql.connector import DatabaseError, IntegrityError
+from mysql.connector.cursor import MySQLCursor
 from src.config.MysqlService import MySQLService
 from src.util.EmailService import EmailService
-
+from src.validators.Validators import Validators
+from src.schema.StatusProcessoSeletivoSchema import PegarStatusProcessoSeletivo, PegarUsuarios
+from src.controller.sql_status_processo_seletivo.comandos_sql import (
+    SQL_PEGAR_NOME_VAGA,
+    SQL_PEGAR_NOME_ETAPA,
+    SQL_BUSCAR_VAGA_ID,
+    SQL_BUSCAR_ETAPA_ID,
+    SQL_QUANTIDADE_STATUS_PROCESSO_SELETIVO,
+    SQL_PEGAR_STATUS_PROCESSO_SELETIVO,
+    SQL_QUANTIDADE_TODOS_USUARIOS,
+    SQL_PEGAR_TODOS_USUARIOS,
+    SQL_VERIFICAR_SE_USUARIO_TEM_INSCRICAO,
+    SQL_SALVAR_STATUS_PROCESSO_SELETIVO,
+    SQL_ATUALIZAR_STATUS_PROCESSO_SELETIVO
+)
 
 class StatusProcessoSeletivoController(StatusProcessoSeletivoModel):
-    
-    def __init__(self, data_entrevista: str, data_conclusao: str, status_processo: str, perfil: str, observacao: str, forms_respondido: bool, avaliacao_forms: str):
+    """
+    Construtor responsável pelo controle do status do processo seletivo.
+
+    Herda de StatusProcessoSeletivoModel e fornece métodos para gerenciar 
+    status de processos seletivos, incluindo a salvamento e atualização de status, 
+    bem como a recuperação de informações relacionadas a vagas e etapas.
+
+    Atributos:
+        data_entrevista (str): (protected)
+            Data da entrevista marcada.
+        data_conclusao (str): (protected)
+            Data de conclusão do processo seletivo.
+        status_processo (str): (protected)
+            Status atual do processo seletivo.
+        perfil (str): (protected)
+            Perfil do candidato.
+        observacao (str): (protected)
+            Observações adicionais sobre o processo seletivo.
+        forms_respondido (bool): (protected)
+            Indica se os formulários foram respondidos.
+        avaliacao_forms (str): (protected)
+            Avaliação dos formulários respondidos.
+        __mysql (MySQLService): (private)
+            Instância do serviço `MySQLService` para gerenciar conexões e operações no banco de dados.
+        __email_service (EmailService): (private)
+            Instância do serviço `EmailService` para enviar e-mails.
+
+    Métodos:
+        pegar_vagas_etapas() -> tuple[list, list]: (public)
+            Retorna uma tupla com listas de vagas e etapas disponíveis.
+            
+        __buscar_vaga_etapa(db_cursor: MySQLCursor, nome_vaga: str, nome_etapa: str) -> tuple[int, int]: (private)
+            Retorna o ID da vaga e da etapa correspondente ao nome fornecido.
+        
+        pegar_todos_status_processo_seletivo() -> list: (public)
+            Retorna uma lista com todos os status de processos seletivos cadastrados.
+        
+        pegar_todos_usuarios() -> list: (public)
+            Retorna uma lista com todos os usuários cadastrados no sistema.
+        
+        salvar_status_processo_seletivo(vaga: str, etapa: str) -> None: (public)
+            Salva o status do processo seletivo com base na vaga e etapa fornecidas.
+        
+        atualizar_status_processo_seletivo(id_status_processo_seletivo: int) -> None: (public)
+            Atualiza o status do processo seletivo existente com os dados atuais da classe.
+        
+        enviar_email_com_base_no_status(nome_usuario: str, email_usuario: str) -> None: (public)
+            Envia um e-mail ao usuário informando sobre a mudança de status do processo seletivo.
+    """
+    def __init__(self, data_entrevista: str = None, data_conclusao: str = None, status_processo: str = None, perfil: str = None, observacao: str = None, forms_respondido: bool = None, avaliacao_forms: str = None):
         super().__init__(
-            data_entrevista=data_entrevista, data_conclusao=data_conclusao, 
-            status_processo=status_processo, perfil=perfil, observacao=observacao, 
-            forms_respondido=forms_respondido, avaliacao_forms=avaliacao_forms
+            _data_entrevista=data_entrevista, _data_conclusao=data_conclusao, 
+            _status_processo=status_processo, _perfil=perfil, _observacao=observacao, 
+            _forms_respondido=forms_respondido, _avaliacao_forms=avaliacao_forms
         )
+        self.__mysql: MySQLService = MySQLService()
+        self.__validators_schema: Validators = Validators()
+        self.__email_service: EmailService = EmailService()
     
     
     def pegar_vagas_etapas(self) -> tuple[list, list]:
-        mysql: MySQLService = MySQLService()
-        comandoSQL_vaga: str = """
-            SELECT nome_vaga
-            FROM vaga;
-        """
+        db_connection, db_cursor = self.__mysql.connect()
         
-        comandoSQL_etapa: str = """
-            SELECT nome_etapa
-            FROM etapa;
-        """
-        
-        vagas_raw: list[list[str]] = mysql.fetch_all(comandoSQL_vaga)
-        etapa_raw: list[list[str]] = mysql.fetch_all(comandoSQL_etapa)
+        vagas_raw: list[list[str]] = self.__mysql.fetch_all(SQL_PEGAR_NOME_VAGA, None, db_cursor)
+        etapa_raw: list[list[str]] = self.__mysql.fetch_all(SQL_PEGAR_NOME_ETAPA, None, db_cursor)
         
         vagas: list[str] = [vaga[0] for vaga in vagas_raw]
         etapas: list[str] = [etapa[0] for etapa in etapa_raw]
         
-        mysql.close_cursor()
-        mysql.close_connection()
+        self.__mysql.close_cursor_and_connection(db_cursor, db_connection)
         
         return vagas, etapas
     
     
-    def buscar_vaga_etapa(self, mysql: MySQLService, nome_vaga: str, nome_etapa: str) -> tuple[int, int]:
-        comandoSQL_vaga: str = """
-            SELECT id_vaga
-            FROM vaga
-            WHERE nome_vaga = %s;
-        """
-        
-        comandoSQL_etapa: str = """
-            SELECT id_etapa
-            FROM etapa
-            WHERE nome_etapa = %s;
-        """
-        
-        resultado_vaga: tuple = mysql.fetch_one(comandoSQL_vaga, (nome_vaga,))
-        resultado_etapa: tuple = mysql.fetch_one(comandoSQL_etapa, (nome_etapa,))
+    def __buscar_vaga_etapa(self, db_cursor: MySQLCursor, nome_vaga: str, nome_etapa: str) -> tuple[int, int]:
+        resultado_vaga: tuple = self.__mysql.fetch_one(SQL_BUSCAR_VAGA_ID, (nome_vaga,), db_cursor)
+        resultado_etapa: tuple = self.__mysql.fetch_one(SQL_BUSCAR_ETAPA_ID, (nome_etapa,), db_cursor)
         
         if not resultado_vaga or not resultado_etapa:
             raise ValueError("Vaga ou etapa não encontrado")
@@ -60,108 +104,106 @@ class StatusProcessoSeletivoController(StatusProcessoSeletivoModel):
         return resultado_vaga[0], resultado_etapa[0]
     
     
-    def pegar_todos_status_processo_seletivo(self) -> list:
-        mysql: MySQLService = MySQLService()
-        comandoSQL_status_processo_seletivo: str = """
-            SELECT sps.data_entrevista, sps.data_conclusao, du.nome_usuario, du.telefone, u.email, c.nome_cargo, e.nome_etapa, s.nome_setor, sps.perfil, sps.status_processo, sps.observacao
-            FROM status_processo_seletivo sps
-            INNER JOIN etapa e ON sps.id_etapa = e.id_etapa
-            INNER JOIN vaga v ON sps.id_vaga = v.id_vaga
-            INNER JOIN setor s ON v.id_setor = s.id_setor
-            INNER JOIN cargo c ON v.id_cargo = c.id_cargo
-            INNER JOIN inscricao i ON v.id_vaga = i.id_vaga
-            INNER JOIN usuario u ON i.id_usuario = u.id_usuario
-            INNER JOIN dados_usuario du ON i.id_usuario = du.id_dados_usuario;
-        """
-        
-        resultado: list = mysql.fetch_all(comandoSQL_status_processo_seletivo)
-        mysql.close_cursor()
-        mysql.close_connection()
-        
-        return resultado
+    def pegar_todos_status_processo_seletivo(self, pagina: int, limite_por_pagina: int = 50) -> list[dict]:
+        db_connection, db_cursor = self.__mysql.connect()
+
+        total_de_paginas, resultado = self.__validators_schema.validar_paginacao(pagina, limite_por_pagina, SQL_PEGAR_STATUS_PROCESSO_SELETIVO, SQL_QUANTIDADE_STATUS_PROCESSO_SELETIVO, db_cursor)
     
-    def pegar_todos_usuarios(self) -> list:
-        mysql: MySQLService = MySQLService()
-        comandoSQL_usuarios: str = """
-            SELECT u.id_usuario, u.email, u.admin, u.data_criacao, du.nome_usuario, du.cpf, du.telefone, du.endereco, du.data_nascimento, du.sexo,
-                CASE
-                    WHEN COUNT(i.id_usuario) > 0 THEN 'Sim'
-                    ELSE 'Não'
-                END AS tem_inscricao
-            FROM dados_usuario du
-            INNER JOIN usuario u ON du.id_dados_usuario = u.id_usuario
-            LEFT JOIN inscricao i ON u.id_usuario = i.id_usuario
-            GROUP BY u.id_usuario;
-        """
+        self.__mysql.close_cursor_and_connection(db_cursor, db_connection)
         
-        resultado: list = mysql.fetch_all(comandoSQL_usuarios)
-        mysql.close_cursor()
-        mysql.close_connection()
+        status_processo_seletivos: list[dict] = [
+            PegarStatusProcessoSeletivo(
+                id_status_processo_seletivo=status_processo_seletivo[0], data_entrevista=str(status_processo_seletivo[1]),
+                data_conclusao=str(status_processo_seletivo[2]), nome_usuario=status_processo_seletivo[3],
+                telefone=status_processo_seletivo[4], email=status_processo_seletivo[5],
+                nome_cargo=status_processo_seletivo[6], nome_etapa=status_processo_seletivo[7],
+                nome_setor=status_processo_seletivo[8], perfil=status_processo_seletivo[9],
+                status_processo=status_processo_seletivo[10], observacao=status_processo_seletivo[11],
+                forms_respondido=status_processo_seletivo[12],avaliacao_forms=status_processo_seletivo[13]
+            ).model_dump()
+            for status_processo_seletivo in resultado
+        ]
         
-        return resultado
+        return total_de_paginas, status_processo_seletivos
     
     
-    def salvar_status_processo_seletivo(self, vaga: str, etapa: str) -> None:
-        mysql: MySQLService = MySQLService()
-        comandoSQL_status_processo_seletivo: str = """
-            INSERT INTO status_processo_seletivo (id_vaga, id_etapa, data_entrevista, data_conclusao, status_processo, perfil, observacao, forms_respondido, avaliacao_forms)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);
-        """
+    def pegar_todos_usuarios(self, pagina: int, limite_por_pagina: int = 50) -> list[dict]:
+        db_connection, db_cursor = self.__mysql.connect()
+        
+        total_de_paginas, resultado = self.__validators_schema.validar_paginacao(pagina, limite_por_pagina, SQL_PEGAR_TODOS_USUARIOS, SQL_QUANTIDADE_TODOS_USUARIOS, db_cursor)
+        
+        self.__mysql.close_cursor_and_connection(db_cursor, db_connection)
+        
+        usuarios: list[dict] = [
+            PegarUsuarios(
+                id_usuario=usuario[0], email=usuario[1],
+                admin=usuario[2], data_criacao=usuario[3],
+                nome_usuario=usuario[4], telefone=usuario[5],
+                cpf=usuario[6], endereco=usuario[7], 
+                data_nascimento=str(usuario[8]), sexo=usuario[9], 
+                tem_inscricao=usuario[10]
+            ).model_dump()
+            for usuario in resultado
+        ]
+        
+        return total_de_paginas, usuarios
+    
+    
+    def salvar_status_processo_seletivo(self, id_usuario: int, vaga: str, etapa: str) -> None:
+        db_connection, db_cursor = self.__mysql.connect()
         
         try:
-            mysql.begin_transaction()
+            db_connection.start_transaction()
             
-            id_vaga, id_etapa = self.buscar_vaga_etapa(mysql, vaga, etapa)
+            id_vaga, id_etapa = self.__buscar_vaga_etapa(db_cursor, vaga, etapa)
             
-            mysql.execute_query(
-                comandoSQL_status_processo_seletivo, 
+            resultado: list = self.__mysql.fetch_one(SQL_VERIFICAR_SE_USUARIO_TEM_INSCRICAO, (id_usuario, id_vaga), db_cursor)
+            
+            if not resultado:
+                raise ValueError("Usuario não possui essa inscricao para salvar o status do processo seletivo")
+            
+            db_cursor.execute(
+                SQL_SALVAR_STATUS_PROCESSO_SELETIVO, 
                 (id_vaga, id_etapa, self.data_entrevista, self.data_conclusao, self.status_processo, self.perfil, self.observacao, self.forms_respondido, self.avaliacao_forms)
             )
             
-            mysql.commit()
+            db_connection.commit()
         except IntegrityError as ie:
-            mysql.rollback()
+            db_connection.rollback()
             raise IntegrityError(f"Erro de integridade ao salvar o status do processo seletivo: {ie}")
         except DatabaseError as de:
-            mysql.rollback()
+            db_connection.rollback()
             raise DatabaseError(f"Erro de banco de dados ao salvar o status do processo seletivo: {de}")
         except Exception as error:
-            mysql.rollback()
+            db_connection.rollback()
             raise Exception(f"Erro ao salvar o status do processo seletivo: {error}")
         finally:
-            mysql.close_cursor()
-            mysql.close_connection()
+            self.__mysql.close_cursor_and_connection(db_cursor, db_connection)
         
     
     def atualizar_status_processo_seletivo(self, id_status_processo_seletivo: int) -> None:
-        mysql: MySQLService = MySQLService()
-        comandoSQL_status_processo_seletivo: str = """
-            UPDATE status_processo_seletivo
-            SET data_entrevista = %s, data_conclusao = %s, status_processo = %s, perfil = %s, observacao = %s, forms_respondido = %s, avaliacao_forms = %s
-            WHERE id_status_processo_seletivo = %s;
-        """
+        db_connection, db_cursor = self.__mysql.connect()
         
         try:
-            mysql.begin_transaction()
+            db_connection.start_transaction()
             
-            mysql.execute_query(
-                comandoSQL_status_processo_seletivo, 
+            db_cursor.execute(
+                SQL_ATUALIZAR_STATUS_PROCESSO_SELETIVO, 
                 (self.data_entrevista, self.data_conclusao, self.status_processo, self.perfil, self.observacao, self.forms_respondido, self.avaliacao_forms, id_status_processo_seletivo)
             )
             
-            mysql.commit()
+            db_connection.commit()
         except IntegrityError as ie:
-            mysql.rollback()
+            db_connection.rollback()
             raise IntegrityError(f"Erro de integridade ao atualizar o status do processo seletivo: {ie}")
         except DatabaseError as de:
-            mysql.rollback()
+            db_connection.rollback()
             raise DatabaseError(f"Erro de banco de dados ao atualizar o status do processo seletivo: {de}")
         except Exception as error:
-            mysql.rollback()
+            db_connection.rollback()
             raise Exception(f"Erro ao atualizar o status do processo seletivo: {error}")
         finally:
-            mysql.close_cursor()
-            mysql.close_connection()
+            self.__mysql.close_cursor_and_connection(db_cursor, db_connection)
     
     
     def enviar_email_com_base_no_status(self, nome_usuario: str, email_usuario: str) -> None:
@@ -181,6 +223,20 @@ class StatusProcessoSeletivoController(StatusProcessoSeletivoModel):
 
         mensagem_corpo: str = f"O status do seu processo seletivo mudou para {self.status_processo}!"
 
-        EmailService().send_email_informing_user_status_selection_process(
+        self.__email_service.send_email_informing_user_status_selection_process(
             send_email=email_usuario, subject=assunto, name_user=nome_usuario, message=mensagem_corpo 
+        )
+        
+    
+    def __str__(self):
+        return (
+            "StatusProcessoSeletivoController("
+            f"data_entrevista='{self.data_entrevista}', "
+            f"data_conclusao='{self.data_conclusao}', "
+            f"status_processo='{self.status_processo}', "
+            f"perfil='{self.perfil}', "
+            f"observacao='{self.observacao}', "
+            f"forms_respondido='{self.forms_respondido}', "
+            f"avaliacao_forms='{self.avaliacao_forms}'"
+            ")"
         )

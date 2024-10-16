@@ -1,12 +1,12 @@
 import os
 from flask import Blueprint, jsonify, request, Response, send_from_directory
 from flask_jwt_extended import jwt_required
-from src.validators.Validators import ValidatorsSchema
+from src.validators.Validators import Validators
 from src.controller.InscricaoController import InscricaoController
 
 inscricao_routes: Blueprint = Blueprint('inscricao_routes', __name__)
 
-validators_schema: ValidatorsSchema = ValidatorsSchema()
+validators_schema: Validators = Validators()
 DIRETORIO_CURRICULOS: str = os.getcwd() + "\\src\\archives"
 
 
@@ -24,7 +24,7 @@ def excluir_curriculo(id_usuario: int) -> tuple[Response, int]:
         
         inscricao.excluir_curriculo()
         
-        return jsonify({"success": "Curriculo excluído com sucesso"}), 200
+        return jsonify({"success": "Curriculo excluído com sucesso"}), 204
     except ValueError as error:
         return jsonify({"error": "ValueError " + str(error)}), 400
     except Exception as error:
@@ -47,7 +47,7 @@ def pegar_curriculo(id_usuario: int) -> tuple[Response, int]:
 @jwt_required()
 def salvar_inscricao_curriculo(id_usuario: int, id_vaga: int) -> tuple[Response, int]:
     try:
-        nome_usuario = request.form.get("nome_usuario")
+        nome_usuario: str = request.form.get("nome_usuario")
         arquivo: str = request.files.get("curriculo")
         
         if not nome_usuario:
@@ -58,17 +58,16 @@ def salvar_inscricao_curriculo(id_usuario: int, id_vaga: int) -> tuple[Response,
         
         inscricao: InscricaoController = InscricaoController(id_usuario, id_vaga)
         
-        nome_arquivo_curriculo: str = inscricao.tratar_nome_curriculo(nome_usuario)
-        inscricao.salvar_inscricao_curriculo(nome_arquivo_curriculo)
+        nome_arquivo_curriculo: str = inscricao.salvar_inscricao_curriculo(nome_usuario)
         
         arquivo.save(os.path.join(DIRETORIO_CURRICULOS, nome_arquivo_curriculo))
         
         response_message: dict[str, str] = {"success": "Inscricão salva com sucesso e curriculo salvo"}
         
-        try:
-            inscricao.enviar_email_informando_inscricao_usuario_para_admin(id_usuario)
-        except Exception as error:
-            response_message["email_error"] = str(error)
+        # try:
+        #     inscricao.enviar_email_informando_inscricao_usuario_para_admin(id_usuario)
+        # except Exception as error:
+        #     response_message["email_error"] = str(error)
         
         return jsonify(response_message), 200
     except ValueError as error:
@@ -79,12 +78,14 @@ def salvar_inscricao_curriculo(id_usuario: int, id_vaga: int) -> tuple[Response,
         return jsonify({"error": "Exception " + str(error)}), 500
     
 
-@inscricao_routes.route('/mostrar-inscricoes-usuario/<int:id_usuario>', methods=['GET'])
+@inscricao_routes.route('/mostrar-inscricoes-usuario/<int:id_usuario>/', defaults={'pagina': 1}, methods=['GET'])
+@inscricao_routes.route('/mostrar-inscricoes-usuario/<int:id_usuario>/<int:pagina>', methods=['GET'])
 @jwt_required()
-def mostrar_inscricoes_usuario(id_usuario: int) -> tuple[Response, int]:
+def mostrar_inscricoes_usuario(id_usuario: int, pagina: int) -> tuple[Response, int]:
     try:
         inscricao: InscricaoController = InscricaoController(id_usuario, None)
-        return jsonify({"success": "Inscricoes encontradas", "inscricoes": inscricao.mostrar_inscricoes_usuario()}), 200
+        total_de_paginas, inscricoes = inscricao.mostrar_inscricoes_usuario(pagina)
+        return jsonify({"success": "Inscricoes encontradas", "total_de_paginas": total_de_paginas, "inscricoes": inscricoes}), 200
     except Exception as error:
         return jsonify({"error": "Exception " + str(error)}), 500
 
@@ -96,6 +97,6 @@ def atualizar_forms_como_preenchido(id_status_processo_seletivo: int):
         inscricao: InscricaoController = InscricaoController(None, None)
         inscricao.atualizar_forms_como_preenchido(id_status_processo_seletivo)
         
-        return jsonify({"success": "Form foi declarado como preenchido"}), 200
+        return jsonify({"success": "Form foi declarado como preenchido"}), 204
     except Exception as error:
         return jsonify({"error": "Exception " + str(error)}), 500

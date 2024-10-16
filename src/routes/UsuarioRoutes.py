@@ -2,11 +2,11 @@ from flask import Blueprint, jsonify, request, Response
 from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 from src.controller.DadosUsuarioController import DadosUsuarioController
 from src.controller.UsuarioController import UsuarioController
-from src.validators.Validators import ValidatorsSchema
+from src.validators.Validators import Validators
 
 usuario_routes: Blueprint = Blueprint('usuario_routes', __name__)
 
-validators_schema: ValidatorsSchema = ValidatorsSchema()
+validators_schema: Validators = Validators()
 
 @usuario_routes.route('/pegar-dados-usuario', methods=['GET'])
 @jwt_required()
@@ -28,7 +28,7 @@ def atualizar_para_usuario_ou_admin(id_usuario: int, admin: bool) -> tuple[Respo
         
         usuario_controller.atualizar_usuario_ou_admin(id_usuario)
         
-        return jsonify({"success": "Usuario atualizado com sucesso"}), 200
+        return jsonify({"success": "Usuario atualizado com sucesso"}), 204
     except Exception as error:
         return jsonify({"error": "Exception " + str(error)}), 500     
         
@@ -42,14 +42,14 @@ def criar_usuario() -> tuple[Response, int]:
             raise ValueError("Algum campo obrigatório não foi preenchido")
         
         dados_usuario: DadosUsuarioController = DadosUsuarioController(
-            nome_usuario = body["nome_usuario"], cpf = body["cpf"], 
-            telefone = body["telefone"], endereco = body["endereco"], 
-            dataNascimento = body["dataNascimento"], sexo = body["sexo"], curriculo = None
+            body["nome_usuario"], body["cpf"], 
+            body["telefone"], body["endereco"], 
+            body["dataNascimento"], body["sexo"], None
         )
         
         usuario_controller: UsuarioController = UsuarioController(
-            dados_usuario = dados_usuario, email = body["email"], 
-            senha = body["senha"], admin = False
+            dados_usuario, body["email"], 
+            body["senha"], False
         )
         
         usuario_controller.criar_usuario()
@@ -159,7 +159,7 @@ def atualizar_dados(id_usuario: int):
         
         usuario_controller.atualizar_dados_usuario(id_usuario, body["novo_email"], body["nova_senha"])
         
-        return jsonify({"success": "Dados atualizados com sucesso"}), 200
+        return jsonify({"success": "Dados atualizados com sucesso"}), 204
     except ValueError as error:
         return jsonify({"error": "ValueError " + str(error)}), 400
     except Exception as error:
