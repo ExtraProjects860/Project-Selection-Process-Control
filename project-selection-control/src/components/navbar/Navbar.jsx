@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import  { useState } from 'react';
 import './Navbar.css';
 import logo from '../../assets/icon/logo.svg';
@@ -11,18 +12,17 @@ function Navbar({ userType }) {
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
-  const { setIsLoggedIn, setUserRole } = useContext(AuthContext); // Atualiza o contexto global
+  const { setIsLoggedIn, setUserRole } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    // Limpa o localStorage
+
     localStorage.clear();
 
-    // Atualiza o estado global de login
     setIsLoggedIn(false);
     setUserRole(null);
 
-    // Redireciona para a página de login
+    
     navigate('/');
   };
 

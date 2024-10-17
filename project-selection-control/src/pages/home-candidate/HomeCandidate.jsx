@@ -5,21 +5,45 @@ import AvaliableJobs from '../../components/avaliable-jobs/AvaliableJobs';
 import SocialFooter from '../../components/social-footer/SocialFooter';
 import RightsFooter from '../../components/rights-footer/RightsFooter';
 import Navbar from '../../components/navbar/Navbar';
-
+import { useState } from 'react';
 
 function HomeCandidate() {
   const userType = 'candidato'; 
+  const [updateRegistrations, setUpdateRegistrations] = useState(false);
+  const [loadingJobs, setLoadingJobs] = useState(true);
+  const [loadingRegistrations, setLoadingRegistrations] = useState(true);
+
+  const handleUpdateRegistrations = () => {
+    setUpdateRegistrations(!updateRegistrations); 
+  };
+
+  const handleJobsLoaded = () => {
+    setLoadingJobs(false); 
+  };
+
+  const handleRegistrationsLoaded = () => {
+    setLoadingRegistrations(false); 
+  };
+
+  const isLoading = loadingJobs || loadingRegistrations; 
 
   return (
     <>
-    <Navbar userType={userType}/>
-    <HeaderCandidate />
-    <AvaliableJobs/>
+      {isLoading && (
+        <div className="loading-overlay">
+          <div className="spinner"></div>
+        </div>
+      )}
+      
+      <Navbar userType={userType} />
+      <HeaderCandidate />
+      
+      <AvaliableJobs onSuccess={handleUpdateRegistrations} onLoaded={handleJobsLoaded} />
       <hr className='line'></hr>
-      <RegistrationsCandidate/>
-      <SocialFooter/>
-      <RightsFooter/>
-      </>
+      <RegistrationsCandidate updateTrigger={updateRegistrations} onLoaded={handleRegistrationsLoaded} />
+      <SocialFooter />
+      <RightsFooter />
+    </>
   );
 }
 

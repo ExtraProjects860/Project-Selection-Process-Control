@@ -1,44 +1,91 @@
-const API_URL = 'http://127.0.0.1:5000/api';
 import axios from 'axios';
 
-export const getAllJobs = async () => {
+const API_URL = 'http://127.0.0.1:5000/api';
+
+
+const handleTokenExpiredError = (error) => {
+  if (!error.response) {
+    return { tokenExpired: true }; 
+  }
+  throw error; 
+};
+
+export const getAllJobs = async (pagina) => {
   try {
     const token = localStorage.getItem('token'); 
     
-
-    const response = await axios.get(API_URL + '/pegar-todas-vagas', {
+    const response = await axios.get(`${API_URL}/pegar-todas-vagas/${pagina}`, {
       headers: {
-        Authorization: `Bearer ${token}` 
+        Authorization: `Bearer ${token}`
       }
     });
 
     return response.data; 
   } catch (error) {
-    if (error.response && error.response.status === 500) {
-      throw new Error('Erro interno do servidor');
+    if (error.response) {
+       if (error.response.status === 500) {
+        throw new Error('Erro interno do servidor');
+      } else {
+        return handleTokenExpiredError(error);
+      }
     } else {
-      throw new Error('Erro ao buscar vagas');
+      return handleTokenExpiredError(error);
     }
   }
 };
 
-export const saveResumeApplication = async (userId, jobId, file, nomeUsuario) => {
-    const token = localStorage.getItem('token'); 
-  
-    const formData = new FormData();
-    formData.append('curriculo', file);
-    formData.append('nome_usuario', nomeUsuario); 
-  
+export const saveResumeApplication = async (userId, jobId, file, userName) => {
+  const formData = new FormData();
+  formData.append('curriculo', file);
+  formData.append('nome_usuario', userName);
+  const token = localStorage.getItem('token'); 
+  try {
+  const response = await axios.post(API_URL + `/salvar-inscricao-curriculo/${userId}/${jobId}`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      Authorization: `Bearer ${token}` 
+    },
+  });
+
+  return response;
+}  catch(error) {
+  return handleTokenExpiredError(error);
+}
+};
+
+
+export const saveStatusProcessoSeletivo = async (vaga, userId) => {
+  const token = localStorage.getItem('token');
+  const data = {
+    vaga,
+    etapa: "FORMS INICIAL",
+    status_processo: "EM ANDAMENTO",
+    forms_respondido: false,
+  };
+  try {
+  const response = await axios.post(API_URL + `/salvar-status-processo-seletivo/${userId}`, data,
+   { headers: {
+      Authorization: `Bearer ${token}`,
+    },}
+  );
+  return response;
+} catch(error) {
+  return handleTokenExpiredError(error);
+}
+};
+
+
+  export const showUserRegistrations = async (idUsuario,pagina) => {
+    const token = localStorage.getItem('token');
     try {
-      const response = await axios.post(API_URL + `/salvar-inscricao-curriculo/${userId}/${jobId}`, formData, {
+      const response = await axios.get(API_URL +`/mostrar-inscricoes-usuario/${idUsuario}/${pagina}`, {
         headers: {
-          'Content-Type': 'multipart/form-data',
-          'Authorization': `Bearer ${token}`  
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
-  
       return response.data;
     } catch (error) {
-      throw new Error('Erro ao salvar inscrição ou enviar o currículo');
+      console.error('Erro ao buscar inscrições', error);
+      return handleTokenExpiredError(error);
     }
   };

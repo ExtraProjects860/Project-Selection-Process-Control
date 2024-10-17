@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { createContext, useState, useEffect } from "react";
 
 export const AuthContext = createContext();
@@ -7,7 +8,7 @@ export const AuthProvider = ({ children }) => {
   const [userRole, setUserRole] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Verifica se o usuário está logado e define o papel do usuário
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     const userData = localStorage.getItem("userData");
@@ -36,3 +37,5 @@ export const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   );
 };
+
+

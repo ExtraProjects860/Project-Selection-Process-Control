@@ -10,9 +10,20 @@ import JobPostingAdminPage from './pages/job-posting-admin-page/JobPostingAdminP
 import HomeAdmin from './pages/home-admin/HomeAdmin';
 import ResetPasswordAdmin from './pages/reset-password-admin/ResetPasswordAdmin';
 import ResetPasswordCandidate from './pages/reset-password-candidate/ResetPasswordCandidate';
+//import { useEffect } from 'react';
 
 function App() {
-  const { isLoggedIn, userRole } = useContext(AuthContext); // Usa o contexto
+  const { isLoggedIn, userRole } = useContext(AuthContext); 
+
+  // useEffect(() => {
+  //   const handleLogoutOnClose = () => {
+  //     localStorage.clear();
+  //   };
+  //   window.addEventListener('beforeunload', handleLogoutOnClose);
+  //   return () => {
+  //     window.removeEventListener('beforeunload', handleLogoutOnClose);
+  //   };
+  // }, []);
 
   const route = userRole === "admin" ? "/home-admin" : "/home-candidate";
 

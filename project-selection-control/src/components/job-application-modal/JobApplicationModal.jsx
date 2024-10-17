@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import './JobApplicationModal.css'; 
 import { FaPaperclip } from 'react-icons/fa'; 
-import { saveResumeApplication } from '../../services/jobs-service/JobsService';
+import { saveResumeApplication, saveStatusProcessoSeletivo } from '../../services/jobs-service/JobsService';
 
-function JobApplicationModal({ jobDetails, isOpen, onClose }) {
+function JobApplicationModal({ jobDetails, isOpen, onClose, onSuccess }) { 
   const [file, setFile] = useState(null);
   const [uploadStatus, setUploadStatus] = useState(null);
-  const [loading, setLoading] = useState(false); // Estado para controlar o carregamento
-  const [showSuccessModal, setShowSuccessModal] = useState(false); // Estado para a modal secundária
+  const [loading, setLoading] = useState(false); 
+  const [showSuccessModal, setShowSuccessModal] = useState(false); 
   const data = localStorage.getItem("userData");
   const userData = JSON.parse(data);
   const userId = userData.dados.id;
@@ -25,27 +25,29 @@ function JobApplicationModal({ jobDetails, isOpen, onClose }) {
       return;
     }
 
-    setLoading(true); // Inicia o carregamento
+    setLoading(true); 
 
     try {
       const response = await saveResumeApplication(userId, jobDetails.id_vaga, file, userName);
+      await saveStatusProcessoSeletivo(jobDetails.nome_vaga, userId);
       setUploadStatus('Inscrição salva com sucesso e currículo enviado');
-      setShowSuccessModal(true); // Exibe a modal de sucesso
+      setShowSuccessModal(true); 
       console.log('Upload bem-sucedido:', response);
+      onSuccess(); 
     } catch (error) {
       setUploadStatus('Erro ao salvar inscrição ou enviar o currículo');
       console.error('Erro ao enviar o arquivo:', error);
     } finally {
-      setLoading(false); // Termina o carregamento
+      setLoading(false); 
     }
   };
 
   const handleCloseModal = () => {
-    setShowSuccessModal(false); // Fecha a modal secundária
-    onClose(); // Fecha a modal principal
+    setShowSuccessModal(false); 
+    onClose(); 
   };
 
-  if (!isOpen) return null; 
+  if (!isOpen) return null;
 
   return (
     <div className="modal-overlay">
@@ -74,7 +76,7 @@ function JobApplicationModal({ jobDetails, isOpen, onClose }) {
           <small className="modal-note">*Só serão aceitos arquivos no formato PDF</small>
           <div className="modal-buttons">
             <button type="submit" className="modal-save-button" disabled={loading}>
-              {loading ? 'Enviando...' : 'Salvar'} {/* Botão exibe "Enviando..." durante o loading */}
+              {loading ? 'Enviando...' : 'Salvar'}
             </button>
             <button type="button" className="modal-cancel-button" onClick={onClose} disabled={loading}>
               Cancelar
@@ -82,9 +84,8 @@ function JobApplicationModal({ jobDetails, isOpen, onClose }) {
           </div>
         </form>
 
-        {uploadStatus && <p>{uploadStatus}</p>} {/* Exibe o status do upload */}
+        {uploadStatus && <p>{uploadStatus}</p>}
 
-        {/* Modal de sucesso */}
         {showSuccessModal && (
           <div className="success-modal-overlay">
             <div className="success-modal-content">
@@ -95,10 +96,9 @@ function JobApplicationModal({ jobDetails, isOpen, onClose }) {
           </div>
         )}
 
-        {/* Spinner de carregamento */}
         {loading && (
           <div className="loading-overlay">
-            <div className="spinner"></div> {/* Aqui é onde o spinner aparece */}
+            <div className="spinner"></div>
           </div>
         )}
       </div>

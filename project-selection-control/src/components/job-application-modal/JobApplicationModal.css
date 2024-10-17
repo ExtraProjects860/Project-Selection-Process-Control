@@ -17,10 +17,10 @@
     background-color: white !important;
     padding: 20px;
     border-radius: 8px !important;
-    width: 400px;
     max-width: 90%;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     text-align: center;
+    width: auto;
   }
   
   /* Estilo dos botões */
@@ -124,5 +124,37 @@
 .modal-close-button:hover {
   background-color: #45a049;
 }
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999; /* Certifique-se de que o overlay esteja acima de outros elementos */
+}
+
+.spinner {
+  border: 8px solid rgba(255, 255, 255, 0.3); /* Cor da borda de fundo */
+  border-top: 8px solid #ffffff; /* Cor da borda do spinner */
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 
   

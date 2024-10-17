@@ -2,11 +2,18 @@ import axios from 'axios';
 
 const API_URL = 'http://127.0.0.1:5000/api';
 
+const handleTokenExpiredError = (error) => {
+  if (error.response && error.response.status === 400 && error.response.data.msg === "Signature has expired") {
+    return { tokenExpired: true }; // Retorna um indicador para o componente
+  }
+  throw error; // Repassa qualquer outro erro
+};
+
 const UserService = {
   registerUser: async (userData) => {
     try {
       const response = await axios.post(`${API_URL}/criar-usuario`, userData);
-      return response.data;  
+      return response.data;
     } catch (error) {
       throw error.response?.data || 'Erro ao registrar usuário';
     }
@@ -21,7 +28,7 @@ const UserService = {
       });
       return response.data;
     } catch (error) {
-      throw error; 
+      return handleTokenExpiredError(error); // Verifica se o token expirou
     }
   },
 };
