@@ -16,6 +16,12 @@
   background: none;
   border: none;
   cursor: pointer;
+  color: black;
+  
+}
+
+button:hover {
+  background-color: transparent !important;
 }
 
 .sidebar {
@@ -46,4 +52,8 @@
 
 .sidebar a:hover {
   background-color: #f0f0f0;
+}
+
+.logout-btn {
+  all: unset;
 }

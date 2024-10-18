@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useState } from 'react';
 import './JobApplicationModal.css'; 
 import { FaPaperclip } from 'react-icons/fa'; 

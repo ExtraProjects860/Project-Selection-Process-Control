@@ -4,9 +4,9 @@ const API_URL = 'http://127.0.0.1:5000/api';
 
 const handleTokenExpiredError = (error) => {
   if (error.response && error.response.status === 400 && error.response.data.msg === "Signature has expired") {
-    return { tokenExpired: true }; // Retorna um indicador para o componente
+    return { tokenExpired: true }; 
   }
-  throw error; // Repassa qualquer outro erro
+  throw error; 
 };
 
 const UserService = {
@@ -28,9 +28,23 @@ const UserService = {
       });
       return response.data;
     } catch (error) {
-      return handleTokenExpiredError(error); // Verifica se o token expirou
+      return handleTokenExpiredError(error); 
     }
   },
+
+  userLogout: async (token) => {
+    try {
+      const response = await axios.post(API_URL + '/logout', {}, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      });
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      throw error.response?.data || 'Erro ao realizar logout';
+    }
+  }
 };
 
 export default UserService;

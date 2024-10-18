@@ -5,6 +5,7 @@ import logo from '../../assets/icon/logo.svg';
 import { useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 import { AuthContext } from '../auth-context/AuthContext';
+import UserService from "../../services/user-service/UserService";
 
 function Navbar({ userType }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -15,15 +16,19 @@ function Navbar({ userType }) {
   const { setIsLoggedIn, setUserRole } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-
-    localStorage.clear();
-
-    setIsLoggedIn(false);
-    setUserRole(null);
-
-    
-    navigate('/');
+  const handleLogout = async () => {
+    const token = localStorage.getItem('token');  
+    try {
+      await UserService.userLogout(token);
+      localStorage.clear();
+  
+      setIsLoggedIn(false); 
+      setUserRole(null);
+  
+      navigate('/');
+    } catch (error) {
+      console.error("Erro ao fazer logout:", error);
+    }
   };
 
   const renderMenu = () => {
@@ -33,7 +38,7 @@ function Navbar({ userType }) {
           <>
             <a href="/home-candidate">Home</a>
             <a href="/reset-password-candidate">Alterar dados</a>
-            <button onClick={handleLogout}>Sair</button>
+            <button className='logout-btn' onClick={handleLogout}>Sair</button>
           </>
         );
       case 'admin':
