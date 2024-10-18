@@ -89,3 +89,22 @@ export const saveStatusProcessoSeletivo = async (vaga, userId) => {
       return handleTokenExpiredError(error);
     }
   };
+
+  export const markFormAsResponded = async (idStatusProcessoSeletivo) => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.put(
+        `${API_URL}/forms-respondido/${idStatusProcessoSeletivo}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, 
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.error('Erro ao marcar formulário como respondido:', error);
+      throw error;
+    }
+  };

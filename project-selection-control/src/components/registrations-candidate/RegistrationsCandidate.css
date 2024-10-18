@@ -104,6 +104,16 @@ h2 {
   width: 30%;
 }
 
+.btn-form {
+  background-color: #006C98; 
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
 .modal-cancel-button {
   background-color: #971C1F; 
   color: white;
