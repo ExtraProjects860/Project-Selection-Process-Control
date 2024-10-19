@@ -3,10 +3,13 @@ import axios from 'axios';
 const API_URL = 'http://127.0.0.1:5000/api';
 
 const handleTokenExpiredError = (error) => {
-  if (error.response && error.response.status === 400 && error.response.data.msg === "Signature has expired") {
-    return { tokenExpired: true }; 
+  if (error.response && error.response.status === 400) {
+    if (error.response.data && error.response.data.msg === "error-jwt") {
+      return { tokenExpired: true }; 
+    }
   }
-  throw error; 
+
+  throw error;
 };
 
 const UserService = {

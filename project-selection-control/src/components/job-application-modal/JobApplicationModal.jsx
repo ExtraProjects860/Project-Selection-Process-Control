@@ -3,10 +3,12 @@ import { useState } from 'react';
 import './JobApplicationModal.css'; 
 import { FaPaperclip } from 'react-icons/fa'; 
 import { saveResumeApplication, saveStatusProcessoSeletivo } from '../../services/jobs-service/JobsService';
+import ModalTokenExpired from '../modal-token-expired/ModalTokenExpired';
 
 function JobApplicationModal({ jobDetails, isOpen, onClose, onSuccess }) { 
   const [file, setFile] = useState(null);
   const [uploadStatus, setUploadStatus] = useState(null);
+  const [isTokenExpired, setIsTokenExpired] = useState(false); 
   const [loading, setLoading] = useState(false); 
   const [showSuccessModal, setShowSuccessModal] = useState(false); 
   const data = localStorage.getItem("userData");
@@ -30,6 +32,10 @@ function JobApplicationModal({ jobDetails, isOpen, onClose, onSuccess }) {
 
     try {
       const response = await saveResumeApplication(userId, jobDetails.id_vaga, file, userName);
+      if (response.tokenExpired) {
+        setIsTokenExpired(true);
+        onClose();
+      } 
       await saveStatusProcessoSeletivo(jobDetails.nome_vaga, userId);
       setUploadStatus('Inscrição salva com sucesso e currículo enviado');
       setShowSuccessModal(true); 
@@ -52,6 +58,17 @@ function JobApplicationModal({ jobDetails, isOpen, onClose, onSuccess }) {
 
   return (
     <div className="modal-overlay">
+      {isTokenExpired && (
+       <ModalTokenExpired
+          title="Sessão Expirada"
+          message="Seu token de autenticação expirou. Faça login novamente."
+          onConfirm={() => {
+            localStorage.clear();
+            setIsTokenExpired(false); 
+            window.location.href = '/'; 
+          }}
+        />
+      )}
       <div className="modal-content">
         <h2>Inscrição vaga {jobDetails.nome_vaga}</h2>
         <p className='txt-description'>{jobDetails.descricao_vaga}</p>

@@ -109,7 +109,7 @@ h2 {
   color: white;
   padding: 10px 20px;
   border: none;
-  border-radius: 12px;
+  border-radius: 10px !important;
   cursor: pointer;
   font-size: 14px;
 }
