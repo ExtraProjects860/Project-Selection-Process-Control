@@ -104,10 +104,10 @@ function ResetPassword({user}) {
                   </tr>
                   <tr>
                     <input
-                      type="tel"
-                      id="phone"
-                      placeholder="Telefone"
-                      value={formData.phone}
+                      type="password"
+                      id="confirmPassword"
+                      placeholder="Confirme sua senha"
+                      value={formData.confirmPassword}
                       onChange={handleInputChange}
                       required
                     />
@@ -126,16 +126,7 @@ function ResetPassword({user}) {
                       required
                     />
                   </tr>
-                  <tr>
-                    <input
-                      type="password"
-                      id="confirmPassword"
-                      placeholder="Confirme sua senha"
-                      value={formData.confirmPassword}
-                      onChange={handleInputChange}
-                      required
-                    />
-                  </tr>
+                
                 </div>
               </td>
               <td>
