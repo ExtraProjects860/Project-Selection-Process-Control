@@ -97,7 +97,7 @@ class Validators:
     def validate_validade_e_token(self, email: str, token: str, mysql: MySQLService, db_connection: MySQLConnection, db_cursor: MySQLCursor) -> None:
         data_token: tuple = mysql.fetch_one(SQL_VERIFICAR_VALIDADE_E_TOKEN, (email,), db_cursor)
         
-        if not token == data_token[0]:
+        if token != data_token[0]:
             raise ValueError("Token inválido, tente novamente")
         
         if datetime.fromisoformat(str(data_token[1])) - datetime.now() >= timedelta(hours=1):
