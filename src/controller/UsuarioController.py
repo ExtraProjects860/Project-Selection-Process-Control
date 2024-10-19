@@ -174,12 +174,12 @@ class UsuarioController(UsuarioModel):
         
     def redefinir_senha(self, token: str) -> None:
         db_connection, db_cursor = self.__mysql.connect()
-        self.__validators_schema.validate_validade_e_token(self.email, token, self.__mysql, db_connection, db_cursor)
-        
-        hashedPassword: str = bcrypt.hashpw(self.senha.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
-        
         try:
             db_connection.start_transaction()
+
+            self.__validators_schema.validate_validade_e_token(self.email, token, self.__mysql, db_connection, db_cursor)
+            hashedPassword: str = bcrypt.hashpw(self.senha.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+            
             db_cursor.execute(SQL_REDEFINIR_SENHA, (hashedPassword, self.email))
             db_connection.commit()
         except IntegrityError as ie:
