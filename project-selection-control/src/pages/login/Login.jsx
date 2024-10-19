@@ -47,14 +47,11 @@ function Login() {
 
     try {
       const response = await login(email, password);
-      console.log("Login bem-sucedido:", response);
       setErrorMessage("");
       const token = response.token;
       localStorage.setItem("token", token);
       const userData = await UserService.pegarDadosUsuario(token);
-      console.log("User data: ", userData);
       localStorage.setItem("userData", JSON.stringify(userData));
-      console.log("Admin? ", userData.dados.admin);
       setIsLoggedIn(true);
       setUserRole(userData.dados.admin === 1 ? "admin" : "candidate");
       const route = userData.dados.admin === 1 ? "/home-admin" : "/home-candidate";

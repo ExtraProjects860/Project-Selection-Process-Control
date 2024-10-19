@@ -6,8 +6,10 @@ import Navbar from '../../components/navbar/Navbar';
 import SocialFooter from '../../components/social-footer/SocialFooter';
 import RightsFooter from '../../components/rights-footer/RightsFooter';
 import { useNavigate } from 'react-router-dom';
-import { validateForm, handleErrorResponse } from '../../utils/formUtils';
+import { updateUserData, saveResume } from '../../services/user-service/UserService';
 import { FaPaperclip } from 'react-icons/fa'; 
+import ModalTokenExpired from '../modal-token-expired/ModalTokenExpired';
+import UserService from "../../services/user-service/UserService";
 
 function ResetPassword({ user }) {
   const [formData, setFormData] = useState({
@@ -21,20 +23,23 @@ function ResetPassword({ user }) {
   const [file, setFile] = useState(null);
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+  const [isTokenExpired, setIsTokenExpired] = useState(false); 
   const [loading, setLoading] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false); 
   const [uploadStatus, setUploadStatus] = useState(null);
 
   const navigate = useNavigate();
   const userType = user;
+ 
 
   useEffect(() => {
-   
+
     const userData = JSON.parse(localStorage.getItem('userData'))?.dados;
     if (userData) {
       setFormData({
-        email: userData.email || '',
-        phone: userData.telefone || '',
-        address: userData.endereco || '',
+        email: userData.email,
+        phone: userData.telefone,
+        address: userData.endereco,
         password: '',
         confirmPassword: '',
       });
@@ -53,81 +58,73 @@ function ResetPassword({ user }) {
     e.preventDefault();
     setErrorMessage('');
     setSuccessMessage('');
-    
-  
+
+
     if (formData.password && formData.password !== formData.confirmPassword) {
       setErrorMessage('As senhas não correspondem!');
       return;
     }
 
-    const validationError = validateForm(formData);
-    if (validationError) {
-      setErrorMessage(validationError);
-      return;
-    }
-
     const userData = {
-      email: formData.email,
-      telefone: formData.phone,
-      endereco: formData.address,
-      senha: formData.password ? formData.password : undefined, 
+      novo_email: formData.email,
+      nova_senha: formData.password || "", 
+      novo_telefone: formData.phone,
+      novo_endereco: formData.address,
     };
 
     try {
       setLoading(true);
-
-     
-      if (userData.email || userData.telefone || userData.endereco || userData.senha) {
-        const response = await fetch('URL_DO_ENDPOINT_DE_DADOS', {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(userData),
-        });
-
-        const data = await response.json();
-        if (response.ok) {
-          setSuccessMessage('Dados alterados com sucesso!');
-        } else {
-          handleErrorResponse(data); 
-        }
-      }
-
+      const user = JSON.parse(localStorage.getItem('userData'))?.dados;
+      const userId = user.id;
+      const dataResponse = await updateUserData(userId, userData);
+      if (dataResponse.tokenExpired) {
+        setIsTokenExpired(true);
+      }  
+      setSuccessMessage('Dados alterados com sucesso!');
+      const token = localStorage.getItem('token');
+      const userInfo = await UserService.pegarDadosUsuario(token);
+      localStorage.setItem("userData", JSON.stringify(userInfo));
       if (file) {
-        const formDataFile = new FormData();
-        formDataFile.append('file', file);
-
-        const fileResponse = await fetch('URL_DO_ENDPOINT_DE_CURRICULO', {
-          method: 'POST',
-          body: formDataFile,
-        });
-
-         await fileResponse.json();
-        if (fileResponse.ok) {
-          setUploadStatus('Currículo enviado com sucesso!');
-        } else {
-          setUploadStatus('Erro ao enviar o currículo.');
-        }
+        const resumeResponse = await saveResume(userId, file);
+        if (resumeResponse.tokenExpired) {
+          setIsTokenExpired(true);
+        }  
+        setUploadStatus('Currículo enviado com sucesso!');
       }
+
+      setShowSuccessModal(true); 
 
     } catch (error) {
-      console.error('Erro ao enviar os dados:', error);
-      setErrorMessage('Erro ao enviar os dados.');
+      setErrorMessage(error.message || 'Erro ao enviar os dados.');
     } finally {
-      setLoading(false);
+      setLoading(false); 
     }
   };
 
   const goBack = () => {
     navigate(-1);
   };
-  
+
+  const handleCloseModal = () => {
+    setShowSuccessModal(false); 
+    goBack();
+  };
 
   return (
     <>
       <Navbar userType={userType} />
       <div className="register-container">
+      {isTokenExpired && (
+        <ModalTokenExpired
+          title="Sessão Expirada"
+          message="Seu token de autenticação expirou. Faça login novamente."
+          onConfirm={() => {
+            localStorage.clear();
+            setIsTokenExpired(false); 
+            window.location.href = '/'; 
+          }}
+        />
+      )}
         <div className="register-card">
           <div className="register-header">
             <img src={logo} alt="Web Certificados" className="logo" />
@@ -144,7 +141,6 @@ function ResetPassword({ user }) {
                   placeholder="E-mail"
                   value={formData.email}
                   onChange={handleInputChange}
-                  required
                 />
                   </tr>
                   <tr>
@@ -154,32 +150,22 @@ function ResetPassword({ user }) {
                   placeholder="Telefone"
                   value={formData.phone}
                   onChange={handleInputChange}
-                  required
                 />
                   </tr>
                 </div>
               </td>
               <td>
                 <div className="input-group">
-                <tr>
+    
                 <input
                       type="text"
                       id="address"
                       placeholder="Endereço"
                       value={formData.address}
                       onChange={handleInputChange}
-                      required
                     />
-                  </tr>
-                  <tr>
-                    <input
-                      type="password"
-                      id="confirmPassword"
-                      placeholder="Confirme sua senha"
-                      value={formData.confirmPassword}
-                      onChange={handleInputChange}
-                    />
-                  </tr>
+          
+                  
                 </div>
               </td>
               <td>
@@ -193,7 +179,15 @@ function ResetPassword({ user }) {
                       onChange={handleInputChange}
                     />
                   </tr>
-                
+                  <tr>
+                    <input
+                      type="password"
+                      id="confirmPassword"
+                      placeholder="Confirme sua senha"
+                      value={formData.confirmPassword}
+                      onChange={handleInputChange}
+                    />
+                  </tr>
                 </div>
               </td>
               <td>
@@ -218,28 +212,35 @@ function ResetPassword({ user }) {
                 </div>
               )}
               </td>
-
-              <br />
-              <br />
-              <div className='btns'>
+              <div className="btns">
                 <button type="submit" className="register-button" disabled={loading}>
                   {loading ? 'Enviando...' : 'Confirmar'}
                 </button>
-                <button onClick={goBack} className="cancel-button">
+                <button onClick={goBack} className="cancel-btn">
                   Cancelar
                 </button>
-                </div>
-                {errorMessage && <p className="error-message">{errorMessage}</p>}
-                {successMessage && <p className="success-message">{successMessage}</p>}
-                {uploadStatus && <p className="upload-status">{uploadStatus}</p>}
-                
-             
+              </div>
+              {errorMessage && <p className="error-message">{errorMessage}</p>}
+              {successMessage && <p className="success-message">{successMessage}</p>}
+              {uploadStatus && <p className="upload-status">{uploadStatus}</p>}
             </form>
           </div>
         </div>
       </div>
       <SocialFooter />
       <RightsFooter />
+
+      {/* Modal de sucesso */}
+      {showSuccessModal && (
+        <div className="modal">
+          <div className="modal-content">
+            <h2>Alterações realizadas com sucesso!</h2>
+            <button onClick={handleCloseModal} className="modal-button">
+              OK
+            </button>
+          </div>
+        </div>
+      )}
     </>
   );
 }

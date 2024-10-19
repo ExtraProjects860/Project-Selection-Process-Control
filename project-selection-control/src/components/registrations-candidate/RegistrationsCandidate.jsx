@@ -190,7 +190,7 @@ function RegistrationsCandidate({ updateTrigger, onLoaded }) {
             <div className="modal-buttons">
               <button
                 type="button"
-                className="modal-cancel-button"
+                className="cancel-button"
                 onClick={handleCloseModal}
               >
                 Fechar

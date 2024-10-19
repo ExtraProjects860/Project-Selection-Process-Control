@@ -20,7 +20,8 @@
     max-width: 90%;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     text-align: center;
-    width: auto;
+    width: auto !important;
+    height: auto !important;
   }
   
   /* Estilo dos botões */
@@ -31,25 +32,33 @@
   }
   
   .modal-save-button {
-    background-color: #006C98; 
-    color: white;
+    background-color: #006C98 !important; 
+    color: white !important;
     padding: 10px 20px;
     border: none;
     border-radius: 12px;
     cursor: pointer;
     font-size: 14px;
-    width: 30%;
+    width: 38% !important;
+  }
+
+  .modal-save-button:hover {
+    background-color: #006C98 !important; 
   }
   
   .modal-cancel-button {
-    background-color: #971C1F; 
-    color: white;
+    background-color: #971C1F !important; 
+    color: white !important;
     padding: 10px 20px;
     border: none;
     border-radius: 12px;
     cursor: pointer;
     font-size: 14px;
-    width: 30%;
+    width: 38% !important;
+  }
+
+  .modal-cancel-button:hover {
+    background-color: #971C1F !important; 
   }
   
 

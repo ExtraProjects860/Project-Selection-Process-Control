@@ -3,13 +3,13 @@
   padding: 70px;
   border-radius: 8px;
   display: flex;
-  flex-wrap: wrap; /* Para garantir que os cards "quebrem" para uma nova linha */
-  gap: 20px; /* Espaçamento entre os cards */
+  flex-wrap: wrap; 
+  gap: 20px; 
 }
 
 h2 {
   color: #006C98;
-  width: 100%; /* Título sempre ocupa 100% da largura */
+  width: 100%; 
   margin-bottom: 20px;
 }
 
@@ -92,7 +92,7 @@ h2 {
   margin-bottom: 10%;
 }
 
-/* Estilo dos botões */
+
 .modal-buttons {
   margin-top: 20px;
   display: flex;
@@ -120,7 +120,7 @@ h2 {
   font-size: 14px;
 }
 
-.modal-cancel-button {
+.cancel-button {
   background-color: #971C1F; 
   color: white;
   padding: 10px 20px;
@@ -128,7 +128,7 @@ h2 {
   border-radius: 12px;
   cursor: pointer;
   font-size: 14px;
-  width: 30%;
+  width: auto !important;
 }
 
 .loading-overlay {

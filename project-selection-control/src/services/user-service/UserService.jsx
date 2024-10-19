@@ -27,7 +27,7 @@ export const requestPasswordReset = async (email) => {
   } catch (error) {
     if (error.response) {
       if (error.response.status === 400) {
-        throw new Error('Solicitação inválida - Campos obrigatórios ausentes');
+        throw new Error('Solicitação inválida');
       } else if (error.response.status === 500) {
         throw new Error('Erro interno do servidor');
       }
@@ -101,6 +101,40 @@ const UserService = {
       throw error.response?.data || 'Erro ao realizar logout';
     }
   }
+};
+
+export const updateUserData = async (userId, userData) => {
+  try {
+    const response = await axios.put(`${API_URL}/atualizar-dados/${userId}`, userData, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+      },
+    });
+    return response.data; 
+  } catch (error) {
+    return handleTokenExpiredError(error); 
+    
+  }
+};
+
+export const saveResume = async (userId, file, userName) => {
+  const formData = new FormData();
+  formData.append('curriculo', file);
+  formData.append('nome_usuario', userName);
+  const token = localStorage.getItem('token'); 
+  try {
+  const response = await axios.post(API_URL + `/salvar-inscricao-curriculo/${userId}`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      Authorization: `Bearer ${token}` 
+    },
+  });
+
+  return response;
+}  catch(error) {
+  return handleTokenExpiredError(error);
+}
 };
 
 export default UserService;
