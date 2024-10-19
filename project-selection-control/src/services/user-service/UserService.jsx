@@ -12,6 +12,59 @@ const handleTokenExpiredError = (error) => {
   throw error;
 };
 
+export const requestPasswordReset = async (email) => {
+  try {
+    const response = await axios.post(`${API_URL}/requisitar-troca-senha`, {
+      email, 
+    }, {
+      headers: {
+        'Content-Type': 'application/json', 
+      },
+    });
+
+    return response.data; 
+
+  } catch (error) {
+    if (error.response) {
+      if (error.response.status === 400) {
+        throw new Error('Solicitação inválida - Campos obrigatórios ausentes');
+      } else if (error.response.status === 500) {
+        throw new Error('Erro interno do servidor');
+      }
+    } else {
+      throw new Error('Erro ao se conectar ao servidor');
+    }
+  }
+};
+
+export const resetPassword = async (email, nova_senha, token) => {
+  try {
+    const response = await axios.post(API_URL + '/redefinir-senha', {
+      email,
+      nova_senha,
+      token,
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      if (error.response.status === 400) {
+        throw new Error('Solicitação inválida');
+      } else if (error.response.status === 500) {
+        throw new Error('Erro interno do servidor');
+      }
+    } else {
+      throw new Error('Erro ao se conectar ao servidor');
+    }
+  }
+};
+
+
+
 const UserService = {
   registerUser: async (userData) => {
     try {

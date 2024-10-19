@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useState, useEffect } from 'react';
 import './ResetPassword.css'; 
 import logo from '../../assets/icon/logo.svg';
@@ -17,7 +18,7 @@ function ResetPassword({ user }) {
     confirmPassword: '',
   });
 
-  const [file, setFile] = useState(null); // Adicionei o estado para o arquivo
+  const [file, setFile] = useState(null);
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const [loading, setLoading] = useState(false);
@@ -102,7 +103,7 @@ function ResetPassword({ user }) {
           body: formDataFile,
         });
 
-        const fileData = await fileResponse.json();
+         await fileResponse.json();
         if (fileResponse.ok) {
           setUploadStatus('Currículo enviado com sucesso!');
         } else {

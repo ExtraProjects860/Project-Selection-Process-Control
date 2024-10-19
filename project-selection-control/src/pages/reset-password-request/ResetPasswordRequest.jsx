@@ -1,22 +1,37 @@
-import React, {useState} from 'react';
+import  { useState } from 'react';
 import './ResetPasswordRequest.css'; 
 import logo from '../../assets/icon/logo.svg';
 import Navbar from '../../components/navbar/Navbar';
 import SocialFooter from '../../components/social-footer/SocialFooter';
 import RightsFooter from '../../components/rights-footer/RightsFooter';
 import ResetPasswordConfirmation from '../reset-password-confirmation/ResetPasswordConfirmation';
+import { requestPasswordReset } from '../../services/user-service/UserService';
+
 
 function ResetPasswordRequest() {
   const [showFirstDiv, setShowFirstDiv] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [email, setEmail] = useState('');
   const userType = 'deslogado'; 
 
   const toggleDiv = () => {
-    setShowFirstDiv(!showFirstDiv); // Alterna entre true e false
+    setShowFirstDiv(!showFirstDiv); 
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-   toggleDiv();
+    setLoading(true);
+    setErrorMessage('');
+
+    try {
+      await requestPasswordReset(email);
+      toggleDiv();
+    } catch (error) {
+      setErrorMessage(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -36,10 +51,16 @@ function ResetPasswordRequest() {
                 type="email"
                 id="email"
                 placeholder="Digite seu e-mail"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 required
               />
+              <br></br>
               <p className="info-text">Um token para redefinir sua senha será enviado para o seu e-mail.</p>
-              <button type="submit" className="reset-button">Enviar token de redefinição</button>
+              {errorMessage && <p className="error-message">{errorMessage}</p>} 
+              <button type="submit" className="reset-button" disabled={loading}>
+                {loading ? 'Enviando...' : 'Enviar token de redefinição'}
+              </button>
             </form>
           </div>
         </div>
@@ -49,7 +70,7 @@ function ResetPasswordRequest() {
       </div>
      ) : (
       <div>
-        <ResetPasswordConfirmation/>
+        <ResetPasswordConfirmation />
       </div>
      )}
     </>
