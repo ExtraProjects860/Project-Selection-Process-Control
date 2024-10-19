@@ -97,7 +97,7 @@ class VagaController(VagaModel):
         return resultado_setor[0], resultado_cargo[0]
     
     
-    def pegar_todas_vagas(self, pagina: int, limite_por_pagina: int = 3) -> tuple[int, list[dict]]:
+    def pegar_todas_vagas(self, pagina: int, limite_por_pagina: int = 4) -> tuple[int, list[dict]]:
         db_connection, db_cursor = self.__mysql.connect()
         
         total_de_paginas, resultado = self.__validators_schema.validar_paginacao(pagina, limite_por_pagina, SQL_PEGAR_TODAS_VAGAS, SQL_QUANTIDADE_VAGAS, db_cursor)

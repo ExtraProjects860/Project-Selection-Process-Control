@@ -11,6 +11,13 @@ SQL_ATUALIZAR_EMAIL_SENHA_USUARIO: str = """
 """
 
 
+SQL_ATUALIZAR_EMAIL_USUARIO: str = """
+    UPDATE usuario
+    SET email = %s
+    WHERE id_usuario = %s;
+"""
+
+
 SQL_ATUALIZAR_DADOS_USUARIO: str = """
     UPDATE dados_usuario
     SET telefone = %s, endereco = %s

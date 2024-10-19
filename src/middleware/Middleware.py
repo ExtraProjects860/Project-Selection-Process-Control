@@ -37,11 +37,11 @@ class Middleware:
             try:
                 self.__verificacoes_rotas()
             except Unauthorized as e:
-                response = jsonify({"msg": str(e)})
+                response = jsonify({"error-unauthorized": str(e)})
                 response.status_code = 401
                 return response(environ, start_response)
             except Exception as e:
-                response = jsonify({"msg": str(e)})
+                response = jsonify({"error-jwt": str(e)})
                 response.status_code = 400
                 return response(environ, start_response)
         
@@ -81,7 +81,7 @@ class Middleware:
         public_routes: list[str] = [
             r"^/api/criar-usuario/?$", 
             r"^/api/login/?$", 
-            r"^/api/requistar-troca-senha/?$",
+            r"^/api/requisitar-troca-senha/?$",
             r"^/api/redefinir-senha/?$",
         ]
         

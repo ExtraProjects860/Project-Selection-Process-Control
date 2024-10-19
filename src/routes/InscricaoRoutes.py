@@ -43,9 +43,10 @@ def pegar_curriculo(id_usuario: int) -> tuple[Response, int]:
         return jsonify({"error": "Exception " + str(error)}), 500
 
 
+@inscricao_routes.route('/salvar-inscricao-curriculo/<int:id_usuario>', methods=['POST'], strict_slashes=False)
 @inscricao_routes.route('/salvar-inscricao-curriculo/<int:id_usuario>/<int:id_vaga>', methods=['POST'], strict_slashes=False)
 @jwt_required()
-def salvar_inscricao_curriculo(id_usuario: int, id_vaga: int) -> tuple[Response, int]:
+def salvar_inscricao_curriculo(id_usuario: int, id_vaga: int=None) -> tuple[Response, int]:
     try:
         nome_usuario: str = request.form.get("nome_usuario")
         arquivo: str = request.files.get("curriculo")
@@ -90,10 +91,11 @@ def mostrar_inscricoes_usuario(id_usuario: int, pagina: int) -> tuple[Response, 
         return jsonify({"error": "Exception " + str(error)}), 500
 
 
-@inscricao_routes.route('/forms-respondido/<int:id_status_processo_seletivo>',  methods=['PUT'])
-@jwt_required
+@inscricao_routes.route('/forms-respondido/<int:id_status_processo_seletivo>',  methods=['PUT'], strict_slashes=False)
+@jwt_required()
 def atualizar_forms_como_preenchido(id_status_processo_seletivo: int):
     try:
+        print(id_status_processo_seletivo)
         inscricao: InscricaoController = InscricaoController(None, None)
         inscricao.atualizar_forms_como_preenchido(id_status_processo_seletivo)
         

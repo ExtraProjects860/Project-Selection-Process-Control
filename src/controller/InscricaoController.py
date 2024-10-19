@@ -60,7 +60,7 @@ class InscricaoController(InscricaoModel):
         Atualiza o status do processo seletivo como concluído no banco de dados.
     """
     
-    def __init__(self, id_usuario: int, id_vaga: int):
+    def __init__(self, id_usuario: int, id_vaga: int=None):
         super().__init__(
             _id_usuario=id_usuario, _id_vaga=id_vaga
         )
@@ -112,6 +112,12 @@ class InscricaoController(InscricaoModel):
         try:
             db_connection.start_transaction()
             nome_arquivo: str = self.__tratar_nome_curriculo(nome_usuario)
+            
+            if self.id_vaga is None:
+                db_cursor.execute(SQL_SUBIR_CURRICULO, (nome_arquivo, self.id_usuario),)
+                db_connection.commit()
+                return nome_arquivo
+            
             db_cursor.execute(SQL_SALVAR_INSCRICAO, (self.id_usuario, self.id_vaga))
             db_cursor.execute(SQL_SUBIR_CURRICULO, (nome_arquivo, self.id_usuario),)
             db_connection.commit()
@@ -145,7 +151,7 @@ class InscricaoController(InscricaoModel):
         )
     
     
-    def mostrar_inscricoes_usuario(self, pagina: int, limite_por_pagina: int = 3) -> tuple[int, list[dict]]:
+    def mostrar_inscricoes_usuario(self, pagina: int, limite_por_pagina: int = 4) -> tuple[int, list[dict]]:
         db_connection, db_cursor = self.__mysql.connect()
         
         offset: int = (pagina - 1) * limite_por_pagina

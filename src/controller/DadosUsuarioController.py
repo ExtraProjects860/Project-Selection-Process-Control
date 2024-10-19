@@ -7,6 +7,7 @@ from src.controller.sql_dados_usuario.comandos_sql import (
     SQL_INSERIR_DADOS_USUARIO,
     SQL_ATUALIZAR_EMAIL_SENHA_USUARIO,
     SQL_ATUALIZAR_DADOS_USUARIO,
+    SQL_ATUALIZAR_EMAIL_USUARIO
 )
 
 class DadosUsuarioController(DadosUsuarioModel):
@@ -71,10 +72,15 @@ class DadosUsuarioController(DadosUsuarioModel):
         
     def atualizar_dados_usuario(self, id_usuario: int, new_email: str, new_password: str) -> None:
         db_connection, db_cursor = self.__mysql.connect()
-        hashedPassword: str = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
         try:
             db_connection.start_transaction()
-            db_cursor.execute(SQL_ATUALIZAR_EMAIL_SENHA_USUARIO, (new_email, hashedPassword, id_usuario),)
+            if new_password:
+                print(new_password)
+                hashedPassword: str = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+                db_cursor.execute(SQL_ATUALIZAR_EMAIL_SENHA_USUARIO, (new_email, hashedPassword, id_usuario),)
+            else:
+                db_cursor.execute(SQL_ATUALIZAR_EMAIL_USUARIO, (new_email, id_usuario),)
+            
             db_cursor.execute(SQL_ATUALIZAR_DADOS_USUARIO, (self.telefone, self.endereco, id_usuario),)
             db_connection.commit()
         except IntegrityError as ie:

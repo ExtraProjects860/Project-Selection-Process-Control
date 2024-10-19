@@ -60,6 +60,6 @@ SQL_MOSTRAR_INSCRICOES_USUARIO: str = """
 
 SQL_MARCAR_CONCLUIDO_FORMS: str = """
     UPDATE status_processo_seletivo
-    SET forms_preenchidos = TRUE
+    SET forms_respondido = TRUE
     WHERE id_status_processo_seletivo = %s;
 """
