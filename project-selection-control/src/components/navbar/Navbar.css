@@ -20,7 +20,7 @@
   
 }
 
-button:hover {
+.menu-button:hover {
   background-color: transparent !important;
 }
 
@@ -40,7 +40,7 @@ button:hover {
 }
 
 .sidebar.open {
-  right: 0; /* Mostra o menu lateral */
+  right: 0; 
 }
 
 .sidebar a {
@@ -51,9 +51,13 @@ button:hover {
 }
 
 .sidebar a:hover {
-  background-color: #f0f0f0;
+  background-color: #f0f0f0 !important;
 }
 
 .logout-btn {
   all: unset;
+}
+
+.logout-btn:hover {
+  background-color: transparent !important;
 }

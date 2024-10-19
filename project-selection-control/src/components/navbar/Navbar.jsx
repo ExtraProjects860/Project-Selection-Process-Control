@@ -48,7 +48,7 @@ function Navbar({ userType }) {
             <a href="/">Gerenciar Usuários</a>
             <a href="/job-posting-admin-page">Gerenciar vagas</a>
             <a href="/reset-password-admin">Alterar dados</a>
-            <button onClick={handleLogout}>Sair</button>
+            <button className='logout-btn' onClick={handleLogout}>Sair</button>
           </>
         );
       case 'deslogado':
