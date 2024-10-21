@@ -1,12 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './Pagination.css';
 
-function Pagination() {
-  const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = 3;
+function Pagination({ totalPages, currentPage, onPageChange }) {
 
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
+  const handlePageChange = (newPage) => {
+    onPageChange(newPage);
   };
 
   return (

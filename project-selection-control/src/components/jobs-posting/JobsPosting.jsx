@@ -1,62 +1,109 @@
-import { useState } from 'react';
 import './JobsPosting.css';
+import { useState, useEffect } from 'react';
 import Pagination from '../pagination/Pagination';
 import JobEditionModal from '../job-edition-modal/JobEditionModal';
 import JobExclusionModal from '../job-exclusion-modal/JobExclusionModal';
+import CreateJobModal from '../job-creation-modal/JobCreationModal';
+import CreateJobButton from '../add-button/AddButton';
+import { getAllJobs } from '../../services/jobs-service/JobsService';
 
 function JobsPosting() {
   const [selectedJob, setSelectedJob] = useState(null); 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalCancelOpen, setIsModalCancelOpen] = useState(false);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
-  const jobDetails = [
-    {
-      id: 1,
-      title: "Vaga de Desenvolvedor Frontend",
-      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet.",
-    },
-    {
-      id: 2,
-      title: "Vaga de Designer UX/UI",
-      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet.",
-    },
-    {
-      id: 3,
-      title: "Vaga de Analista de Dados",
-      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet.",
-    },
-  ];
+  const [jobDetails, setJobDetails] = useState([]); 
+  const [loading, setLoading] = useState(true); 
+  const [error, setError] = useState(null);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+
+  const [listClass, setListClass] = useState('');
+
+  useEffect(() => {
+    const fetchVagas = async (page) => {
+      try {
+        setLoading(true);
+        const data = await getAllJobs(page); 
+        setJobDetails(data.vagas);
+        setTotalPages(data.total_de_paginas);
+      } catch (error) {
+        setError('Erro ao carregar vagas.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchVagas(currentPage);
+  }, [currentPage]);
+
+  useEffect(() => {
+    if (jobDetails.length < 4) {
+      setListClass('has-less-than-four');
+    } else {
+      setListClass('');
+    }
+  }, [jobDetails]);
 
   const openEditModal = (job) => {
-    setIsModalOpen(false); // Fecha o modal de edição atual, se aberto
-    setSelectedJob(job); // Define a vaga selecionada
-    setIsModalOpen(true); // Abre o modal de edição
+    setIsModalOpen(false);
+    setSelectedJob(job);
+    setIsModalOpen(true);
   };
 
   const openCancelModal = (job) => {
-    setIsModalOpen(false); // Fecha o modal de edição atual, se aberto
-    setSelectedJob(job); // Define a vaga selecionada
-    setIsModalCancelOpen(true); // Abre o modal de exclusão
+    setIsModalOpen(false);
+    setSelectedJob(job);
+    setIsModalCancelOpen(true);
   };
+
+  const openCreateModal = () => {
+    setIsCreateModalOpen(true);
+  };
+
+  if (loading) {
+    return (
+      <div className="loading-overlay">
+        <div className="spinner"></div>
+      </div>
+    );
+  }
+  
+  if (error) {
+    return <p className='txt'>{error}</p>;
+  }
 
   return (
     <>
       <div className="jobs-container">
-        <h2>VAGAS</h2>
-        <div className="jobs-list">
-          {jobDetails.map((job) => (
-            <div key={job.id} className="job-card">
-              <h3>{job.title}</h3>
-              <hr></hr>
-              <div className='btns'>
-                <button className='edition-btn' onClick={() => openEditModal(job)}>Editar</button>
-                <button className='cancel-job-btn' onClick={() => openCancelModal(job)}>Encerrar</button>
+        <div className="inner-content">
+          <h2>VAGAS</h2>
+          <CreateJobButton onClick={openCreateModal} />
+          <div className={`jobs-list ${listClass}`}>
+            {jobDetails.map((job) => (
+              <div key={job.id_vaga} className="job-card">
+                <span className={job.status === "FECHADA" ? "closed-status" : "open-status"}>{job.status}</span>
+                <div className="job-title-container">                  
+                  <h3>{job.nome_vaga}</h3>
+                </div>
+                <div>
+                  <hr></hr>
+                  <div className='btns'>
+                    <button className='edition-btn' onClick={() => openEditModal(job)}>Mais detalhes</button>
+                    <button className='cancel-job-btn' onClick={() => openCancelModal(job)}>Encerrar</button>
+                  </div>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
-        <div className="pagination">
-          <Pagination />
+            ))}
+          </div>
+          <div className="pagination">
+            <Pagination 
+              totalPages={totalPages}
+              currentPage={currentPage}
+              onPageChange={setCurrentPage}/>
+          </div>
         </div>
       </div>
       
@@ -79,6 +126,14 @@ function JobsPosting() {
             setIsModalCancelOpen(false);
             setSelectedJob(null);
           }}
+        />
+      )}
+
+      {isCreateModalOpen && (
+        <CreateJobModal
+          jobDetails={selectedJob}
+          isOpen={isCreateModalOpen}
+          onClose={() => setIsCreateModalOpen(false)}
         />
       )}
     </>
