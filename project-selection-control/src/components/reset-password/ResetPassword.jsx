@@ -1,47 +1,49 @@
 /* eslint-disable react/prop-types */
-import { useState, useEffect } from 'react';
-import './ResetPassword.css'; 
-import logo from '../../assets/icon/logo.svg';
-import Navbar from '../../components/navbar/Navbar';
-import SocialFooter from '../../components/social-footer/SocialFooter';
-import RightsFooter from '../../components/rights-footer/RightsFooter';
-import { useNavigate } from 'react-router-dom';
-import { updateUserData, saveResume } from '../../services/user-service/UserService';
-import { FaPaperclip } from 'react-icons/fa'; 
-import ModalTokenExpired from '../modal-token-expired/ModalTokenExpired';
+import { useState, useEffect } from "react";
+import "./ResetPassword.css";
+import logo from "../../assets/icon/logo.svg";
+import Navbar from "../../components/navbar/Navbar";
+import SocialFooter from "../../components/social-footer/SocialFooter";
+import RightsFooter from "../../components/rights-footer/RightsFooter";
+import { useNavigate } from "react-router-dom";
+import {
+  updateUserData,
+  saveResume,
+} from "../../services/user-service/UserService";
+import { FaPaperclip } from "react-icons/fa";
+import ModalTokenExpired from "../modal-token-expired/ModalTokenExpired";
 import UserService from "../../services/user-service/UserService";
+import { validateForm } from "../../utils/formUtils";
 
 function ResetPassword({ user }) {
   const [formData, setFormData] = useState({
-    email: '',
-    phone: '',
-    address: '',
-    password: '',
-    confirmPassword: '',
+    email: "",
+    phone: "",
+    address: "",
+    password: "",
+    confirmPassword: "",
   });
 
   const [file, setFile] = useState(null);
-  const [errorMessage, setErrorMessage] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
-  const [isTokenExpired, setIsTokenExpired] = useState(false); 
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [isTokenExpired, setIsTokenExpired] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [showSuccessModal, setShowSuccessModal] = useState(false); 
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [uploadStatus, setUploadStatus] = useState(null);
 
   const navigate = useNavigate();
   const userType = user;
- 
 
   useEffect(() => {
-
-    const userData = JSON.parse(localStorage.getItem('userData'))?.dados;
+    const userData = JSON.parse(localStorage.getItem("userData"))?.dados;
     if (userData) {
       setFormData({
         email: userData.email,
         phone: userData.telefone,
         address: userData.endereco,
-        password: '',
-        confirmPassword: '',
+        password: "",
+        confirmPassword: "",
       });
     }
   }, []);
@@ -56,75 +58,95 @@ function ResetPassword({ user }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrorMessage('');
-    setSuccessMessage('');
+    setErrorMessage("");
+    setSuccessMessage("");
 
+    const validationError = validateForm({
+      email: formData.email,
+      password: formData.password,
+      phone: formData.phone,
+    });
+
+    if (validationError) {
+      setErrorMessage(validationError);
+      return;
+    }
 
     if (formData.password && formData.password !== formData.confirmPassword) {
-      setErrorMessage('As senhas não correspondem!');
+      setErrorMessage("As senhas não correspondem!");
       return;
     }
 
     const userData = {
       novo_email: formData.email,
-      nova_senha: formData.password || "", 
+      nova_senha: formData.password || "",
       novo_telefone: formData.phone,
       novo_endereco: formData.address,
     };
 
     try {
       setLoading(true);
-      const user = JSON.parse(localStorage.getItem('userData'))?.dados;
+      const user = JSON.parse(localStorage.getItem("userData"))?.dados;
       const userId = user.id;
       const dataResponse = await updateUserData(userId, userData);
       if (dataResponse.tokenExpired) {
         setIsTokenExpired(true);
-      }  
-      setSuccessMessage('Dados alterados com sucesso!');
-      const token = localStorage.getItem('token');
-      const userInfo = await UserService.pegarDadosUsuario(token);
-      localStorage.setItem("userData", JSON.stringify(userInfo));
+      }
+      setSuccessMessage("Dados alterados com sucesso!");
+
       if (file) {
         const resumeResponse = await saveResume(userId, file);
         if (resumeResponse.tokenExpired) {
           setIsTokenExpired(true);
-        }  
-        setUploadStatus('Currículo enviado com sucesso!');
+        }
+        setUploadStatus("Currículo enviado com sucesso!");
       }
 
-      setShowSuccessModal(true); 
-
+      setShowSuccessModal(true);
     } catch (error) {
-      setErrorMessage(error.message || 'Erro ao enviar os dados.');
+      setErrorMessage(error.message || "Erro ao enviar os dados.");
     } finally {
-      setLoading(false); 
+      setLoading(false);
     }
   };
 
   const goBack = () => {
-    navigate(-1);
+    navigate(-1); 
   };
-
-  const handleCloseModal = () => {
-    setShowSuccessModal(false); 
-    goBack();
+  
+  const handleCloseModal = async () => {
+    const token = localStorage.getItem('token');  
+    try {
+      console.log("Tentando fazer logout...");
+      if (token) {
+        await UserService.userLogout(token);
+        console.log("Logout bem-sucedido.");
+      }
+      localStorage.clear(); 
+      console.log("LocalStorage limpo, redirecionando para a tela de login...");
+      window.location.href = '/'; 
+    } catch (error) {
+      console.error("Erro ao fazer logout:", error);
+    }
   };
+  
+  
 
   return (
     <>
       <Navbar userType={userType} />
       <div className="register-container">
-      {isTokenExpired && (
-        <ModalTokenExpired
-          title="Sessão Expirada"
-          message="Seu token de autenticação expirou. Faça login novamente."
-          onConfirm={() => {
-            localStorage.clear();
-            setIsTokenExpired(false); 
-            window.location.href = '/'; 
-          }}
-        />
-      )}
+        {isTokenExpired && (
+          <ModalTokenExpired
+            title="Sessão Expirada"
+            message="Seu token de autenticação expirou. Faça login novamente."
+            onConfirm={() => {
+              localStorage.clear();
+              setIsTokenExpired(false);
+              window.location.href = "/";
+            }}
+          />
+        )}
         <div className="register-card">
           <div className="register-header">
             <img src={logo} alt="Web Certificados" className="logo" />
@@ -132,40 +154,40 @@ function ResetPassword({ user }) {
           </div>
           <div className="register-body">
             <form onSubmit={handleSubmit}>
-            <td>
+              <td>
                 <div className="input-group">
                   <tr>
-                  <input
-                  type="email"
-                  id="email"
-                  placeholder="E-mail"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                />
+                    <input
+                      type="email"
+                      id="email"
+                      placeholder="E-mail"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      required
+                    />
                   </tr>
                   <tr>
-                  <input
-                  type="tel"
-                  id="phone"
-                  placeholder="Telefone"
-                  value={formData.phone}
-                  onChange={handleInputChange}
-                />
+                    <input
+                      type="tel"
+                      id="phone"
+                      placeholder="Telefone"
+                      value={formData.phone}
+                      onChange={handleInputChange}
+                      required
+                    />
                   </tr>
                 </div>
               </td>
               <td>
                 <div className="input-group">
-    
-                <input
-                      type="text"
-                      id="address"
-                      placeholder="Endereço"
-                      value={formData.address}
-                      onChange={handleInputChange}
-                    />
-          
-                  
+                  <input
+                    type="text"
+                    id="address"
+                    placeholder="Endereço"
+                    value={formData.address}
+                    onChange={handleInputChange}
+                    required
+                  />
                 </div>
               </td>
               <td>
@@ -191,37 +213,45 @@ function ResetPassword({ user }) {
                 </div>
               </td>
               <td>
-              {userType != 'admin' && (
-                <div>
-                   <div className="file-input-container">
-                  <input
-                    type="file"
-                    id="file"
-                    accept=".pdf"
-                    onChange={handleFileChange}
-                    className="file-input"
-                  />
-                  <label htmlFor="file" className="file-label">
-                    {file ? file.name : 'Currículo'}
-                  </label>
-                  <span className="file-icon">
-                    <FaPaperclip />
-                  </span>
+                {userType != "admin" && (
+                  <div>
+                    <div className="file-input-container">
+                      <input
+                        type="file"
+                        id="file"
+                        accept=".pdf"
+                        onChange={handleFileChange}
+                        className="file-input"
+                      />
+                      <label htmlFor="file" className="file-label">
+                        {file ? file.name : "Currículo"}
+                      </label>
+                      <span className="file-icon">
+                        <FaPaperclip />
+                      </span>
+                    </div>
+                    <small className="modal-note">
+                      *Só serão aceitos arquivos no formato PDF
+                    </small>
                   </div>
-                  <small className="modal-note">*Só serão aceitos arquivos no formato PDF</small>
-                </div>
-              )}
+                )}
               </td>
               <div className="btns">
-                <button type="submit" className="register-button" disabled={loading}>
-                  {loading ? 'Enviando...' : 'Confirmar'}
+                <button
+                  type="submit"
+                  className="register-button"
+                  disabled={loading}
+                >
+                  {loading ? "Enviando..." : "Confirmar"}
                 </button>
                 <button onClick={goBack} className="cancel-btn">
                   Cancelar
                 </button>
               </div>
               {errorMessage && <p className="error-message">{errorMessage}</p>}
-              {successMessage && <p className="success-message">{successMessage}</p>}
+              {successMessage && (
+                <p className="success-message">{successMessage}</p>
+              )}
               {uploadStatus && <p className="upload-status">{uploadStatus}</p>}
             </form>
           </div>
@@ -230,12 +260,12 @@ function ResetPassword({ user }) {
       <SocialFooter />
       <RightsFooter />
 
-      {/* Modal de sucesso */}
       {showSuccessModal && (
         <div className="modal">
           <div className="modal-content">
             <h2>Alterações realizadas com sucesso!</h2>
-            <button onClick={handleCloseModal} className="modal-button">
+            <p>Você será direcionado para realizar um novo login.</p>
+            <button onClick={handleCloseModal} className="ok-button">
               OK
             </button>
           </div>

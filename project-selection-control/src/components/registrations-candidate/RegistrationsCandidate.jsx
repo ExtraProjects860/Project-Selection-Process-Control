@@ -17,7 +17,7 @@ function RegistrationsCandidate({ updateTrigger, onLoaded }) {
   const data = localStorage.getItem("userData");
   const userData = JSON.parse(data);
   const userId = userData.dados.id;
-
+  
   const formatDate = (dateString) => {
     if (dateString === "None" || !dateString) return "Data não definida";
     
