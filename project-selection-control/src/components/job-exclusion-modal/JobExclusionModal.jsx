@@ -1,13 +1,31 @@
 import React, { useState } from 'react';
+import { updateJobs } from '../../services/jobs-service/JobsService';
 
 function JobExclusionModal({ jobDetails, isOpen, onClose }) {
   const [isCancelled, setIsCancelled] = useState(false);
 
   const confirmExclusion = () => {
-    const idJob = jobDetails.id;
+    const idJob = jobDetails.id_vaga;
     console.log("Job excluido: ", idJob);
-    // Simula o cancelamento e exibe a mensagem de confirmação
-    setIsCancelled(true);
+
+    const updateJobData = {
+      nome_vaga: jobDetails.nome_vaga,
+      status: "FECHADA",
+      descricao_vaga: jobDetails.descricao_vaga,
+      cargo: jobDetails.nome_cargo,
+      setor: jobDetails.nome_setor,
+      salario: jobDetails.salario,
+      quantidade_vagas: jobDetails.quantidade_vagas,
+      data_encerramento: jobDetails.data_encerramento,
+    };
+
+    updateJobs(idJob, updateJobData).then(() => {
+      // Simula o cancelamento e exibe a mensagem de confirmação
+      setIsCancelled(true);
+      window.location.reload();
+    }).catch((error) => {
+      console.log("Erro ao cancelar a vaga: ", error);
+    })
   };
 
   const closeAll = () => {
