@@ -55,6 +55,7 @@ function Navbar({ userType }) {
       default:
         return (
           <>
+            <a href="/">Home</a>
             <a href="/login">Login</a>
             <a href="/register">Cadastro</a>
             <a href="/reset-password-request">Redefinição de senha</a>
