@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
-import "./ResetPassword.css";
+import styles from './ResetPassword.module.css';
 import logo from "../../assets/icon/logo.svg";
 import Navbar from "../../components/navbar/Navbar";
 import SocialFooter from "../../components/social-footer/SocialFooter";
@@ -135,7 +135,7 @@ function ResetPassword({ user }) {
   return (
     <>
       <Navbar userType={userType} />
-      <div className="register-container">
+      <div className={styles.registerContainer}>
         {isTokenExpired && (
           <ModalTokenExpired
             title="Sessão Expirada"
@@ -147,15 +147,15 @@ function ResetPassword({ user }) {
             }}
           />
         )}
-        <div className="register-card">
-          <div className="register-header">
+        <div className={styles.registerCard}>
+          <div className={styles.registerHeader}>
             <img src={logo} alt="Web Certificados" className="logo" />
             <h2>Alteração de dados</h2>
           </div>
-          <div className="register-body">
+          <div className={styles.registerBody}>
             <form onSubmit={handleSubmit}>
               <td>
-                <div className="input-group">
+                <div className={styles.inputGroup}>
                   <tr>
                     <input
                       type="email"
@@ -179,7 +179,7 @@ function ResetPassword({ user }) {
                 </div>
               </td>
               <td>
-                <div className="input-group">
+                <div className={styles.inputGroup}>
                   <input
                     type="text"
                     id="address"
@@ -191,7 +191,7 @@ function ResetPassword({ user }) {
                 </div>
               </td>
               <td>
-                <div className="input-group">
+                <div className={styles.inputGroup}>
                   <tr>
                     <input
                       type="password"
@@ -215,57 +215,59 @@ function ResetPassword({ user }) {
               <td>
                 {userType != "admin" && (
                   <div>
-                    <div className="file-input-container">
+                    <div className={styles.FileInputContainer}>
                       <input
                         type="file"
                         id="file"
                         accept=".pdf"
                         onChange={handleFileChange}
-                        className="file-input"
+                        className={styles.fileInput}
                       />
-                      <label htmlFor="file" className="file-label">
+                      <label htmlFor="file" className={styles.fileLabel}>
                         {file ? file.name : "Currículo"}
                       </label>
-                      <span className="file-icon">
+                      <span className={styles.fileIcon}>
                         <FaPaperclip />
                       </span>
                     </div>
-                    <small className="modal-note">
+                    <small className={styles.modalNote}>
                       *Só serão aceitos arquivos no formato PDF
                     </small>
                   </div>
                 )}
               </td>
-              <div className="btns">
+              <div className={styles.btns}>
                 <button
-                  type="submit"
-                  className="register-button"
+                  type={styles.submit}
+                  className={styles.registerButton}
                   disabled={loading}
                 >
                   {loading ? "Enviando..." : "Confirmar"}
                 </button>
-                <button onClick={goBack} className="cancel-btn">
+                <button onClick={goBack} className={styles.cancelBtn}>
                   Cancelar
                 </button>
               </div>
-              {errorMessage && <p className="error-message">{errorMessage}</p>}
+              {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
               {successMessage && (
-                <p className="success-message">{successMessage}</p>
+                <p className={styles.successMessage}>{successMessage}</p>
               )}
-              {uploadStatus && <p className="upload-status">{uploadStatus}</p>}
+              {uploadStatus && <p className={styles.uploadStatus}>{uploadStatus}</p>}
             </form>
           </div>
         </div>
       </div>
+      <footer className={styles.footer}>
       <SocialFooter />
       <RightsFooter />
-
+      </footer>
+     
       {showSuccessModal && (
-        <div className="modal">
-          <div className="modal-content">
+        <div className={styles.modal}>
+          <div className={styles.modalContent}>
             <h2>Alterações realizadas com sucesso!</h2>
             <p>Você será direcionado para realizar um novo login.</p>
-            <button onClick={handleCloseModal} className="ok-button">
+            <button onClick={handleCloseModal} className={styles.okButton}>
               OK
             </button>
           </div>

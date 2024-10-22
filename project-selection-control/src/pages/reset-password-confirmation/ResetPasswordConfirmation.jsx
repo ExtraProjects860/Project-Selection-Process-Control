@@ -177,10 +177,10 @@ function ResetPasswordConfirmation() {
           </div>
         </div>
       </div>
-
+      <footer className='footer'>
       <SocialFooter />
       <RightsFooter />
-
+      </footer>
       
     </>
   );

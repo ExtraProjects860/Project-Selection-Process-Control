@@ -65,8 +65,10 @@ function ResetPasswordRequest() {
           </div>
         </div>
       </div>
+      <footer className='footer'>
       <SocialFooter />
       <RightsFooter />
+      </footer>
       </div>
      ) : (
       <div>

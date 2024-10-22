@@ -14,8 +14,10 @@ function HomeAdmin() {
     <Navbar userType={userType}/>
     <HeaderCandidate />
     <TablesContainer />
+    <footer className='footer'>
       <SocialFooter/>
       <RightsFooter/>
+      </footer>
       </>
   );
 }

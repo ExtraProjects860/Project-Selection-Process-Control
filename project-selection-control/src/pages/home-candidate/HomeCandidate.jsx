@@ -41,8 +41,10 @@ function HomeCandidate() {
       <AvaliableJobs onSuccess={handleUpdateRegistrations} onLoaded={handleJobsLoaded} />
       <hr className='line'></hr>
       <RegistrationsCandidate updateTrigger={updateRegistrations} onLoaded={handleRegistrationsLoaded} />
+      <footer className='footer'>
       <SocialFooter />
       <RightsFooter />
+      </footer>
     </>
   );
 }

@@ -130,8 +130,10 @@ function Login() {
           </div>
         </div>
       </div>
+      <footer className="footer">
       <SocialFooter />
       <RightsFooter />
+      </footer>
     </>
   );
 }

@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from 'react';
-import './AvaliableJobs.css';
+import styles from './AvaliableJobs.module.css';
 import JobApplicationModal from '../job-application-modal/JobApplicationModal';
 import { getAllJobs } from '../../services/jobs-service/JobsService';
 import  Pagination  from '../pagination/Pagination';
@@ -55,8 +55,8 @@ function AvaliableJobs({ onSuccess, onLoaded }) {
 
   if (loading) {
     return (
-      <div className="loading-overlay">
-        <div className="spinner"></div>
+      <div className={styles.loading_overlay}>
+        <div className={styles.spinner}></div>
       </div>
     );
   }
@@ -67,9 +67,9 @@ function AvaliableJobs({ onSuccess, onLoaded }) {
 
   return (
     <>
-      <div className="jobs-container">
+      <div className={styles.jobs_container}>
         <h2>VAGAS DISPONÍVEIS</h2>
-        <div className="jobs-list">
+        <div className={styles.jobs_list}>
         {isTokenExpired && (
         <ModalTokenExpired
           title="Sessão Expirada"
@@ -82,13 +82,15 @@ function AvaliableJobs({ onSuccess, onLoaded }) {
         />
       )}
           {availableJobs.map((job) => (
-            <div key={job.id} className="job-card">
+            <div key={job.id} className={styles.job_card}>
               <h3>{job.nome_vaga}</h3>
               <p>{job.descricao_vaga}</p>
+              <div>
               <hr />
-              <button className='inscription-btn' onClick={() => openApplicationModal(job)}>
+              <button className={styles.inscription_btn} onClick={() => openApplicationModal(job)}>
                 Inscrever
               </button>
+              </div>
             </div>
           ))}
         </div>

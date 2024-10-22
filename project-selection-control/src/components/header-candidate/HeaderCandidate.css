@@ -4,5 +4,9 @@
     text-align: center;
     padding: 20px;
     border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 18rem;
   }
   

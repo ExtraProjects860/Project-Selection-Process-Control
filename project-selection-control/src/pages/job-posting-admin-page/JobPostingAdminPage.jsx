@@ -14,8 +14,10 @@ function JobPostingAdminPage() {
     <Navbar userType={userType}/>
     <HeaderCandidate />
     <JobsPosting/>
+    <footer className='footer'>
       <SocialFooter/>
       <RightsFooter/>
+      </footer>
       </>
   );
 }

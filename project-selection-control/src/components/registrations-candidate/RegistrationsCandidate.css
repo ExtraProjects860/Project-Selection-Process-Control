@@ -44,7 +44,7 @@ h2 {
 
 @media (min-width: 1101px) {
   .registration-card {
-      flex: 1 1 25%;
+      flex: 1 1 23%;
   }
 }
 
@@ -86,6 +86,12 @@ h2 {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   text-align: center;
   box-sizing: border-box;
+  p {
+    margin: 0 !important;
+  }
+  h2 {
+    margin: 0;
+  }
 }
 
 .div-pagination {

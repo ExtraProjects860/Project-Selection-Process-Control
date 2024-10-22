@@ -208,8 +208,10 @@ function Register() {
           </div>
         </div>
       </div>
+      <footer className='footer'>
       <SocialFooter />
       <RightsFooter />
+      </footer>
     </>
   );
 }

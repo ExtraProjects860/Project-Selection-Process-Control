@@ -76,8 +76,10 @@ const LandingPage = () => {
         </Row>
       </section>
     </Container>
+    <footer className='footer'>
     <SocialFooter/>
     <RightsFooter/>
+    </footer>
     </>
   );
 };

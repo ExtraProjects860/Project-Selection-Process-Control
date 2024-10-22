@@ -57,54 +57,6 @@ export const createJob = async (jobData) => {
   }
 };
 
-export const getSetoresECargos = async () => {
-  try {
-    const token = localStorage.getItem('token');
-
-    const response = await axios.get(`${API_URL}/pegar-setores-cargos`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    console.log("Response recebida:", response.data);
-    return response.data;
-  } catch (error) {
-    if (error.response) {
-       if (error.response.status === 500) {
-        throw new Error('Erro interno do servidor');
-      } else {
-        return handleTokenExpiredError(error);
-      }
-    } else {
-      console.error("Erro ao buscar setores e cargos:", error);
-      throw new Error('Erro ao buscar setores e cargos');
-    }
-  }
-};
-
-export const createJob = async (jobData) => {
-  try {
-    const token = localStorage.getItem('token');
-
-    const response = await axios.post(`${API_URL}/criar-vaga`, jobData, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-    });
-
-    return response.data;
-  } catch (error) {
-    if (error.response && error.response.status === 400) {
-      throw new Error('Erro de validação dos dados enviados.');
-    } else if (error.response && error.response.status === 500) {
-      throw new Error('Erro interno do servidor.');
-    } else {
-      throw new Error('Erro ao criar a vaga.');
-    }
-  }
-};
 
 export const getSetoresECargos = async () => {
   try {
