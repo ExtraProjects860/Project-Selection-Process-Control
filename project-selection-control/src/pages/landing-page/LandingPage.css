@@ -17,6 +17,7 @@
   
   p {
     color: #666;
+    margin-bottom: 1rem;
   }
   
   .faq-section {
@@ -38,14 +39,37 @@
 
   .text-center:has(img) {
     padding: 0 !important;
-    height: 20rem !important;
     margin-bottom: 2rem !important;
   }
 
   .img-fluid {
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: cover !important;
+    width: 100%; 
+    height: auto; 
+    object-fit: cover;
+    margin-bottom: 0;
+  }
+  
+  @media (min-width: 768px) {
+    .sobre-webcertificados img {
+      max-height: 300px; 
+      object-fit: cover; 
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .sobre-webcertificados img {
+      width: 100%;
+      height: auto; 
+      object-fit: cover; 
+    }
+  }
+
+  .sobre-webcertificados img {
+    width: 100%;
+    max-width: 100%; 
+    height: auto;
   }
 
   
