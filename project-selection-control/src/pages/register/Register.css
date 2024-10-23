@@ -3,8 +3,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 120vh;
     background-color: #f4f4f4;
+    margin-top: 72px;
+    padding: 32px;
   }
   
 
@@ -40,7 +41,7 @@
     gap: 15px;
 
     tr {
-        width: 50%;
+        width: 50% !important;
         input {
             width: 90%;
         }
@@ -118,6 +119,7 @@
 
 .input-group {
     gap: 6px;
+    flex-wrap: nowrap !important;
     display: flex;
     select {
       width: 96%;
