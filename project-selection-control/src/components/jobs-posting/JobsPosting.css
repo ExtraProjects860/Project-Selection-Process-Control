@@ -1,15 +1,15 @@
-.jobs-container {
+.jobsContainer {
   margin: 20px 0;
   display: flex;
   justify-content: center;
 }
 
-.inner-content {
+.innerContent {
   width: 90%;
   max-width: 1440px;
 }
 
-.job-title-container {
+.jobTitleContainer {
   display: flex;
   flex-direction: row;
   height: 100%;
@@ -18,24 +18,24 @@
   margin: 30px 0 15px;
 }
 
-h3 {
+.titleCardAdmin {
   margin: 0 !important;
 }
 
-h2 {
+.titleAdminPage {
   text-align: left;
   color: #006C98;
   margin: 50px 20px 0 !important;
 }
 
-.jobs-list {
+.jobsList {
   display: flex;
   justify-content: flex-start;
   padding: 20px;
   gap: 10px;
 }
 
-.job-card {
+.jobCard {
   position: relative;
   border: 1px solid #E5E5E5;
   border-radius: 8px;
@@ -44,9 +44,10 @@ h2 {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  flex: 1;
 }
 
-.job-card span {
+.jobCard span {
   position: absolute;
   left: 0;
   top: 0;
@@ -66,12 +67,12 @@ h2 {
   background-color: #d32d31;
 }
 
-.jobs-list.has-less-than-four .job-card {
+.jobsList.has-less-than-four .jobCard {
   flex: 1 1 calc(33.333% - 20px);
   max-width: 25%;
 }
 
-.cancel-job-btn {
+.cancelJobBtn {
   background-color: #971C1F;
   color: white;
   padding: 10px;
@@ -81,7 +82,11 @@ h2 {
   width: 40%;
 }
 
-.edition-btn {
+.cancelJobBtn:hover {
+  background-color: #83191b !important;
+}
+
+.editionBtn {
   background-color: #006C98;
   color: white;
   padding: 10px;
@@ -93,16 +98,17 @@ h2 {
 
 .pagination {
   margin-top: 20px;
+  justify-content: center;
 }
 
-.btns {
+.btnsCard {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 5px !important;
 }
 
-.btns button {
+.btnsCard button {
   width: 100% !important;
 }
 
@@ -141,36 +147,36 @@ h2 {
 }
 
 @media (max-width: 1170px) {
-  .btns {
+  .btnsCard {
     flex-direction: column !important;
   }
 }
 
 @media (max-width: 765px) {
-  .jobs-list {
+  .jobsList {
     display: grid;
     grid-template-columns: 1fr 1fr;
   }
 
-  .job-card,
-  .jobs-list.has-less-than-four .job-card  {
+  .jobCard,
+  .jobsList.has-less-than-four .jobCard  {
     width: auto;
     max-width: unset;
   }
 
-  .btns {
+  .btnsCard {
     flex-direction: row !important;
   }
 }
 
 @media (max-width: 610px) {
-  .btns {
+  .btnsCard {
     flex-direction: column !important;
   }
 }
 
 @media (max-width: 375px) {
-  .jobs-list {
+  .jobsList {
     grid-template-columns: 1fr;
   }
 }

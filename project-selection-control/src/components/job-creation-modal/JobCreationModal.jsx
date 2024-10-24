@@ -116,7 +116,7 @@ function CreateJobModal({ isOpen, onClose }) {
 
   return (
     <div className="modal-overlay">
-      <div className="modal-content">
+      <div className="modal-content modalContent">
         <h2 className="title-modal">Criar nova vaga</h2>
         <div className="inner-content-container">
           <div className="column">
@@ -166,11 +166,10 @@ function CreateJobModal({ isOpen, onClose }) {
               placeholder="Quantidade de vagas"
             />
             <input
-              type="text"
+              type="date"
               value={dataEncerramento}
               onChange={handleInputChange}
-              placeholder="Data de encerramento (AAAA-MM-DD)"
-              maxLength={10}
+              min={new Date().getDate()}
             />
             <select value={status} onChange={(e) => setStatus(e.target.value)}>
               <option value="">Selecione um status</option>

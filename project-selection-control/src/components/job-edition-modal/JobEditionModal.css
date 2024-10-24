@@ -6,10 +6,10 @@
   flex-direction: column;
 }
 
-.modal-content {
+.modalContent {
   gap: 20px;
-  width: 80%;
-  max-width: 900px;
+  width: 80% !important;
+  max-width: 900px !important;
 }
 
 .inner-content-container {

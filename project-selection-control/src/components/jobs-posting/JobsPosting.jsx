@@ -77,22 +77,22 @@ function JobsPosting() {
 
   return (
     <>
-      <div className="jobs-container">
-        <div className="inner-content">
-          <h2>VAGAS</h2>
+      <div className="jobsContainer">
+        <div className="innerContent">
+          <h2 className='titleAdminPage'>VAGAS</h2>
           <CreateJobButton onClick={openCreateModal} />
-          <div className={`jobs-list ${listClass}`}>
+          <div className={`jobsList ${listClass}`}>
             {jobDetails.map((job) => (
-              <div key={job.id_vaga} className="job-card">
+              <div key={job.id_vaga} className="jobCard">
                 <span className={job.status === "FECHADA" ? "closed-status" : "open-status"}>{job.status}</span>
-                <div className="job-title-container">                  
-                  <h3>{job.nome_vaga}</h3>
+                <div className="jobTitleContainer">                  
+                  <h3 className='titleCardAdmin'>{job.nome_vaga}</h3>
                 </div>
                 <div>
                   <hr></hr>
-                  <div className='btns'>
-                    <button className='edition-btn' onClick={() => openEditModal(job)}>Mais detalhes</button>
-                    <button className='cancel-job-btn' onClick={() => openCancelModal(job)}>Encerrar</button>
+                  <div className='btnsCard'>
+                    <button className='editionBtn' onClick={() => openEditModal(job)}>Mais detalhes</button>
+                    <button className='cancelJobBtn' onClick={() => openCancelModal(job)}>Encerrar</button>
                   </div>
                 </div>
               </div>

@@ -160,7 +160,7 @@ function JobEditionModal({ jobDetails, isOpen, onClose }) {
 
   return (
     <div className="modal-overlay">
-      <div className="modal-content">
+      <div className="modal-content modalContent">
       <h2 className="title-modal">Editar vaga</h2>
       <div className="inner-content-container">
         <div className="column">

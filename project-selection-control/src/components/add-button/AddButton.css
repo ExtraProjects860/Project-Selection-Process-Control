@@ -4,11 +4,11 @@
     justify-content: end;
 }
 
-.create-job-button {
+.createJobButton {
     background-color: transparent;
     color: #007bff;
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
     border-radius: 5px;
     border: 3px solid #007bff;
     cursor: pointer;
@@ -17,7 +17,12 @@
     justify-content: center;
   }
   
-  .create-job-button span {
+  .createJobButton span {
     font-size: 30px;
     line-height: 1;
+    margin-bottom: 5px;
+  }
+
+  .createJobButton:hover {
+    background-color: white !important;
   }
