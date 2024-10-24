@@ -14,7 +14,7 @@ function AvaliableJobs({ onSuccess, onLoaded }) {
   const [availableJobs, setAvailableJobs] = useState([]); 
   const [loading, setLoading] = useState(true); 
   const [error, setError] = useState(null);
-  const [currentPage, setCurrentPage] = useState(1); // Página atual
+  const [currentPage, setCurrentPage] = useState(1); 
   const [totalPages, setTotalPages] = useState(1); 
 
   const openApplicationModal = (job) => {

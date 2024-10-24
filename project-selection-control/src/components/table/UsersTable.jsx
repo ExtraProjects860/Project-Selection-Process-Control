@@ -1,289 +1,161 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from 'react';
 import Table from "react-bootstrap/Table";
-import { FaSort, FaSortUp, FaSortDown } from "react-icons/fa"; // Ícones de ordenação
-import { PencilSquare } from "react-bootstrap-icons"; // Ícone de edição
-import EditModal from "../modalEditorTable/EditModalCandidatos";
-import Modal from "react-bootstrap/Modal"; // Importe o Modal do React-Bootstrap
+import { PencilSquare } from "react-bootstrap-icons";
+import EditModal from '../modalEditorTable/EditModalUsers';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
 import "bootstrap/dist/css/bootstrap.min.css";
 import styles from "./Table.module.css";
+import LoadingSpinner from "../spinnerLoadingTable/LoadingSpinnerTable";
+import { getUsers } from "../../services/get-data-table-service/GetDataTableService";
+import { usePagination } from "./logic/TablesLogic";
 
-function UsersTable() {
-  const [users, setUsers] = useState([
-    {
-      dataEtapa1: "2023-09-01",
-      candidato: "Mark Otto",
-      cargo: "Desenvolvedor",
-      contato: "mark@example.com",
-      setor: "Tecnologia",
-      etapaAtual: "Entrevista Técnica",
-      perfil: "Senior",
-      status: "Em andamento",
-      feedback: "Muito bem, aprovado!",
-    },
-    {
-      dataEtapa1: "2023-09-02",
-      candidato: "Jacob Thornton",
-      cargo: "Analista",
-      contato: "jacob@example.com",
-      setor: "Marketing",
-      etapaAtual: "Testes de Habilidades",
-      perfil: "Pleno",
-      status: "Aguardando feedback",
-      feedback: "Seu currículo será salvo em nosso banco de talentos.",
-    },
-    {
-      dataEtapa1: "2023-09-03",
-      candidato: "Larry Bird",
-      cargo: "Gerente de Projetos",
-      contato: "larry@example.com",
-      setor: "Gestão",
-      etapaAtual: "Entrevista Final",
-      perfil: "Sênior",
-      status: "Aprovado",
-      feedback: "Parabéns, aprovado!",
-    },
-    {
-      dataEtapa1: "2023-09-04",
-      candidato: "John Doe",
-      cargo: "Designer",
-      contato: "john@example.com",
-      setor: "Design",
-      etapaAtual: "Entrevista Técnica",
-      perfil: "Pleno",
-      status: "Em andamento",
-      feedback: "Aguardando retorno.",
-    },
-  ]);
+function UsersTable({ searchTerm }) {
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [showEditModal, setShowEditModal] = useState(false); // Controle do modal
+  const [showTextModal, setShowTextModal] = useState(false); // Controle da modal de texto completo
+  const [selectedUser, setSelectedUser] = useState(null); // Usuário selecionado
+  const [selectedText, setSelectedText] = useState(""); // Texto do item selecionado
+  const [totalPages, setTotalPages] = useState(1);
+  const { currentPage, handleNextPage, handlePrevPage } = usePagination(totalPages);
 
-  const [selectedColumn, setSelectedColumn] = useState("");
+  const token = localStorage.getItem('token');
 
-  const [sortConfig, setSortConfig] = useState({
-    key: null,
-    direction: "ascending",
-  });
-
-  const [selectedUser, setSelectedUser] = useState(null);
-  const [showModal, setShowModal] = useState(false);
-  const [fullText, setFullText] = useState(null); // Novo estado para o texto completo
-
-  const itemsPerPage = 8; // Defina quantos itens por página você deseja
-  const [currentPage, setCurrentPage] = useState(1);
-
-  const totalPages = Math.ceil(users.length / itemsPerPage);
-
-  // Retorna os dados da página atual
-  const currentData = () => {
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    return users.slice(startIndex, endIndex);
-  };
-
-  const sortedUsers = [...currentData()].sort((a, b) => {
-    if (sortConfig.key) {
-      const aValue = a[sortConfig.key];
-      const bValue = b[sortConfig.key];
-      if (aValue < bValue) return sortConfig.direction === "ascending" ? -1 : 1;
-      if (aValue > bValue) return sortConfig.direction === "ascending" ? 1 : -1;
+  useEffect(() => {
+    async function fetchData(page) {
+      try {
+        setLoading(true);
+        const data = await getUsers(page, token); // Chama a função de serviço
+        setUsers(data.usuarios); // Ajusta conforme a estrutura da resposta da API
+        setTotalPages(data.total_de_paginas);
+        setLoading(false);
+      } catch (error) {
+        setError('Erro ao carregar os dados');
+        setLoading(false);
+      }
     }
-    return 0;
+
+    fetchData(currentPage);
+  }, [currentPage]);
+
+  // Função de filtragem com base no termo de busca
+  const filteredUsers = users.filter(user => {
+    const lowerSearchTerm = searchTerm.toLowerCase();
+    return (
+      user.nome_usuario.toLowerCase().includes(lowerSearchTerm) ||
+      user.email.toLowerCase().includes(lowerSearchTerm) ||
+      user.cpf.toLowerCase().includes(lowerSearchTerm) ||
+      user.data_nascimento.toLowerCase().includes(lowerSearchTerm) ||
+      user.endereco.toLowerCase().includes(lowerSearchTerm) ||
+      user.telefone.toLowerCase().includes(lowerSearchTerm) ||
+      (user.admin ? 'Sim' : 'Não').toLowerCase().includes(lowerSearchTerm) ||
+      user.tem_inscricao.toLowerCase().includes(lowerSearchTerm)
+    );
   });
-
-  const handleSort = (key) => {
-    let direction = "ascending";
-    if (sortConfig.key === key && sortConfig.direction === "ascending") {
-      direction = "descending";
-    }
-    setSortConfig({ key, direction });
-  };
-
-  const getSortIcon = (key) => {
-    if (sortConfig.key !== key) return <FaSort />;
-    if (sortConfig.direction === "ascending") return <FaSortUp />;
-    return <FaSortDown />;
-  };
 
   const handleEditClick = (user) => {
-    setSelectedUser(user);
-    setShowModal(true);
+    setSelectedUser(user); // Define o usuário clicado
+    setShowEditModal(true); // Mostra o modal de edição
   };
 
-  const handleSave = (updatedUser) => {
-    setUsers((prevUsers) =>
-      prevUsers.map((user) =>
-        user.candidato === updatedUser.candidato ? updatedUser : user
-      )
-    );
-    setShowModal(false);
+  const handleModalClose = () => {
+    setShowEditModal(false); // Fecha o modal de edição
   };
 
-  const handleNextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage((prevPage) => prevPage + 1);
-    }
+  const handleTextClick = (text) => {
+    setSelectedText(text); // Define o texto selecionado
+    setShowTextModal(true); // Mostra a modal de texto completo
   };
 
-  const handlePrevPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage((prevPage) => prevPage - 1);
-    }
+  const handleTextModalClose = () => {
+    setShowTextModal(false); // Fecha a modal de texto completo
   };
 
-  // Atualize a função handleCellClick
-  const handleCellClick = (text, columnName) => {
-    setFullText(text);
-    setSelectedColumn(columnName);
-  };
+  if (loading) return <LoadingSpinner />;
+  if (error) return <p>{error}</p>;
 
   return (
     <>
-      <Table responsive>
+      <Table striped bordered hover className={styles.table}>
         <thead>
           <tr>
             <th colSpan={10} className={styles.tableTitle}>
               USUÁRIOS
             </th>
           </tr>
-          <tr className={styles.tableHeader}>
-            <th onClick={() => handleSort("dataEtapa1")}>
-              DATA ETAPA 1 {getSortIcon("dataEtapa1")}
-            </th>
-            <th onClick={() => handleSort("candidato")}>
-              CANDIDATO {getSortIcon("candidato")}
-            </th>
-            <th onClick={() => handleSort("cargo")}>
-              CARGO {getSortIcon("cargo")}
-            </th>
-            <th onClick={() => handleSort("contato")}>
-              CONTATO {getSortIcon("contato")}
-            </th>
-            <th onClick={() => handleSort("setor")}>
-              SETOR {getSortIcon("setor")}
-            </th>
-            <th onClick={() => handleSort("etapaAtual")}>
-              ETAPA ATUAL {getSortIcon("etapaAtual")}
-            </th>
-            <th onClick={() => handleSort("perfil")}>
-              PERFIL {getSortIcon("perfil")}
-            </th>
-            <th onClick={() => handleSort("status")}>
-              STATUS {getSortIcon("status")}
-            </th>
-            <th onClick={() => handleSort("feedback")}>
-              FEEDBACK {getSortIcon("feedback")}
-            </th>
-            <th>AÇÃO</th>
+          <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>CPF</th>
+            <th>Data de Nascimento</th>
+            <th>Endereço</th>
+            <th>Telefone</th>
+            <th>Admin</th>
+            <th>Tem Inscrição</th>
+            <th>Ações</th>
           </tr>
         </thead>
         <tbody>
-          {currentData().map((user, index) => (
-            <tr key={index}>
-              <td
-                className={styles.tableCell}
-                onClick={() => handleCellClick(user.dataEtapa1, "DATA ETAPA 1")}
-              >
-                {user.dataEtapa1}
-              </td>
-              <td
-                className={styles.tableCell}
-                onClick={() => handleCellClick(user.candidato, "CANDIDATO")}
-              >
-                {user.candidato}
-              </td>
-              <td
-                className={styles.tableCell}
-                onClick={() => handleCellClick(user.cargo, "CARGO")}
-              >
-                {user.cargo}
-              </td>
-              <td
-                className={styles.tableCell}
-                onClick={() => handleCellClick(user.contato, "CONTATO")}
-              >
-                {user.contato}
-              </td>
-              <td
-                className={styles.tableCell}
-                onClick={() => handleCellClick(user.setor, "SETOR")}
-              >
-                {user.setor}
-              </td>
-              <td
-                className={styles.tableCell}
-                onClick={() => handleCellClick(user.etapaAtual, "ETAPA ATUAL")}
-              >
-                {user.etapaAtual}
-              </td>
-              <td
-                className={styles.tableCell}
-                onClick={() => handleCellClick(user.perfil, "PERFIL")}
-              >
-                {user.perfil}
-              </td>
-              <td
-                className={styles.tableCell}
-                onClick={() => handleCellClick(user.status, "STATUS")}
-              >
-                {user.status}
-              </td>
-              <td
-                className={styles.tableCell}
-                onClick={() => handleCellClick(user.feedback, "FEEDBACK")}
-              >
-                {user.feedback}
-              </td>
-
-              <td className={styles.tableCell}>
+          {filteredUsers.map(user => (
+            <tr key={user.id_usuario}>
+              <td>{user.id_usuario}</td>
+              <td onClick={() => handleTextClick(user.nome_usuario)} style={{ cursor: 'pointer' }}>{user.nome_usuario}</td>
+              <td onClick={() => handleTextClick(user.email)} style={{ cursor: 'pointer' }}>{user.email}</td>
+              <td onClick={() => handleTextClick(user.cpf)} style={{ cursor: 'pointer' }}>{user.cpf}</td>
+              <td onClick={() => handleTextClick(user.data_nascimento)} style={{ cursor: 'pointer' }}>{user.data_nascimento}</td>
+              <td onClick={() => handleTextClick(user.endereco)} style={{ cursor: 'pointer' }}>{user.endereco}</td>
+              <td onClick={() => handleTextClick(user.telefone)} style={{ cursor: 'pointer' }}>{user.telefone}</td>
+              <td>{user.admin ? 'Sim' : 'Não'}</td>
+              <td>{user.tem_inscricao}</td>
+              <td>
                 <PencilSquare
-                  className="action-icon"
-                  style={{
-                    cursor: "pointer",
-                    marginRight: "10px",
-                    color: "#006C98",
-                  }}
-                  onClick={() => handleEditClick(user)}
+                  className="text-primary"
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => handleEditClick(user)} // Chama o modal de edição
                 />
               </td>
             </tr>
           ))}
         </tbody>
       </Table>
+
       <div className={styles.pagination}>
-        <button onClick={handlePrevPage} disabled={currentPage === 1}>
+      <button onClick={handlePrevPage} disabled={currentPage === 1}>
           Anterior
-        </button>
+      </button>
         <span
           className={styles.pageInfo}
         >{`Página ${currentPage} de ${totalPages}`}</span>
-        <button onClick={handleNextPage} disabled={currentPage === totalPages}>
-          Próxima
-        </button>
-      </div>
-      {selectedUser && (
+      <button onClick={handleNextPage} disabled={currentPage === totalPages}>
+        Próxima
+      </button>
+    </div>
+
+      {/* Modal de Edição */}
+      {showEditModal && selectedUser && (
         <EditModal
-          show={showModal}
-          user={selectedUser}
-          onSave={handleSave}
-          onClose={() => setShowModal(false)}
+          show={showEditModal}
+          user={selectedUser} // Passa o usuário selecionado
+          onClose={handleModalClose}
+          onSave={() => setShowEditModal(false)}
         />
       )}
-      {/* Modal para exibir o texto completo */}
-      <Modal show={fullText !== null} onHide={() => setFullText(null)}>
+
+      {/* Modal de Exibição de Texto Completo */}
+      <Modal show={showTextModal} onHide={handleTextModalClose}>
         <Modal.Header closeButton>
-          <Modal.Title>{selectedColumn} - Texto Completo</Modal.Title>
+          <Modal.Title>Texto Completo</Modal.Title>
         </Modal.Header>
-        <Modal.Body>{fullText}</Modal.Body>
+        <Modal.Body>
+          <p>{selectedText}</p>
+        </Modal.Body>
         <Modal.Footer>
-          <button
-            className="btn"
-            style={{
-              backgroundColor: "#006C98",
-              color: "white",
-              border: "none",
-            }} // Estilo inline
-            onClick={() => setFullText(null)}
-          >
+          <Button variant="secondary" onClick={handleTextModalClose}>
             Fechar
-          </button>
+          </Button>
         </Modal.Footer>
       </Modal>
     </>

@@ -45,7 +45,6 @@ function Navbar({ userType }) {
         return (
           <>
             <a href="/home-admin">Home</a>
-            <a href="/">Gerenciar Usuários</a>
             <a href="/job-posting-admin-page">Gerenciar vagas</a>
             <a href="/reset-password-admin">Alterar dados</a>
             <button className='logout-btn' onClick={handleLogout}>Sair</button>

@@ -1,270 +1,160 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
-import { FaSort, FaSortUp, FaSortDown } from "react-icons/fa"; // Ícones de ordenação
-import { PencilSquare } from "react-bootstrap-icons"; // Ícone de edição
+import { PencilSquare } from "react-bootstrap-icons";
 import EditModal from "../modalEditorTable/EditModalCandidatos";
-import Modal from "react-bootstrap/Modal"; // Importe o Modal do React-Bootstrap
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
 import "bootstrap/dist/css/bootstrap.min.css";
 import styles from "./Table.module.css";
+import LoadingSpinner from "../spinnerLoadingTable/LoadingSpinnerTable";
+import { getProcessStatusCandidates } from "../../services/get-data-table-service/GetDataTableService";
+import { usePagination, useEditCandidateOrUser } from "./logic/TablesLogic";
 
-function CandidatesTable() {
-  const [candidates, setCandidates] = useState([
-    {
-      dataEtapa1: "2023-09-01",
-      candidato: "Mark Otto",
-      cargo: "Desenvolvedor",
-      contato: "mark@example.com",
-      setor: "Tecnologia",
-      etapaAtual: "Entrevista Técnica",
-      perfil: "Senior",
-      status: "Em andamento",
-      observacao: "Entrevista agendada para semana que vem",
-    },
-    {
-      dataEtapa1: "2023-09-02",
-      candidato: "Jacob Thornton",
-      cargo: "Analista",
-      contato: "jacob@example.com",
-      setor: "Marketing",
-      etapaAtual: "Testes de Habilidades",
-      perfil: "Pleno",
-      status: "Aguardando feedback",
-      observacao: "Testes entregues, aguardando resposta",
-    },
-    {
-      dataEtapa1: "2023-09-03",
-      candidato: "Larry Bird",
-      cargo: "Gerente de Projetos",
-      contato: "larry@example.com",
-      setor: "Gestão",
-      etapaAtual: "Entrevista Final",
-      perfil: "Sênior",
-      status: "Aprovado",
-      observacao: "Aprovação pendente de documentação",
-    },
-  ]);
+function CandidatesTable({ searchTerm }) {
+  const [candidates, setCandidates] = useState([]);
+  const [totalPages, setTotalPages] = useState(1);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [showTextModal, setShowTextModal] = useState(false); // Estado para controlar a modal de texto completo
+  const [selectedText, setSelectedText] = useState(""); // Estado para armazenar o texto selecionado
 
-  const [selectedColumn, setSelectedColumn] = useState("");
+  const { currentPage, handleNextPage, handlePrevPage } = usePagination(totalPages);
+  const { selectedCandidate, showModal, handleEditClick, setShowModal } = useEditCandidateOrUser();
 
-  const [sortConfig, setSortConfig] = useState({
-    key: null,
-    direction: "ascending",
-  });
-  
-  const [selectedCandidate, setSelectedCandidate] = useState(null);
-  const [showModal, setShowModal] = useState(false);
-  const [fullText, setFullText] = useState(null); // Novo estado para o texto completo
+  const token = localStorage.getItem('token');
 
-  const itemsPerPage = 8; // Defina quantos itens por página você deseja
-  const [currentPage, setCurrentPage] = useState(1);
-
-  const totalPages = Math.ceil(candidates.length / itemsPerPage);
-
-  // Retorna os dados da página atual
-  const currentData = () => {
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    return candidates.slice(startIndex, endIndex);
-  };
-
-  const handleSort = (key) => {
-    let direction = "ascending";
-    if (sortConfig.key === key && sortConfig.direction === "ascending") {
-      direction = "descending";
-    }
-    setSortConfig({ key, direction });
-  };
-
-  const getSortIcon = (key) => {
-    if (sortConfig.key !== key) return <FaSort />;
-    if (sortConfig.direction === "ascending") return <FaSortUp />;
-    return <FaSortDown />;
-  };
-
-  const handleEditClick = (candidate) => {
-    setSelectedCandidate(candidate);
-    setShowModal(true);
-  };
-
-  const handleSave = (updatedCandidate) => {
-    setCandidates((prevCandidates) =>
-      prevCandidates.map((candidate) =>
-        candidate.candidato === updatedCandidate.candidato
-          ? updatedCandidate
-          : candidate
-      )
+  const filteredCandidates = candidates.filter(candidate => {
+    // Filtra os candidatos com base em qualquer campo que contenha o termo de busca
+    const lowerSearchTerm = searchTerm.toLowerCase();
+    return (
+      candidate.nome_usuario.toLowerCase().includes(lowerSearchTerm) ||
+      candidate.telefone.toLowerCase().includes(lowerSearchTerm) ||
+      candidate.email.toLowerCase().includes(lowerSearchTerm) ||
+      candidate.nome_cargo.toLowerCase().includes(lowerSearchTerm) ||
+      candidate.nome_setor.toLowerCase().includes(lowerSearchTerm) ||
+      candidate.status_processo.toLowerCase().includes(lowerSearchTerm)
     );
-    setShowModal(false);
+  });
+
+  useEffect(() => {
+    async function fetchData(page) {
+      try {
+        setLoading(true);
+        const data = await getProcessStatusCandidates(page, token);
+        setCandidates(data.status_processo_seletivo);
+        setTotalPages(data.total_de_paginas);
+        setLoading(false);
+      } catch (error) {
+        setError('Erro ao carregar os dados');
+        setLoading(false);
+      }
+  }
+
+  fetchData(currentPage);
+  }, [currentPage]);
+
+  const handleTextClick = (text) => {
+    setSelectedText(text); // Define o texto selecionado
+    setShowTextModal(true); // Exibe a modal de texto completo
   };
 
-  const handleNextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage((prevPage) => prevPage + 1);
-    }
+  const handleTextModalClose = () => {
+    setShowTextModal(false); // Fecha a modal de texto completo
   };
 
-  const handlePrevPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage((prevPage) => prevPage - 1);
-    }
-  };
-
-  const handleCellClick = (text, columnName) => {
-    setFullText(text);
-    setSelectedColumn(columnName);
-  };
+  if (loading) return <LoadingSpinner />;
+  if (error) return <p>{error}</p>;
 
   return (
     <>
-      <Table responsive>
-        <thead>
-          <tr>
-            <th colSpan={10} className={styles.tableTitle}>
-              CANDIDATOS
-            </th>
+      <Table responsive striped bordered hover>
+      <thead>
+        <tr>
+          <th colSpan={15} className={styles.tableTitle}>
+            CANDIDATOS
+          </th>
+        </tr>
+        <tr className={styles.tableHeader}>
+          <th>ID</th>
+          <th>NOME DO USUÁRIO</th>
+          <th>TELEFONE</th>
+          <th>EMAIL</th>
+          <th>CARGO</th>
+          <th>SETOR</th>
+          <th>ETAPA ATUAL</th>
+          <th>STATUS</th>
+          <th>DATA ENTREVISTA</th>
+          <th>DATA CONCLUSÃO</th>
+          <th>FORMS RESPONDIDO</th>
+          <th>AVALIAÇÃO FORMS</th>
+          <th>PERFIL</th>
+          <th>OBSERVAÇÃO</th>
+          <th>AÇÃO</th>
+        </tr>
+      </thead>
+      <tbody>
+      {filteredCandidates.map(candidate => (
+          <tr key={candidate.id_status_processo_seletivo}>
+            <td>{candidate.id_status_processo_seletivo}</td>
+            <td onClick={() => handleTextClick(candidate.nome_usuario)} style={{ cursor: 'pointer' }}>{candidate.nome_usuario}</td>
+            <td onClick={() => handleTextClick(candidate.telefone)} style={{ cursor: 'pointer' }}>{candidate.telefone}</td>
+            <td onClick={() => handleTextClick(candidate.email)} style={{ cursor: 'pointer' }}>{candidate.email}</td>
+            <td onClick={() => handleTextClick(candidate.nome_cargo)} style={{ cursor: 'pointer' }}>{candidate.nome_cargo}</td>
+            <td onClick={() => handleTextClick(candidate.nome_setor)} style={{ cursor: 'pointer' }}>{candidate.nome_setor}</td>
+            <td onClick={() => handleTextClick(candidate.nome_etapa)} style={{ cursor: 'pointer' }}>{candidate.nome_etapa}</td>
+            <td onClick={() => handleTextClick(candidate.status_processo)} style={{ cursor: 'pointer' }}>{candidate.status_processo}</td>
+            <td onClick={() => handleTextClick(candidate.data_entrevista)} style={{ cursor: 'pointer' }}>{candidate.data_entrevista}</td>
+            <td onClick={() => handleTextClick(candidate.data_conclusao)} style={{ cursor: 'pointer' }}>{candidate.data_conclusao}</td>
+            <td>{candidate.forms_respondido ? "Sim" : "Não"}</td>
+            <td>{candidate.avaliacao_forms || "N/A"}</td>
+            <td onClick={() => handleTextClick(candidate.perfil)} style={{ cursor: 'pointer' }}>{candidate.perfil || "N/A"}</td>
+            <td onClick={() => handleTextClick(candidate.observacao)} style={{ cursor: 'pointer' }}>{candidate.observacao || "N/A"}</td>
+            <td>
+              <PencilSquare 
+                className="text-primary" 
+                style={{ cursor: 'pointer' }} 
+                onClick={() => handleEditClick(candidate)}
+              />
+            </td>
           </tr>
-          <tr className={styles.tableHeader}>
-            <th onClick={() => handleSort("dataEtapa1")}>
-              DATA ETAPA 1 {getSortIcon("dataEtapa1")}
-            </th>
-            <th onClick={() => handleSort("candidato")}>
-              CANDIDATO {getSortIcon("candidato")}
-            </th>
-            <th onClick={() => handleSort("cargo")}>
-              CARGO {getSortIcon("cargo")}
-            </th>
-            <th onClick={() => handleSort("contato")}>
-              CONTATO {getSortIcon("contato")}
-            </th>
-            <th onClick={() => handleSort("setor")}>
-              SETOR {getSortIcon("setor")}
-            </th>
-            <th onClick={() => handleSort("etapaAtual")}>
-              ETAPA ATUAL {getSortIcon("etapaAtual")}
-            </th>
-            <th onClick={() => handleSort("perfil")}>
-              PERFIL {getSortIcon("perfil")}
-            </th>
-            <th onClick={() => handleSort("status")}>
-              STATUS {getSortIcon("status")}
-            </th>
-            <th onClick={() => handleSort("observacao")}>
-              OBSERVAÇÃO {getSortIcon("observacao")}
-            </th>
-            <th>AÇÃO</th>
-          </tr>
-        </thead>
-        <tbody>
-          {currentData().map((candidate, index) => (
-            <tr key={index}>
-              <td
-                className={styles.tableCell}
-                onClick={() => handleCellClick(candidate.dataEtapa1, "DATA ETAPA 1")}
-              >
-                {candidate.dataEtapa1}
-              </td>
-              <td
-                className={styles.tableCell}
-                onClick={() => handleCellClick(candidate.candidato, "CANDIDATO")}
-              >
-                {candidate.candidato}
-              </td>
-              <td
-                className={styles.tableCell}
-                onClick={() => handleCellClick(candidate.cargo, "CARGO")}
-              >
-                {candidate.cargo}
-              </td>
-              <td
-                className={styles.tableCell}
-                onClick={() => handleCellClick(candidate.contato, "CONTATO")}
-              >
-                {candidate.contato}
-              </td>
-              <td
-                className={styles.tableCell}
-                onClick={() => handleCellClick(candidate.setor, "SETOR")}
-              >
-                {candidate.setor}
-              </td>
-              <td
-                className={styles.tableCell}
-                onClick={() => handleCellClick(candidate.etapaAtual, "ETAPA ATUAL")}
-              >
-                {candidate.etapaAtual}
-              </td>
-              <td
-                className={styles.tableCell}
-                onClick={() => handleCellClick(candidate.perfil, "PERFIL")}
-              >
-                {candidate.perfil}
-              </td>
-              <td
-                className={styles.tableCell}
-                onClick={() => handleCellClick(candidate.status, "STATUS")}
-              >
-                {candidate.status}
-              </td>
-              <td
-                className={styles.tableCell}
-                onClick={() => handleCellClick(candidate.observacao, "OBSERVAÇÃO")}
-              >
-                {candidate.observacao}
-              </td>
-              <td>
-                <PencilSquare
-                  className="action-icon"
-                  style={{
-                    cursor: "pointer",
-                    marginRight: "10px",
-                    color: "#006C98",
-                  }}
-                  onClick={() => handleEditClick(candidate)}
-                />
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
-      <div className={styles.pagination}>
-        <button onClick={handlePrevPage} disabled={currentPage === 1}>
+        ))}
+      </tbody>
+    </Table>
+
+    <div className={styles.pagination}>
+      <button onClick={handlePrevPage} disabled={currentPage === 1}>
           Anterior
-        </button>
+      </button>
         <span
           className={styles.pageInfo}
         >{`Página ${currentPage} de ${totalPages}`}</span>
-        <button onClick={handleNextPage} disabled={currentPage === totalPages}>
-          Próxima
-        </button>
-      </div>
-      {selectedCandidate && (
-        <EditModal
-          show={showModal}
-          candidate={selectedCandidate}
-          onSave={handleSave}
-          onClose={() => setShowModal(false)}
-        />
-      )}
-      {/* Modal para exibir o texto completo */}
-      <Modal show={fullText !== null} onHide={() => setFullText(null)}>
-        <Modal.Header closeButton>
-          <Modal.Title>{selectedColumn} - Texto Completo</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>{fullText}</Modal.Body>
-        <Modal.Footer>
-          <button
-            className="btn"
-            style={{
-              backgroundColor: "#006C98",
-              color: "white",
-              border: "none",
-            }} // Estilo inline
-            onClick={() => setFullText(null)}
-          >
-            Fechar
-          </button>
-        </Modal.Footer>
-      </Modal>
+      <button onClick={handleNextPage} disabled={currentPage === totalPages}>
+        Próxima
+      </button>
+    </div>
+    
+    {selectedCandidate && (
+      <EditModal
+        show={showModal}
+        onClose={() => setShowModal(false)}
+        candidate={selectedCandidate}
+      />
+    )}
+
+    {/* Modal para exibir o texto completo */}
+    <Modal show={showTextModal} onHide={handleTextModalClose}>
+      <Modal.Header closeButton>
+        <Modal.Title>Texto Completo</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <p>{selectedText}</p>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={handleTextModalClose}>
+          Fechar
+        </Button>
+      </Modal.Footer>
+    </Modal>
     </>
   );
 }

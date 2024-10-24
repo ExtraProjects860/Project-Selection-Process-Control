@@ -50,20 +50,22 @@
   margin: 0 10px !important; /* Adiciona espaçamento entre os botões */
 }
 
-.tableHeader th, 
+.tableHeader th,
 .tableHeader td {
-    height: 50px; /* Ajuste a altura conforme necessário */
-    vertical-align: middle; /* Centraliza o conteúdo verticalmente */
-    overflow: hidden; /* Evita que o texto exceda a altura definida */
-    text-overflow: ellipsis; /* Adiciona reticências se o texto for longo */
-    white-space: nowrap; /* Impede a quebra de linha no texto */
+  height: 50px; /* Ajuste a altura conforme necessário */
+  vertical-align: middle; /* Centraliza o conteúdo verticalmente */
+  overflow: hidden; /* Evita que o texto exceda a altura definida */
+  text-overflow: ellipsis; /* Adiciona reticências se o texto for longo */
+  white-space: nowrap; /* Impede a quebra de linha no texto */
 }
 
 table {
   table-layout: fixed !important; /* Para um layout de tabela fixo */
-width: 100% !important; /* Para garantir que a tabela utilize toda a largura disponível */
+  width: 100% !important; /* Para garantir que a tabela utilize toda a largura disponível */
+  text-align: center;
 }
-.tableCell {
+
+table td {
   height: 50px !important; /* Ajuste a altura conforme necessário */
   vertical-align: middle !important; /* Centraliza o conteúdo verticalmente */
   overflow: hidden !important; /* Evita que o texto exceda a altura definida */
@@ -71,5 +73,13 @@ width: 100% !important; /* Para garantir que a tabela utilize toda a largura dis
   white-space: nowrap !important; /* Impede a quebra de linha no texto */
   padding: 8px !important; /* Espaçamento interno */
   border: 1px solid #dee2e6 !important; /* Borda da célula */
+  text-align: center; /* Centraliza o conteúdo horizontalmente */
+  vertical-align: middle; /* Centraliza o conteúdo verticalmente */
+  text-align: center;
 }
 
+.actionIcon {
+  cursor: pointer;
+  margin-right: 10px;
+  color: #006c98;
+}
