@@ -379,7 +379,7 @@
         <mxCell id="wAWdI9XRGKY5rI-mCFxE-140" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" parent="wAWdI9XRGKY5rI-mCFxE-138" vertex="1">
           <mxGeometry y="130" width="550" height="8" as="geometry" />
         </mxCell>
-        <mxCell id="wAWdI9XRGKY5rI-mCFxE-141" value="+ connect(): tuple[MySQLConnection, MySQLCursor]" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="wAWdI9XRGKY5rI-mCFxE-138" vertex="1">
+        <mxCell id="wAWdI9XRGKY5rI-mCFxE-141" value="+ connect(): MySQLConnection" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="wAWdI9XRGKY5rI-mCFxE-138" vertex="1">
           <mxGeometry y="138" width="550" height="26" as="geometry" />
         </mxCell>
         <mxCell id="wAWdI9XRGKY5rI-mCFxE-145" value="+ lastrowid(cursor: MySQLCursor): int" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="wAWdI9XRGKY5rI-mCFxE-138" vertex="1">
