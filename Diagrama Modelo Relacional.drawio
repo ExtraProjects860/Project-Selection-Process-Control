@@ -104,7 +104,7 @@
           <mxGeometry x="640" y="331.25" width="60" height="30" as="geometry" />
         </mxCell>
         <mxCell id="I47DqBnZ9mMkm5J6Py_j-3" value="Links_Forms" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="640" y="525" width="160" height="120" as="geometry" />
+          <mxGeometry x="380" y="525" width="160" height="120" as="geometry" />
         </mxCell>
         <mxCell id="I47DqBnZ9mMkm5J6Py_j-4" value="+id_link_forms&lt;div&gt;+nome&lt;/div&gt;&lt;div&gt;+link&lt;br&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;/div&gt;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;" parent="I47DqBnZ9mMkm5J6Py_j-3" vertex="1">
           <mxGeometry y="50" width="160" height="70" as="geometry" />
@@ -131,7 +131,7 @@
           <mxGeometry x="10" y="900" width="60" height="30" as="geometry" />
         </mxCell>
         <mxCell id="Op6Df1ElM4a1uzjS3YWg-9" value="Token_Blacklist" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="440" y="525" width="165" height="120" as="geometry" />
+          <mxGeometry x="164.5" y="525" width="165" height="120" as="geometry" />
         </mxCell>
         <mxCell id="Op6Df1ElM4a1uzjS3YWg-10" value="+id_token_blacklist&lt;div&gt;+jti&lt;/div&gt;&lt;div&gt;+revogado&lt;br&gt;&lt;div&gt;+data_criação&lt;/div&gt;&lt;/div&gt;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;" parent="Op6Df1ElM4a1uzjS3YWg-9" vertex="1">
           <mxGeometry y="50" width="165" height="70" as="geometry" />
