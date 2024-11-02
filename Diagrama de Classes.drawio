@@ -385,13 +385,13 @@
         <mxCell id="wAWdI9XRGKY5rI-mCFxE-145" value="+ lastrowid(cursor: MySQLCursor): int" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="wAWdI9XRGKY5rI-mCFxE-138" vertex="1">
           <mxGeometry y="164" width="550" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="wAWdI9XRGKY5rI-mCFxE-146" value="+ fetch_all(query: str, values: tuple, cursor: MySQLCursor): tuple" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="wAWdI9XRGKY5rI-mCFxE-138" vertex="1">
+        <mxCell id="wAWdI9XRGKY5rI-mCFxE-146" value="+ fetch_all(query: str, values: tuple, cursor: MySQLCursor): list[tuple] | list[dict]" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="wAWdI9XRGKY5rI-mCFxE-138" vertex="1">
           <mxGeometry y="190" width="550" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="wAWdI9XRGKY5rI-mCFxE-147" value="+ fetch_one(query: str, values: tuple, cursor: MySQLCursor): tuple" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="wAWdI9XRGKY5rI-mCFxE-138" vertex="1">
+        <mxCell id="wAWdI9XRGKY5rI-mCFxE-147" value="+ fetch_one(query: str, values: tuple, cursor: MySQLCursor): tuple | dict" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="wAWdI9XRGKY5rI-mCFxE-138" vertex="1">
           <mxGeometry y="216" width="550" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="wAWdI9XRGKY5rI-mCFxE-148" value="+ close_cursor_and_connection(cursor: MySQLCursor, connection: MySQLConnection)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="wAWdI9XRGKY5rI-mCFxE-138" vertex="1">
+        <mxCell id="wAWdI9XRGKY5rI-mCFxE-148" value="+ close_cursor_and_connection(cursor: MySQLCursor, connection: MySQLConnection): None" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="wAWdI9XRGKY5rI-mCFxE-138" vertex="1">
           <mxGeometry y="242" width="550" height="26" as="geometry" />
         </mxCell>
         <mxCell id="wAWdI9XRGKY5rI-mCFxE-149" value="&lt;font style=&quot;font-size: 30px;&quot;&gt;Util&lt;/font&gt;" style="verticalAlign=top;align=center;spacingTop=8;spacingLeft=2;spacingRight=12;shape=cube;size=10;direction=south;fontStyle=4;html=1;whiteSpace=wrap;" parent="1" vertex="1">
