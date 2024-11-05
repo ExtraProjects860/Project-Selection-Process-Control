@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36" version="24.8.3">
   <diagram name="Page-1" id="kNr-TW5UxMLHMkdF3ImA">
-    <mxGraphModel dx="3341" dy="2047" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="2484" dy="1661" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -178,7 +178,7 @@
         <mxCell id="wAWdI9XRGKY5rI-mCFxE-84" value="# cpf: str" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="wAWdI9XRGKY5rI-mCFxE-48" vertex="1">
           <mxGeometry y="182" width="610" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="ZkenpJWiBJo8fUrKXf_B-1" value="- validators: ValidatorsSchema" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="wAWdI9XRGKY5rI-mCFxE-48">
+        <mxCell id="ZkenpJWiBJo8fUrKXf_B-1" value="- validators: ValidatorsSchema" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="wAWdI9XRGKY5rI-mCFxE-48" vertex="1">
           <mxGeometry y="208" width="610" height="26" as="geometry" />
         </mxCell>
         <mxCell id="wAWdI9XRGKY5rI-mCFxE-85" value="- mysql: MySQLService" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="wAWdI9XRGKY5rI-mCFxE-48" vertex="1">
@@ -208,7 +208,7 @@
         <mxCell id="wAWdI9XRGKY5rI-mCFxE-105" value="- email_service: EmailService" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="wAWdI9XRGKY5rI-mCFxE-52" vertex="1">
           <mxGeometry y="78" width="490" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="ZkenpJWiBJo8fUrKXf_B-2" value="- validators: ValidatorsSchema" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="wAWdI9XRGKY5rI-mCFxE-52">
+        <mxCell id="ZkenpJWiBJo8fUrKXf_B-2" value="- validators: ValidatorsSchema" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="wAWdI9XRGKY5rI-mCFxE-52" vertex="1">
           <mxGeometry y="104" width="490" height="26" as="geometry" />
         </mxCell>
         <mxCell id="wAWdI9XRGKY5rI-mCFxE-104" value="- mysql: MySQLService" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="wAWdI9XRGKY5rI-mCFxE-52" vertex="1">
@@ -289,7 +289,7 @@
         <mxCell id="wAWdI9XRGKY5rI-mCFxE-134" value="+ salvar_status_processo_seletivo(vaga: str, etapa: str): None" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="wAWdI9XRGKY5rI-mCFxE-56" vertex="1">
           <mxGeometry y="398" width="530" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="wAWdI9XRGKY5rI-mCFxE-135" value="+ atualizar_status_processo_seletivo(id_status_processo_seletivo: int): None" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="wAWdI9XRGKY5rI-mCFxE-56" vertex="1">
+        <mxCell id="wAWdI9XRGKY5rI-mCFxE-135" value="+ atualizar_status_processo_seletivo(id_status_processo_seletivo: int): tuple[str, str]" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="wAWdI9XRGKY5rI-mCFxE-56" vertex="1">
           <mxGeometry y="424" width="530" height="26" as="geometry" />
         </mxCell>
         <mxCell id="wAWdI9XRGKY5rI-mCFxE-136" value="+ enviar_email_com_base_no_status(nome_usuario: str, email_usuario: str): None" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="wAWdI9XRGKY5rI-mCFxE-56" vertex="1">
@@ -404,7 +404,7 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="wAWdI9XRGKY5rI-mCFxE-150" value="EmailService" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="2340" y="1159" width="870" height="424" as="geometry" />
+          <mxGeometry x="2340" y="1159" width="870" height="450" as="geometry" />
         </mxCell>
         <mxCell id="wAWdI9XRGKY5rI-mCFxE-151" value="- smtp_server: str" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="wAWdI9XRGKY5rI-mCFxE-150" vertex="1">
           <mxGeometry y="26" width="870" height="26" as="geometry" />
@@ -442,17 +442,20 @@
         <mxCell id="wAWdI9XRGKY5rI-mCFxE-162" value="- read_placeholders(template: str, replacements: dict[str, str]) -&amp;gt; str" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="wAWdI9XRGKY5rI-mCFxE-150" vertex="1">
           <mxGeometry y="294" width="870" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="wAWdI9XRGKY5rI-mCFxE-163" value="- send_email(from_email: str, to_email: str, subject: str, email_html: str, smtp_user: str, smtp_password: str): None" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="wAWdI9XRGKY5rI-mCFxE-150" vertex="1">
+        <mxCell id="37VG99REod-aS-5Cj4T0-1" value="- send_email_in_background(from_email: str, to_email: str, subject: str, email_html: str, smtp_user: str, smtp_password: str): None" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="wAWdI9XRGKY5rI-mCFxE-150">
           <mxGeometry y="320" width="870" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="wAWdI9XRGKY5rI-mCFxE-164" value="- send_email_forgot_password(send_email: str, subject: str, message: str, token: str): None" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="wAWdI9XRGKY5rI-mCFxE-150" vertex="1">
+        <mxCell id="wAWdI9XRGKY5rI-mCFxE-163" value="- send_email(from_email: str, to_email: str, subject: str, email_html: str, smtp_user: str, smtp_password: str): None" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="wAWdI9XRGKY5rI-mCFxE-150" vertex="1">
           <mxGeometry y="346" width="870" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="wAWdI9XRGKY5rI-mCFxE-165" value="- send_email_informing_user_registration_to_admin(send_email: str, phone_number: str, name_user: str, subject: str, message: str): None" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="wAWdI9XRGKY5rI-mCFxE-150" vertex="1">
+        <mxCell id="wAWdI9XRGKY5rI-mCFxE-164" value="- send_email_forgot_password(send_email: str, subject: str, message: str, token: str): None" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="wAWdI9XRGKY5rI-mCFxE-150" vertex="1">
           <mxGeometry y="372" width="870" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="wAWdI9XRGKY5rI-mCFxE-166" value="- send_email_informing_user_status_selection_process(send_email: str, subject: str, name_user: str, message: str, token: str): None" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="wAWdI9XRGKY5rI-mCFxE-150" vertex="1">
+        <mxCell id="wAWdI9XRGKY5rI-mCFxE-165" value="- send_email_informing_user_registration_to_admin(send_email: str, phone_number: str, name_user: str, subject: str, message: str): None" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="wAWdI9XRGKY5rI-mCFxE-150" vertex="1">
           <mxGeometry y="398" width="870" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="wAWdI9XRGKY5rI-mCFxE-166" value="- send_email_informing_user_status_selection_process(send_email: str, subject: str, name_user: str, message: str, token: str): None" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="wAWdI9XRGKY5rI-mCFxE-150" vertex="1">
+          <mxGeometry y="424" width="870" height="26" as="geometry" />
         </mxCell>
         <mxCell id="wAWdI9XRGKY5rI-mCFxE-175" value="&lt;font style=&quot;font-size: 30px;&quot;&gt;Validators&lt;/font&gt;" style="verticalAlign=top;align=center;spacingTop=8;spacingLeft=2;spacingRight=12;shape=cube;size=10;direction=south;fontStyle=4;html=1;whiteSpace=wrap;" parent="1" vertex="1">
           <mxGeometry x="-1380" y="1020" width="960" height="540" as="geometry" />
