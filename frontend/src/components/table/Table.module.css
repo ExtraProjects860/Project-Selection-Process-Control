@@ -1,0 +1,85 @@
+.tableTitle {
+  color: #fcfcfc !important;
+  font-size: 1.5rem !important;
+  font-weight: 700 !important;
+  text-align: center !important;
+  padding: 10px !important;
+  background-color: #006c98 !important;
+}
+
+.tableHeader {
+  background-color: #006c98 !important;
+  color: white !important;
+}
+
+.pagination {
+  display: flex !important; /* Define o contêiner como flexível */
+  justify-content: center !important; /* Centraliza os itens horizontalmente */
+  align-items: center !important; /* Alinha os itens verticalmente ao centro (opcional) */
+  margin-top: 1rem !important; /* Adiciona uma margem superior para espaçamento */
+}
+
+.pagination button {
+  margin: 0 10px !important; /* Adiciona espaçamento entre os botões */
+  padding: 5px 10px !important; /* Adiciona preenchimento aos botões */
+  border: none !important; /* Remove bordas dos botões */
+  border-radius: 5px !important; /* Arredonda os cantos dos botões */
+  background-color: #006c98 !important; /* Cor de fundo padrão */
+  color: white !important; /* Cor do texto dos botões */
+  cursor: pointer !important; /* Cursor pointer para indicar que é clicável */
+}
+
+/* Estilos para o hover dos botões */
+.pagination button:hover:not(:disabled) {
+  background-color: #00577a !important; /* Cor de fundo ao passar o mouse (apenas se não estiver desabilitado) */
+}
+
+/* Estilos para os botões desabilitados */
+.pagination button:disabled {
+  background-color: #ccc !important; /* Cor de fundo para botões desativados */
+  cursor: not-allowed !important; /* Cursor not-allowed para indicar que não é clicável */
+}
+
+/* Remove o hover em botões desabilitados */
+.pagination button:disabled:hover {
+  background-color: #ccc !important; /* Garante que a cor de fundo continue a mesma quando desabilitado */
+  cursor: not-allowed !important; /* Garante que o cursor continue como not-allowed */
+}
+
+.pageInfo {
+  margin: 0 10px !important; /* Adiciona espaçamento entre os botões */
+}
+
+.tableHeader th,
+.tableHeader td {
+  height: 50px; /* Ajuste a altura conforme necessário */
+  vertical-align: middle; /* Centraliza o conteúdo verticalmente */
+  overflow: hidden; /* Evita que o texto exceda a altura definida */
+  text-overflow: ellipsis; /* Adiciona reticências se o texto for longo */
+  white-space: nowrap; /* Impede a quebra de linha no texto */
+}
+
+table {
+  table-layout: fixed !important; /* Para um layout de tabela fixo */
+  width: 100% !important; /* Para garantir que a tabela utilize toda a largura disponível */
+  text-align: center;
+}
+
+table td {
+  height: 50px !important; /* Ajuste a altura conforme necessário */
+  vertical-align: middle !important; /* Centraliza o conteúdo verticalmente */
+  overflow: hidden !important; /* Evita que o texto exceda a altura definida */
+  text-overflow: ellipsis !important; /* Adiciona reticências se o texto for longo */
+  white-space: nowrap !important; /* Impede a quebra de linha no texto */
+  padding: 8px !important; /* Espaçamento interno */
+  border: 1px solid #dee2e6 !important; /* Borda da célula */
+  text-align: center; /* Centraliza o conteúdo horizontalmente */
+  vertical-align: middle; /* Centraliza o conteúdo verticalmente */
+  text-align: center;
+}
+
+.actionIcon {
+  cursor: pointer;
+  margin-right: 10px;
+  color: #006c98;
+}

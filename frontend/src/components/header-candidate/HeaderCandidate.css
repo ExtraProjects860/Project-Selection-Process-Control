@@ -1,0 +1,12 @@
+.header-container {
+  background-size: cover;
+    background-image: url('../../assets/img/header-candidate.svg');
+    color: white;
+    text-align: center;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 18rem;
+  }
+  

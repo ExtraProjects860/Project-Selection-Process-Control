@@ -1,0 +1,82 @@
+.modal-content input,
+.modal-content textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc; /* Cor da borda */
+  border-radius: 4px; /* Bordas arredondadas */
+  font-size: 16px; /* Tamanho da fonte */
+  box-sizing: border-box; /* Garantir que padding seja incluído na largura total */
+  outline: none; /* Remover o outline padrão */
+  transition: border-color 0.3s ease; /* Transição suave para mudanças na borda */
+}
+
+.modal-content input:focus,
+.modal-content textarea:focus {
+  border-color: #007BFF; /* Cor da borda ao focar */
+}
+
+.modal-content textarea {
+  resize: vertical; /* Permite redimensionar apenas na vertical */
+  min-height: 100px; /* Altura mínima */
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.modal-save-button {
+  background-color: #006C98; 
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 14px;
+  width: 30%;
+}
+
+.modal-cancel-button {
+  background-color: #971C1F; 
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 14px;
+  width: 30%;
+}
+
+.modal-save-button:hover,
+.modal-cancel-button:hover {
+  opacity: 0.9; /* Efeito hover */
+}
+
+.confirmation-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Fundo semitransparente */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Garante que a caixinha de confirmação apareça acima do modal */
+}
+
+.confirmation-box {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  width: 300px;
+}
+
+.confirmation-buttons {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
