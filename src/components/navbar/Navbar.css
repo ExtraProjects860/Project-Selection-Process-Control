@@ -1,0 +1,71 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #fff;
+  position: fixed !important;
+  width: 100% !important;
+  top: 0 !important;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+}
+
+.navbar .logo {
+  width: 120px;
+  padding-left: 20px;
+}
+
+.menu-button {
+  font-size: 24px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: black;
+  
+}
+
+.menu-button:hover {
+  background-color: transparent !important;
+}
+
+.sidebar {
+  top: 72px;
+  width: 100%;
+  align-items: end;
+  text-align: end;
+  position: fixed;
+  right: -200%; 
+  background: #ffffffcf;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  transition: left 3s ease;
+}
+
+.sidebar.open {
+  right: 0; 
+}
+
+.sidebar a,
+.sidebar button {
+  padding: 10px 0;
+  text-decoration: none;
+  color: black;
+  width: 100%;
+}
+
+.sidebar a:hover,
+.sidebar button:hover {
+  background-color: #f0f0f0 !important;
+  border-radius: 5px;
+  padding-right: 5px;
+}
+
+.logout-btn {
+  all: unset;
+}
+
+.logout-btn:hover {
+  background-color: transparent !important;
+}

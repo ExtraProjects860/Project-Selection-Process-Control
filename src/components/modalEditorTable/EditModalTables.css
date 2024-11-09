@@ -1,0 +1,56 @@
+.loading_overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .spinner {
+    border: 8px solid rgba(255, 255, 255, 0.3);
+    border-top: 8px solid #ffffff;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1s linear infinite;
+  }
+
+  .modal {
+    padding: 0 !important;
+  }
+
+  .modal-dialog {
+    max-width: 100% !important;
+    margin: 0 !important;
+    display: flex !important;
+    justify-content: center !important;
+  }
+
+  .modal-content {
+    max-width: 100% !important;
+    margin: 0 10px;
+  }
+
+  .modal-body form {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 0 10px !important;
+  }
+
+  .layoutModalUser input {
+    float: right !important;
+  }
+  
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }

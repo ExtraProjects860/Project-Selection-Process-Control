@@ -1,0 +1,190 @@
+.modal-content,
+.column,
+.column .title-container,
+.title-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.modalContent {
+  gap: 20px;
+  width: 80% !important;
+  max-width: 900px !important;
+}
+
+.inner-content-container {
+  display: flex;
+  gap: 2%;
+  margin: 0 4%;
+}
+
+.title-modal {
+  margin: 3% 4% !important;
+}
+
+.column,
+.confirmation-buttons button {
+  flex: 1;
+}
+
+.column .title-container {
+  flex: 1;
+  gap: 5px;
+  text-align: end;
+}
+
+.column .title-container p,
+.column .title-container input,
+.modal-buttons button {
+  margin: 0 !important;
+}
+
+.column .title-container p {
+  padding: 0 5px;
+  color: #adadad;
+  font-size: 14px;
+}
+
+.column input,
+.column textarea,
+.modal-content select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  box-sizing: border-box;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.column textarea {
+  flex: 3;
+  resize: vertical;
+  min-height: 100px;
+}
+
+input:disabled,
+textarea:disabled {
+  background-color: transparent;
+  color: #adadad;
+  border-color: #c6c6c6;
+}
+
+.modal-content input:focus,
+.modal-content textarea:focus,
+.modal-content select:focus {
+  border-color: #007BFF;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-left: 4% !important;
+  margin-right: 4% !important;
+}
+
+.modal-close-button {
+  background-color: #971C1F !important;
+}
+
+.modal-save-button,
+.modal-edit-button {
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 14px;
+  width: 30%;
+}
+
+.modal-save-button {  
+  background-color: #006C98;
+}
+
+.modal-edit-button {  
+  background-color: gray;
+}
+
+.modal-cancel-button,
+.modal-close-button {
+  background-color: #971C1F; 
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 14px;
+  width: 30%;
+}
+
+.modal-save-button:hover,
+.modal-cancel-button:hover {
+  opacity: 0.9;
+}
+
+.confirmation-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999999;
+}
+
+.confirmation-box {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  width: 300px;
+}
+
+.confirmation-buttons {
+  display: flex;
+  justify-content: space-around;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.error-message {
+  margin: 0 !important;
+}
+
+@media (max-width: 600px) {
+  .modal-content {
+    gap: 10px;
+  }
+
+  .inner-content-container {
+    flex-direction: column;
+  }
+
+  .column input,
+  .column textarea {
+    margin-bottom: 5px !important;
+  }
+
+  .modal-buttons {
+    margin-top: 10px !important;
+  }
+}
+
+@media (max-width: 375px) {
+  .modal-buttons button {
+    flex: 1;
+  }
+
+  .column input,
+  .column textarea,
+  .modal-content select {
+    font-size: 12px;
+  }
+}
