@@ -25,7 +25,7 @@ SQL_BUSCAR_CARGO_POR_ID: str = """
 
 SQL_QUANTIDADE_VAGAS: str = """
     SELECT COUNT(id_vaga) as quantidade
-    FROM vaga;
+    FROM vaga
 """
 
 SQL_PEGAR_TODAS_VAGAS: str = """
