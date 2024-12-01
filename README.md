@@ -52,8 +52,8 @@ Este projeto está sendo desenvolvido pela equipe:
 - [Gustavo Rodrigues](https://github.com/Gvcrodrigues99) - Realização de Testes e criação/controle da Documentação do
 Projeto
 - [Jamil Salomão](https://github.com/jamilsalomao) - Desenvolvedor Frontend e Prototipação do Projeto
-- [Italo Mendes]() - Desenvolvedor Frontend Auxiliar e Prototipação do Projeto
-- [Cassia]
+- [Italo Mendes](https://github.com/ItaloBM) - Desenvolvedor Frontend Auxiliar e Prototipação do Projeto
+- [Cassia]() - Desenvolvedora Frontend Auxiliar
 
 ## Licença
 
