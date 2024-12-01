@@ -71,7 +71,7 @@ Este projeto está sendo desenvolvido pela equipe:
 Projeto
 - [Jamil Salomão](https://github.com/jamilsalomao) - Desenvolvedor Frontend e Prototipação do Projeto
 - [Italo Mendes](https://github.com/ItaloBM) - Desenvolvedor Frontend Auxiliar e Prototipação do Projeto
-- [Cassia]() - Desenvolvedora Frontend Auxiliar
+- [Cassia Costa](https://github.com/CassiaCosta) - Desenvolvedora Frontend Auxiliar
 
 ## Licença
 
