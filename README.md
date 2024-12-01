@@ -43,13 +43,6 @@ de negócios;
 
 ## Esboços do Projeto
 
-## Como Utilizar
-1. Clone este repositório.
-2. Importe o banco de dados MySQL disponível no diretório `database`.
-3. Configure as credenciais do banco de dados no arquivo `ConnectionDatabase.js`.
-4. Execute um ambiente de desenvolvimento Node.js e um como XAMPP, WAMP, ou similar para alocar o banco de dados.
-5. Acesse o site através do seu navegador.
-
 ## Equipe
 
 Este projeto está sendo desenvolvido pela equipe:
@@ -59,6 +52,8 @@ Este projeto está sendo desenvolvido pela equipe:
 - [Gustavo Rodrigues](https://github.com/Gvcrodrigues99) - Realização de Testes e criação/controle da Documentação do
 Projeto
 - [Jamil Salomão](https://github.com/jamilsalomao) - Desenvolvedor Frontend e Prototipação do Projeto
+- [Italo Mendes]() - Desenvolvedor Frontend Auxiliar e Prototipação do Projeto
+- [Cassia]
 
 ## Licença
 
