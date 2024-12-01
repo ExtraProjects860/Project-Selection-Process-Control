@@ -43,6 +43,24 @@ de negócios;
 
 ## Esboços do Projeto
 
+- Tela de Inscrição
+![Tela de Inscrição](https://github.com/ExtraProjects860/Project-Selection-Process-Control/blob/main/img/Modal%20Inscri%C3%A7%C3%A3o.jfif)
+
+- Tela de Login
+![Tela de Login](https://github.com/ExtraProjects860/Project-Selection-Process-Control/blob/main/img/Login.jfif)
+
+- Inscrição do Candidatos
+![Tela de Inscrição do Candidato](https://github.com/ExtraProjects860/Project-Selection-Process-Control/blob/main/img/Inscri%C3%A7%C3%B5es%20Usu%C3%A1rio.jfif)
+
+- Vagas dos Candidatos
+![Tela de Vagas do Candidato](https://github.com/ExtraProjects860/Project-Selection-Process-Control/blob/main/img/Vagas%20usu%C3%A1rio.jfif)
+
+- Página Principal Admin
+![Tela de Adimin](https://github.com/ExtraProjects860/Project-Selection-Process-Control/blob/main/img/Tabela%20Candidatos.jfif)
+
+- Gerenciamento de Vagas Admin
+![Tela Gerenciamento de Vagas do Usuário](https://github.com/ExtraProjects860/Project-Selection-Process-Control/blob/main/img/Admin%20Vagas.jfif)
+
 ## Equipe
 
 Este projeto está sendo desenvolvido pela equipe:
