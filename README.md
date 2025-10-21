@@ -66,7 +66,7 @@ de negócios;
 Este projeto está sendo desenvolvido pela equipe:
 
 - [Alana Karine](https://github.com/AlanaK2) - Desenvolvedora Frontend e Estatística
-- [Davi Nascimento](https://github.com/zedark860) - Desenvolvedor Backend e criação/controle do Banco de Dados
+- [Davi Nascimento](https://github.com/DaviRodrigues) - Desenvolvedor Backend e criação/controle do Banco de Dados
 - [Gustavo Rodrigues](https://github.com/Gvcrodrigues99) - Realização de Testes e criação/controle da Documentação do
 Projeto
 - [Jamil Salomão](https://github.com/jamilsalomao) - Desenvolvedor Frontend e Prototipação do Projeto
